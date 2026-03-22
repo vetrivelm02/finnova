@@ -1,0 +1,1604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FinNova — Personal Finance Manager</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:#0D1B2A; --navy2:#16293D; --navy3:#1E3450;
+  --gold:#C9A84C; --gold-lt:#F5EDD3; --gold-dk:#8B6914;
+  --surface:#132031; --surface2:#1A2D42; --surface3:#213548;
+  --text1:#F0EDE8; --text2:#A8B5C4; --text3:#5A7080;
+  --border:#1E3450; --border2:#2A4560;
+  --green:#22C55E; --green-bg:rgba(34,197,94,.12); --green-text:#4ADE80;
+  --red:#EF4444; --red-bg:rgba(239,68,68,.12); --red-text:#F87171;
+  --blue:#3B82F6; --blue-bg:rgba(59,130,246,.12);
+  --amber:#F59E0B; --amber-bg:rgba(245,158,11,.12);
+  --teal:#14B8A6; --teal-bg:rgba(20,184,166,.12);
+  --purple:#8B5CF6; --purple-bg:rgba(139,92,246,.12);
+  --r:12px; --rs:8px; --rl:20px;
+  --ff:'DM Sans',sans-serif; --fh:'Syne',sans-serif; --fm:'JetBrains Mono',monospace;
+  --sh:0 4px 24px rgba(0,0,0,.3);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:var(--ff);background:var(--navy);color:var(--text1);font-size:14px;line-height:1.6;min-height:100vh;}
+input,select,textarea,button{font-family:var(--ff);}
+h1,h2,h3,h4,h5{font-family:var(--fh);}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:6px;height:6px;}
+::-webkit-scrollbar-track{background:var(--navy2);}
+::-webkit-scrollbar-thumb{background:var(--navy3);border-radius:3px;}
+
+/* SETUP SCREEN */
+#setup-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:2rem;background:var(--navy);position:relative;overflow:hidden;}
+#setup-screen::before{content:'';position:absolute;width:800px;height:800px;background:radial-gradient(circle,rgba(201,168,76,.06) 0%,transparent 70%);top:-300px;right:-300px;pointer-events:none;}
+#setup-screen::after{content:'';position:absolute;width:500px;height:500px;background:radial-gradient(circle,rgba(59,130,246,.04) 0%,transparent 70%);bottom:-200px;left:-100px;pointer-events:none;}
+.setup-card{background:var(--surface);border:1px solid var(--border2);border-radius:24px;padding:48px;width:100%;max-width:540px;box-shadow:var(--sh);position:relative;z-index:1;}
+.setup-logo{display:flex;align-items:center;gap:12px;margin-bottom:36px;}
+.setup-logo-mark{width:44px;height:44px;background:linear-gradient(135deg,var(--gold),var(--gold-dk));border-radius:12px;display:flex;align-items:center;justify-content:center;font-family:var(--fh);font-weight:800;font-size:17px;color:#fff;}
+.setup-logo-name{font-family:var(--fh);font-size:20px;font-weight:800;color:var(--text1);}
+.setup-logo-name span{color:var(--gold);}
+.setup-h1{font-family:var(--fh);font-size:28px;font-weight:800;color:var(--text1);margin-bottom:8px;}
+.setup-sub{color:var(--text2);font-size:14px;margin-bottom:32px;line-height:1.7;}
+.step-pill{display:inline-flex;align-items:center;gap:6px;background:var(--surface2);border:1px solid var(--border2);border-radius:20px;padding:4px 14px;font-size:12px;font-weight:600;color:var(--text2);margin-bottom:20px;}
+.step-pill .step-num{background:var(--gold);color:var(--navy);border-radius:50%;width:18px;height:18px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;}
+.form-label{display:block;font-size:12px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.6px;margin-bottom:7px;}
+.form-input{width:100%;padding:12px 16px;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--rs);color:var(--text1);font-size:14px;outline:none;transition:border-color .2s;}
+.form-input:focus{border-color:var(--gold);}
+.form-group{margin-bottom:18px;}
+.setup-btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--gold),var(--gold-dk));color:var(--navy);border:none;border-radius:var(--rs);font-size:15px;font-weight:700;font-family:var(--fh);cursor:pointer;transition:opacity .2s;margin-top:8px;}
+.setup-btn:hover{opacity:.88;}
+.setup-btn:disabled{opacity:.5;cursor:not-allowed;}
+.setup-hint{font-size:12px;color:var(--text3);margin-top:12px;line-height:1.7;}
+.setup-hint a{color:var(--gold);text-decoration:none;}
+.setup-hint a:hover{text-decoration:underline;}
+.steps-guide{background:var(--navy);border:1px solid var(--border);border-radius:var(--rs);padding:16px;margin-top:20px;}
+.steps-guide-title{font-size:12px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:.6px;margin-bottom:12px;}
+.step-item{display:flex;gap:10px;margin-bottom:10px;font-size:12px;color:var(--text2);line-height:1.6;}
+.step-item-num{width:20px;height:20px;background:var(--surface3);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--gold);flex-shrink:0;margin-top:1px;}
+.alert{padding:12px 16px;border-radius:var(--rs);font-size:13px;margin-bottom:16px;display:flex;align-items:flex-start;gap:8px;}
+.alert-error{background:var(--red-bg);border:1px solid rgba(239,68,68,.3);color:var(--red-text);}
+.alert-success{background:var(--green-bg);border:1px solid rgba(34,197,94,.3);color:var(--green-text);}
+.alert-info{background:var(--blue-bg);border:1px solid rgba(59,130,246,.3);color:#93C5FD;}
+.tab-buttons{display:flex;gap:4px;background:var(--navy);border:1px solid var(--border);border-radius:var(--rs);padding:4px;margin-bottom:24px;}
+.tab-btn{flex:1;padding:8px;border:none;background:none;color:var(--text2);font-size:13px;font-weight:500;border-radius:6px;cursor:pointer;transition:all .15s;}
+.tab-btn.active{background:var(--gold);color:var(--navy);font-weight:700;}
+
+/* APP */
+#app{display:none;min-height:100vh;}
+.sidebar{width:248px;min-height:100vh;background:var(--surface);border-right:1px solid var(--border);position:fixed;top:0;left:0;display:flex;flex-direction:column;z-index:100;}
+.sb-brand{padding:22px 18px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:11px;}
+.sb-mark{width:34px;height:34px;background:linear-gradient(135deg,var(--gold),var(--gold-dk));border-radius:9px;display:flex;align-items:center;justify-content:center;font-family:var(--fh);font-weight:800;font-size:13px;color:var(--navy);flex-shrink:0;}
+.sb-name{font-family:var(--fh);font-size:15px;font-weight:700;color:var(--text1);}
+.sb-name span{color:var(--gold);}
+.sb-sync{font-size:10px;color:var(--text3);margin-top:1px;}
+.sb-nav{padding:12px 10px;flex:1;overflow-y:auto;}
+.sb-sec{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);padding:10px 10px 4px;}
+.ni{display:flex;align-items:center;gap:10px;padding:9px 11px;border-radius:9px;cursor:pointer;color:var(--text2);font-size:13px;font-weight:500;transition:all .15s;margin-bottom:1px;user-select:none;}
+.ni:hover{background:var(--surface2);color:var(--text1);}
+.ni.active{background:rgba(201,168,76,.12);color:var(--gold);font-weight:600;}
+.ni-icon{font-size:15px;width:18px;text-align:center;}
+.ni-badge{margin-left:auto;background:var(--red);color:#fff;font-size:10px;font-weight:700;padding:1px 6px;border-radius:10px;}
+.sb-footer{padding:12px 10px;border-top:1px solid var(--border);}
+.sb-user{display:flex;align-items:center;gap:9px;padding:9px 11px;border-radius:9px;cursor:pointer;}
+.sb-user:hover{background:var(--surface2);}
+.sb-av{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--teal),var(--blue));display:flex;align-items:center;justify-content:center;font-weight:700;font-size:11px;color:#fff;flex-shrink:0;}
+.sb-uname{font-size:13px;font-weight:600;color:var(--text1);}
+.sb-sync-status{font-size:10px;color:var(--green-text);}
+.sb-logout{margin-left:auto;background:none;border:none;color:var(--text3);cursor:pointer;font-size:14px;transition:color .15s;}
+.sb-logout:hover{color:var(--red-text);}
+
+.main{margin-left:248px;min-height:100vh;}
+.topbar{background:var(--surface);border-bottom:1px solid var(--border);height:58px;padding:0 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;}
+.tb-left h1{font-family:var(--fh);font-size:16px;font-weight:700;color:var(--text1);}
+.tb-left p{font-size:11px;color:var(--text3);}
+.tb-right{display:flex;align-items:center;gap:10px;}
+.tb-btn{display:flex;align-items:center;gap:6px;padding:7px 14px;border-radius:var(--rs);border:1px solid var(--border2);background:var(--surface2);color:var(--text2);font-size:12px;font-weight:600;cursor:pointer;transition:all .15s;}
+.tb-btn:hover{background:var(--surface3);color:var(--text1);}
+.tb-btn.primary{background:var(--gold);color:var(--navy);border-color:var(--gold);}
+.tb-btn.primary:hover{opacity:.88;}
+.tb-sync{font-size:11px;color:var(--text3);font-family:var(--fm);}
+
+.page{padding:24px;display:none;animation:pin .2s ease;}
+.page.active{display:block;}
+@keyframes pin{from{opacity:0;transform:translateY(5px);}to{opacity:1;transform:none;}}
+
+/* COMPONENTS */
+.kgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;}
+.kpi{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px;position:relative;overflow:hidden;}
+.kpi::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:var(--r) 0 0 var(--r);}
+.kpi.gold::before{background:var(--gold);}
+.kpi.green::before{background:var(--green);}
+.kpi.red::before{background:var(--red);}
+.kpi.blue::before{background:var(--blue);}
+.kpi.teal::before{background:var(--teal);}
+.kpi.purple::before{background:var(--purple);}
+.kpi-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.6px;color:var(--text3);margin-bottom:8px;}
+.kpi-val{font-family:var(--fh);font-size:22px;font-weight:800;color:var(--text1);margin-bottom:6px;}
+.kpi-sub{font-size:12px;color:var(--text3);}
+.kpi-icon{position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:28px;opacity:.15;}
+.up{color:var(--green-text);}
+.dn{color:var(--red-text);}
+
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;margin-bottom:16px;}
+.card-head{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.card-head h3{font-family:var(--fh);font-size:14px;font-weight:700;color:var(--text1);}
+.card-head p{font-size:12px;color:var(--text3);margin-top:2px;}
+.card-body{padding:18px 20px;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;}
+.g6040{display:grid;grid-template-columns:3fr 2fr;gap:16px;}
+.mb16{margin-bottom:16px;}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:var(--rs);font-size:13px;font-weight:600;cursor:pointer;border:none;transition:all .15s;}
+.btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold-dk));color:var(--navy);}
+.btn-gold:hover{opacity:.88;}
+.btn-outline{background:none;border:1px solid var(--border2);color:var(--text2);}
+.btn-outline:hover{background:var(--surface2);color:var(--text1);}
+.btn-green{background:var(--green-bg);color:var(--green-text);border:1px solid rgba(34,197,94,.2);}
+.btn-red{background:var(--red-bg);color:var(--red-text);border:1px solid rgba(239,68,68,.2);}
+.btn-sm{padding:5px 12px;font-size:12px;}
+.btn-icon{width:30px;height:30px;padding:0;display:flex;align-items:center;justify-content:center;border-radius:6px;}
+
+/* TABLE */
+.tbl-wrap{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;}
+th{padding:10px 16px;text-align:left;font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;background:var(--navy);border-bottom:1px solid var(--border);}
+td{padding:12px 16px;font-size:13px;border-bottom:1px solid var(--border);color:var(--text1);}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:var(--surface2);}
+.badge{display:inline-flex;align-items:center;padding:3px 9px;border-radius:16px;font-size:11px;font-weight:700;}
+.badge-green{background:var(--green-bg);color:var(--green-text);}
+.badge-red{background:var(--red-bg);color:var(--red-text);}
+.badge-amber{background:var(--amber-bg);color:var(--amber);}
+.badge-blue{background:var(--blue-bg);color:#93C5FD;}
+.badge-gold{background:rgba(201,168,76,.15);color:var(--gold);}
+.badge-teal{background:var(--teal-bg);color:var(--teal);}
+
+/* FORM ELEMENTS */
+.fi{width:100%;padding:10px 13px;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--rs);color:var(--text1);font-size:13px;outline:none;transition:border-color .2s;}
+.fi:focus{border-color:var(--gold);}
+select.fi{cursor:pointer;}
+.fl{font-size:12px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:6px;}
+.fg{margin-bottom:14px;}
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.fspan{grid-column:1/-1;}
+
+/* MODAL */
+.mov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:200;align-items:center;justify-content:center;backdrop-filter:blur(4px);}
+.mov.open{display:flex;}
+.modal{background:var(--surface);border:1px solid var(--border2);border-radius:20px;padding:28px;width:500px;max-width:96vw;box-shadow:var(--sh);animation:mIn .2s ease;}
+@keyframes mIn{from{opacity:0;transform:scale(.95);}to{opacity:1;transform:none;}}
+.modal-title{font-family:var(--fh);font-size:18px;font-weight:800;color:var(--text1);margin-bottom:20px;}
+.modal-footer{display:flex;gap:8px;justify-content:flex-end;margin-top:20px;padding-top:16px;border-top:1px solid var(--border);}
+
+/* PROGRESS */
+.progress{background:var(--navy);border-radius:20px;height:6px;overflow:hidden;}
+.progress-fill{height:6px;border-radius:20px;transition:width .4s;}
+
+/* ENTRY ROW */
+.entry-row{display:grid;align-items:center;padding:11px 16px;border-bottom:1px solid var(--border);transition:background .12s;gap:10px;}
+.entry-row:last-child{border-bottom:none;}
+.entry-row:hover{background:var(--surface2);}
+.entry-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
+.entry-name{font-size:13px;font-weight:600;color:var(--text1);}
+.entry-note{font-size:11px;color:var(--text3);}
+.entry-inc{font-family:var(--fm);font-size:13px;font-weight:600;color:var(--green-text);}
+.entry-exp{font-family:var(--fm);font-size:13px;font-weight:600;color:var(--red-text);}
+.entry-date{font-size:11px;color:var(--text3);font-family:var(--fm);}
+.del-btn{background:none;border:none;color:var(--text3);cursor:pointer;font-size:14px;padding:2px 6px;border-radius:4px;transition:all .12s;}
+.del-btn:hover{background:var(--red-bg);color:var(--red-text);}
+
+/* STAT CARDS IN DETAILS */
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px;}
+.stat{background:var(--surface2);border-radius:var(--rs);padding:14px;text-align:center;}
+.stat-label{font-size:11px;color:var(--text3);margin-bottom:4px;}
+.stat-val{font-family:var(--fh);font-size:17px;font-weight:700;color:var(--text1);}
+
+/* MONTH SELECTOR */
+.month-tabs{display:flex;gap:4px;overflow-x:auto;padding-bottom:4px;margin-bottom:16px;}
+.month-tab{flex-shrink:0;padding:6px 14px;border-radius:20px;border:1px solid var(--border);background:none;color:var(--text2);font-size:12px;font-weight:600;cursor:pointer;transition:all .15s;white-space:nowrap;}
+.month-tab.active{background:var(--gold);color:var(--navy);border-color:var(--gold);}
+
+/* LOADING */
+.loading{display:flex;align-items:center;justify-content:center;padding:48px;color:var(--text3);gap:10px;}
+.spinner{width:20px;height:20px;border:2px solid var(--border2);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* TOAST */
+#toast{position:fixed;bottom:24px;right:24px;z-index:500;display:flex;flex-direction:column;gap:8px;}
+.toast-item{background:var(--surface2);border:1px solid var(--border2);border-radius:var(--rs);padding:12px 18px;font-size:13px;color:var(--text1);box-shadow:var(--sh);animation:toastIn .3s ease;display:flex;align-items:center;gap:8px;}
+.toast-item.success{border-color:rgba(34,197,94,.4);}
+.toast-item.error{border-color:rgba(239,68,68,.4);}
+@keyframes toastIn{from{opacity:0;transform:translateX(20px);}to{opacity:1;transform:none;}}
+
+/* SYNC INDICATOR */
+.sync-dot{width:7px;height:7px;border-radius:50%;display:inline-block;margin-right:4px;}
+.sync-dot.green{background:var(--green);}
+.sync-dot.amber{background:var(--amber);animation:pulse .8s infinite;}
+.sync-dot.red{background:var(--red);}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.4;}}
+
+/* CHIT CARD */
+.chit-card{background:var(--surface2);border:1px solid var(--border);border-radius:var(--r);padding:18px;position:relative;overflow:hidden;}
+.chit-stripe{position:absolute;left:0;top:0;bottom:0;width:3px;}
+
+/* EMPTY STATE */
+.empty{text-align:center;padding:48px 24px;color:var(--text3);}
+.empty-icon{font-size:40px;margin-bottom:12px;opacity:.5;}
+.empty-title{font-size:16px;font-weight:600;color:var(--text2);margin-bottom:6px;}
+.empty-sub{font-size:13px;}
+
+/* CATEGORY COLORS */
+.cat-housing{color:#F59E0B;} .cat-food{color:#22C55E;} .cat-transport{color:#3B82F6;}
+.cat-health{color:#14B8A6;} .cat-insurance{color:#F97316;} .cat-investment{color:#8B5CF6;}
+.cat-chit{color:#C9A84C;} .cat-other{color:#6B7280;} .cat-education{color:#EC4899;}
+.cat-income{color:#22C55E;}
+
+/* SCORE GAUGE */
+.score-ring{position:relative;display:inline-flex;align-items:center;justify-content:center;}
+.score-val{position:absolute;font-family:var(--fh);font-size:22px;font-weight:800;color:var(--text1);}
+
+/* NET WORTH HISTORY */
+.nw-item{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);}
+.nw-item:last-child{border-bottom:none;}
+
+@media(max-width:768px){
+  .sidebar{transform:translateX(-100%);transition:transform .3s;}
+  .sidebar.open{transform:none;}
+  .main{margin-left:0;}
+  .kgrid{grid-template-columns:1fr 1fr;}
+  .g2,.g3,.g6040{grid-template-columns:1fr;}
+  .fgrid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- SETUP SCREEN -->
+<div id="setup-screen">
+  <div class="setup-card">
+    <div class="setup-logo">
+      <div class="setup-logo-mark">FN</div>
+      <div class="setup-logo-name">Fin<span>Nova</span></div>
+    </div>
+    <div id="setup-content">
+      <div class="tab-buttons">
+        <button class="tab-btn active" onclick="switchSetupTab('connect')">Connect to Sheets</button>
+        <button class="tab-btn" onclick="switchSetupTab('guide')">Setup Guide</button>
+      </div>
+      <div id="tab-connect">
+        <h2 class="setup-h1">Connect your Google Sheet</h2>
+        <p class="setup-sub">Your financial data lives in YOUR Google Sheet — we just provide the interface. Nothing is stored on any server.</p>
+        <div id="setup-alert"></div>
+        <div class="fg">
+          <label class="form-label">Google OAuth Client ID</label>
+          <input class="form-input" id="clientId" type="text" placeholder="xxxx.apps.googleusercontent.com" autocomplete="off">
+        </div>
+        <div class="fg">
+          <label class="form-label">Google Sheet ID (optional — leave blank to create new)</label>
+          <input class="form-input" id="sheetId" type="text" placeholder="From the URL: .../spreadsheets/d/YOUR_ID_HERE/...">
+        </div>
+        <button class="setup-btn" id="connectBtn" onclick="startAuth()">Connect with Google →</button>
+        <p class="setup-hint">Your Client ID stays in your browser only. <a href="#" onclick="switchSetupTab('guide');return false;">Don't have one? See setup guide →</a></p>
+      </div>
+      <div id="tab-guide" style="display:none">
+        <h2 class="setup-h1">How to set up Google OAuth</h2>
+        <p class="setup-sub">One-time setup takes about 5 minutes. Your data stays in your own Google account.</p>
+        <div class="steps-guide">
+          <div class="steps-guide-title">Step-by-step setup</div>
+          <div class="step-item"><div class="step-item-num">1</div><div>Go to <a href="https://console.cloud.google.com" target="_blank" style="color:var(--gold)">console.cloud.google.com</a> and create a new project (or use existing)</div></div>
+          <div class="step-item"><div class="step-item-num">2</div><div>Search for "Google Sheets API" → click Enable</div></div>
+          <div class="step-item"><div class="step-item-num">3</div><div>Go to APIs & Services → Credentials → Create Credentials → OAuth 2.0 Client ID</div></div>
+          <div class="step-item"><div class="step-item-num">4</div><div>Application type: <strong style="color:var(--text1)">Web application</strong>. Add your website URL (or <code style="background:var(--navy);padding:1px 6px;border-radius:4px;color:var(--gold)">http://localhost</code> for local use) to Authorized JavaScript Origins</div></div>
+          <div class="step-item"><div class="step-item-num">5</div><div>Copy the <strong style="color:var(--text1)">Client ID</strong> (ends in .apps.googleusercontent.com) and paste it in the Connect tab</div></div>
+          <div class="step-item"><div class="step-item-num">6</div><div>Go to APIs & Services → OAuth consent screen → Add your email as a test user if app is not published</div></div>
+        </div>
+        <div class="alert alert-info" style="margin-top:16px">
+          <span>💡</span><span>For personal use, you don't need to publish the app. Just add yourself as a test user on the OAuth consent screen.</span>
+        </div>
+        <button class="setup-btn" onclick="switchSetupTab('connect')" style="margin-top:16px">← Back to Connect</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div id="app">
+  <div class="sidebar" id="sidebar">
+    <div class="sb-brand">
+      <div class="sb-mark">FN</div>
+      <div>
+        <div class="sb-name">Fin<span>Nova</span></div>
+        <div class="sb-sync" id="sb-sync-status">Synced with Google Sheets</div>
+      </div>
+    </div>
+    <div class="sb-nav">
+      <div class="sb-sec">Overview</div>
+      <div class="ni active" onclick="showPage('dashboard',this)"><span class="ni-icon">◈</span> Dashboard</div>
+      <div class="sb-sec">Money</div>
+      <div class="ni" onclick="showPage('income-expense',this)"><span class="ni-icon">⇅</span> Income & Expenses</div>
+      <div class="ni" onclick="showPage('mutual-funds',this)"><span class="ni-icon">📊</span> Mutual Funds</div>
+      <div class="sb-sec">Products</div>
+      <div class="ni" onclick="showPage('chit-funds',this)"><span class="ni-icon">◉</span> Chit Funds</div>
+      <div class="ni" onclick="showPage('investments',this)"><span class="ni-icon">📈</span> Investments</div>
+      <div class="ni" onclick="showPage('insurance',this)"><span class="ni-icon">🛡</span> Insurance</div>
+      <div class="sb-sec">Planning</div>
+      <div class="ni" onclick="showPage('tax',this)"><span class="ni-icon">🧾</span> Tax Planning</div>
+      <div class="ni" onclick="showPage('goals',this)"><span class="ni-icon">🎯</span> Goals & Emergency</div>
+      <div class="ni" onclick="showPage('health',this)"><span class="ni-icon">❤</span> Financial Health</div>
+      <div class="sb-sec">Reports</div>
+      <div class="ni" onclick="showPage('monthly',this)"><span class="ni-icon">📅</span> Monthly Tracker</div>
+      <div class="ni" onclick="showPage('networth',this)"><span class="ni-icon">💎</span> Net Worth</div>
+    </div>
+    <div class="sb-footer">
+      <div class="sb-user">
+        <div class="sb-av" id="user-avatar">?</div>
+        <div><div class="sb-uname" id="user-name">Loading...</div><div class="sb-sync-status"><span class="sync-dot green"></span>Google Sheets</div></div>
+        <button class="sb-logout" onclick="signOut()" title="Sign out">⏻</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="topbar">
+      <div class="tb-left"><h1 id="page-title">Dashboard</h1><p id="page-sub">Your complete financial overview</p></div>
+      <div class="tb-right">
+        <span class="tb-sync" id="last-sync">Syncing...</span>
+        <button class="tb-btn" onclick="syncAll()">↻ Sync</button>
+        <button class="tb-btn primary" onclick="openModal('add-expense-modal')">+ Add Entry</button>
+      </div>
+    </div>
+
+    <!-- DASHBOARD -->
+    <div class="page active" id="page-dashboard">
+      <div class="kgrid">
+        <div class="kpi gold"><div class="kpi-icon">💰</div><div class="kpi-label">Monthly Income</div><div class="kpi-val" id="d-income">—</div><div class="kpi-sub">This month</div></div>
+        <div class="kpi red"><div class="kpi-icon">💸</div><div class="kpi-label">Total Expenses</div><div class="kpi-val" id="d-expenses">—</div><div class="kpi-sub">This month</div></div>
+        <div class="kpi green"><div class="kpi-icon">🎯</div><div class="kpi-label">Net Surplus</div><div class="kpi-val" id="d-surplus">—</div><div class="kpi-sub" id="d-surplus-pct">—</div></div>
+        <div class="kpi blue"><div class="kpi-icon">📈</div><div class="kpi-label">Total Invested</div><div class="kpi-val" id="d-invested">—</div><div class="kpi-sub">MF + NPS + Chits</div></div>
+      </div>
+      <div class="g2 mb16">
+        <div class="kpi teal"><div class="kpi-icon">🏦</div><div class="kpi-label">Chit Funds Paid</div><div class="kpi-val" id="d-chits">—</div><div class="kpi-sub">All chit contributions</div></div>
+        <div class="kpi purple"><div class="kpi-icon">💎</div><div class="kpi-label">Net Worth</div><div class="kpi-val" id="d-networth">—</div><div class="kpi-sub">Assets − Liabilities</div></div>
+      </div>
+      <div class="g2">
+        <div class="card">
+          <div class="card-head"><div><h3>Recent Transactions</h3><p>Last 10 entries</p></div><button class="btn btn-outline btn-sm" onclick="showPage('income-expense',null)">View all</button></div>
+          <div class="tbl-wrap"><table><thead><tr><th>Description</th><th>Category</th><th>Amount</th><th>Date</th></tr></thead><tbody id="dash-recent"></tbody></table></div>
+        </div>
+        <div class="card">
+          <div class="card-head"><div><h3>Expense by Category</h3><p>This month</p></div></div>
+          <div class="card-body" id="dash-cat-breakdown"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- INCOME & EXPENSES -->
+    <div class="page" id="page-income-expense">
+      <div class="kgrid">
+        <div class="kpi green"><div class="kpi-label">Total Income</div><div class="kpi-val" id="ie-income">—</div></div>
+        <div class="kpi red"><div class="kpi-label">Total Expenses</div><div class="kpi-val" id="ie-expenses">—</div></div>
+        <div class="kpi gold"><div class="kpi-label">Net Surplus</div><div class="kpi-val" id="ie-surplus">—</div></div>
+        <div class="kpi blue"><div class="kpi-label">Savings Rate</div><div class="kpi-val" id="ie-rate">—</div></div>
+      </div>
+      <div class="month-tabs" id="ie-month-tabs"></div>
+      <div class="g2">
+        <div class="card">
+          <div class="card-head"><div><h3>Income</h3><p id="ie-inc-count">—</p></div><button class="btn btn-green btn-sm" onclick="openModal('add-income-modal')">+ Add Income</button></div>
+          <div id="ie-income-list"><div class="loading"><div class="spinner"></div> Loading...</div></div>
+          <div style="padding:12px 16px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;">
+            <span style="font-size:12px;color:var(--text3)">Total income</span>
+            <span style="font-family:var(--fm);font-weight:700;font-size:14px;color:var(--green-text)" id="ie-inc-total">—</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-head"><div><h3>Expenses</h3><p id="ie-exp-count">—</p></div><button class="btn btn-red btn-sm" onclick="openModal('add-expense-modal')">+ Add Expense</button></div>
+          <div id="ie-expense-list"><div class="loading"><div class="spinner"></div> Loading...</div></div>
+          <div style="padding:12px 16px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;">
+            <span style="font-size:12px;color:var(--text3)">Total expenses</span>
+            <span style="font-family:var(--fm);font-weight:700;font-size:14px;color:var(--red-text)" id="ie-exp-total">—</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MUTUAL FUNDS -->
+    <div class="page" id="page-mutual-funds">
+      <div class="kgrid">
+        <div class="kpi blue"><div class="kpi-label">Total Portfolio Value</div><div class="kpi-val" id="mf-total">—</div></div>
+        <div class="kpi green"><div class="kpi-label">Total Monthly SIP</div><div class="kpi-val" id="mf-sip">—</div></div>
+        <div class="kpi gold"><div class="kpi-label">Total Invested</div><div class="kpi-val" id="mf-invested">—</div></div>
+        <div class="kpi teal"><div class="kpi-label">Total Returns</div><div class="kpi-val" id="mf-returns">—</div></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><div><h3>Mutual Fund Holdings</h3><p>All funds — enter NAV & units to track value</p></div><button class="btn btn-gold btn-sm" onclick="openModal('add-mf-modal')">+ Add Fund</button></div>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>Fund Name</th><th>Category</th><th>SIP/mo</th><th>Units</th><th>NAV</th><th>Value</th><th>Returns</th><th></th></tr></thead>
+          <tbody id="mf-table"></tbody>
+        </table></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><div><h3>SIP Growth Projection (12% CAGR)</h3><p>What your monthly SIP grows to</p></div></div>
+        <div class="card-body">
+          <div style="margin-bottom:12px;display:flex;gap:10px;align-items:center;">
+            <label style="font-size:13px;color:var(--text2)">Monthly SIP amount:</label>
+            <input type="number" class="fi" style="width:140px" id="proj-sip" value="5000" oninput="updateProjection()">
+          </div>
+          <div class="stat-grid" id="sip-projection" style="grid-template-columns:repeat(6,1fr)"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CHIT FUNDS -->
+    <div class="page" id="page-chit-funds">
+      <div class="kgrid">
+        <div class="kpi gold"><div class="kpi-label">Active Chits</div><div class="kpi-val" id="cf-count">—</div></div>
+        <div class="kpi blue"><div class="kpi-label">Total Monthly</div><div class="kpi-val" id="cf-monthly">—</div></div>
+        <div class="kpi green"><div class="kpi-label">Total Paid So Far</div><div class="kpi-val" id="cf-paid">—</div></div>
+        <div class="kpi teal"><div class="kpi-label">Expected Payout</div><div class="kpi-val" id="cf-payout">—</div></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center" class="mb16">
+        <h3 style="font-family:var(--fh);font-weight:700">Chit Fund Groups</h3>
+        <button class="btn btn-gold" onclick="openModal('add-chit-modal')">+ Add Chit</button>
+      </div>
+      <div id="chit-cards" class="g3 mb16"></div>
+      <div class="card">
+        <div class="card-head"><div><h3>Payment Log</h3><p>Monthly payment history</p></div><button class="btn btn-outline btn-sm" onclick="openModal('add-chitpay-modal')">+ Record Payment</button></div>
+        <div class="tbl-wrap"><table><thead><tr><th>Month</th><th>Chit Fund</th><th>Amount Paid</th><th>Cumulative</th><th>Status</th><th></th></tr></thead><tbody id="chit-log"></tbody></table></div>
+      </div>
+    </div>
+
+    <!-- INVESTMENTS -->
+    <div class="page" id="page-investments">
+      <div class="kgrid">
+        <div class="kpi teal"><div class="kpi-label">NPS Corpus</div><div class="kpi-val" id="inv-nps">—</div></div>
+        <div class="kpi gold"><div class="kpi-label">Gold Value</div><div class="kpi-val" id="inv-gold">—</div></div>
+        <div class="kpi purple"><div class="kpi-label">Direct Stocks</div><div class="kpi-val" id="inv-stocks">—</div></div>
+        <div class="kpi blue"><div class="kpi-label">Other (PPF/FD)</div><div class="kpi-val" id="inv-other">—</div></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><div><h3>Investment Portfolio</h3><p>NPS, Gold, Stocks, PPF, FD — all in one place</p></div><button class="btn btn-gold btn-sm" onclick="openModal('add-inv-modal')">+ Add Investment</button></div>
+        <div class="tbl-wrap"><table><thead><tr><th>Investment</th><th>Type</th><th>Monthly/Annual</th><th>Current Value</th><th>Target</th><th>Notes</th><th></th></tr></thead><tbody id="inv-table"></tbody></table></div>
+      </div>
+    </div>
+
+    <!-- INSURANCE -->
+    <div class="page" id="page-insurance">
+      <div class="kgrid">
+        <div class="kpi gold"><div class="kpi-label">Total Annual Premium</div><div class="kpi-val" id="ins-annual">—</div></div>
+        <div class="kpi blue"><div class="kpi-label">Monthly Equiv.</div><div class="kpi-val" id="ins-monthly">—</div></div>
+        <div class="kpi green"><div class="kpi-label">Active Policies</div><div class="kpi-val" id="ins-count">—</div></div>
+        <div class="kpi teal"><div class="kpi-label">Total Coverage</div><div class="kpi-val" id="ins-cover">Enter covers</div></div>
+      </div>
+      <div class="card mb16">
+        <div class="card-head"><div><h3>Insurance Policies</h3><p>Track all your policies</p></div><button class="btn btn-gold btn-sm" onclick="openModal('add-ins-modal')">+ Add Policy</button></div>
+        <div class="tbl-wrap"><table><thead><tr><th>Policy Name</th><th>Type</th><th>Annual Premium</th><th>Coverage</th><th>Renewal Date</th><th>Status</th><th></th></tr></thead><tbody id="ins-table"></tbody></table></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><div><h3>Recommendations</h3></div></div>
+        <div class="card-body">
+          <div class="alert alert-success" style="margin-bottom:10px"><span>✅</span><span><strong>Term Insurance:</strong> ₹1,300/month is good. Confirm sum assured is ≥ ₹50 Lakhs (20x annual income).</span></div>
+          <div class="alert alert-error" style="margin-bottom:10px"><span>⚠️</span><span><strong>Life Insurance ₹1L/year:</strong> Traditional endowment policies earn only 4-6%. After 5+ years, calculate surrender value and compare with redirecting to index funds.</span></div>
+          <div class="alert alert-success" style="margin-bottom:10px"><span>✅</span><span><strong>Health Insurance:</strong> ₹25k/year is reasonable. Consider a super top-up plan (₹50L cover) for ₹3-5k/year extra.</span></div>
+          <div class="alert alert-info"><span>💡</span><span><strong>Gap:</strong> Add Personal Accident cover — ₹25L+ disability cover for ~₹500-1,000/year.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAX PLANNING -->
+    <div class="page" id="page-tax">
+      <div class="kgrid">
+        <div class="kpi red"><div class="kpi-label">80C Used</div><div class="kpi-val" id="tax-80c">—</div><div class="kpi-sub">Max ₹1,50,000</div></div>
+        <div class="kpi teal"><div class="kpi-label">80CCD(1B) NPS</div><div class="kpi-val" id="tax-nps">—</div><div class="kpi-sub">Extra ₹50,000</div></div>
+        <div class="kpi blue"><div class="kpi-label">80D Health</div><div class="kpi-val" id="tax-80d">—</div><div class="kpi-sub">Max ₹25,000</div></div>
+        <div class="kpi green"><div class="kpi-label">Est. Tax Saved</div><div class="kpi-val" id="tax-saved">—</div><div class="kpi-sub">At 5% slab</div></div>
+      </div>
+      <div class="g2">
+        <div class="card">
+          <div class="card-head"><div><h3>80C Investments</h3><p>Max ₹1,50,000/year</p></div></div>
+          <div id="tax-80c-list"></div>
+        </div>
+        <div class="card">
+          <div class="card-head"><div><h3>80D & Other Deductions</h3></div></div>
+          <div id="tax-other-list"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GOALS & EMERGENCY -->
+    <div class="page" id="page-goals">
+      <div class="card mb16">
+        <div class="card-head"><div><h3>Emergency Fund</h3><p>Target: 6 months of expenses</p></div></div>
+        <div class="card-body">
+          <div class="stat-grid">
+            <div class="stat"><div class="stat-label">Monthly Expenses</div><div class="stat-val" id="ef-monthly">—</div></div>
+            <div class="stat"><div class="stat-label">Target (6 months)</div><div class="stat-val" id="ef-target">—</div></div>
+            <div class="stat"><div class="stat-label">Current Balance</div><div class="stat-val"><input type="text" class="fi" id="ef-balance" placeholder="Enter balance" style="text-align:center;font-size:14px;font-weight:700;" oninput="saveEmergencyFund()"></div></div>
+          </div>
+          <div class="progress" style="height:10px;margin-bottom:8px"><div class="progress-fill" id="ef-progress" style="background:var(--gold);width:0%"></div></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text3)">
+            <span id="ef-pct">0% funded</span>
+            <span id="ef-shortfall">Shortfall: —</span>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head"><div><h3>Financial Goals</h3><p>SIP-based goal planner at 12% CAGR</p></div><button class="btn btn-gold btn-sm" onclick="openModal('add-goal-modal')">+ Add Goal</button></div>
+        <div class="tbl-wrap"><table><thead><tr><th>Goal</th><th>Target Amount</th><th>Timeline (years)</th><th>SIP Needed/mo</th><th>Saved So Far</th><th>Progress</th><th></th></tr></thead><tbody id="goals-table"></tbody></table></div>
+      </div>
+    </div>
+
+    <!-- FINANCIAL HEALTH -->
+    <div class="page" id="page-health">
+      <div class="card mb16">
+        <div class="card-head"><div><h3>Financial Health Score</h3><p>Based on 6 key ratios</p></div></div>
+        <div class="card-body">
+          <div id="health-metrics"></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head"><div><h3>Priority Action Plan</h3></div></div>
+        <div class="card-body" id="action-plan"></div>
+      </div>
+    </div>
+
+    <!-- MONTHLY TRACKER -->
+    <div class="page" id="page-monthly">
+      <div class="month-tabs" id="monthly-tabs"></div>
+      <div class="kgrid">
+        <div class="kpi green"><div class="kpi-label">Income</div><div class="kpi-val" id="mt-income">—</div></div>
+        <div class="kpi red"><div class="kpi-label">Expenses</div><div class="kpi-val" id="mt-expenses">—</div></div>
+        <div class="kpi gold"><div class="kpi-label">Surplus / (Deficit)</div><div class="kpi-val" id="mt-surplus">—</div></div>
+        <div class="kpi blue"><div class="kpi-label">Savings Rate</div><div class="kpi-val" id="mt-rate">—</div></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><div><h3>Category Breakdown</h3><p>This month vs budget</p></div></div>
+        <div class="card-body" id="mt-breakdown"></div>
+      </div>
+    </div>
+
+    <!-- NET WORTH -->
+    <div class="page" id="page-networth">
+      <div class="kgrid">
+        <div class="kpi green"><div class="kpi-label">Total Assets</div><div class="kpi-val" id="nw-assets">—</div></div>
+        <div class="kpi red"><div class="kpi-label">Total Liabilities</div><div class="kpi-val" id="nw-liab">—</div></div>
+        <div class="kpi gold"><div class="kpi-label">Net Worth</div><div class="kpi-val" id="nw-total">—</div></div>
+        <div class="kpi teal"><div class="kpi-label">vs Last Month</div><div class="kpi-val" id="nw-change">—</div></div>
+      </div>
+      <div class="g2">
+        <div class="card">
+          <div class="card-head"><div><h3>Assets</h3></div><button class="btn btn-gold btn-sm" onclick="openModal('add-asset-modal')">+ Add Asset</button></div>
+          <div class="tbl-wrap"><table><thead><tr><th>Asset</th><th>Type</th><th>Value</th><th>Updated</th><th></th></tr></thead><tbody id="assets-table"></tbody></table></div>
+        </div>
+        <div class="card">
+          <div class="card-head"><div><h3>Liabilities</h3></div><button class="btn btn-outline btn-sm" onclick="openModal('add-liab-modal')">+ Add Liability</button></div>
+          <div class="tbl-wrap"><table><thead><tr><th>Liability</th><th>Type</th><th>Amount</th><th>Updated</th><th></th></tr></thead><tbody id="liab-table"></tbody></table></div>
+        </div>
+      </div>
+    </div>
+  </div><!-- /main -->
+</div><!-- /app -->
+
+<!-- MODALS -->
+<div class="mov" id="add-income-modal">
+  <div class="modal">
+    <div class="modal-title">Add Income Entry</div>
+    <div class="fgrid">
+      <div class="fg fspan"><label class="fl">Description</label><input class="fi" id="inc-desc" type="text" placeholder="e.g. Monthly salary"></div>
+      <div class="fg"><label class="fl">Amount (₹)</label><input class="fi" id="inc-amount" type="number" placeholder="22000"></div>
+      <div class="fg"><label class="fl">Category</label><select class="fi" id="inc-cat"><option>Salary</option><option>Business</option><option>Freelance</option><option>Chit Payout</option><option>Dividends</option><option>Rental</option><option>Other</option></select></div>
+      <div class="fg"><label class="fl">Date</label><input class="fi" id="inc-date" type="date"></div>
+      <div class="fg fspan"><label class="fl">Notes</label><input class="fi" id="inc-notes" type="text" placeholder="Optional notes"></div>
+    </div>
+    <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('add-income-modal')">Cancel</button><button class="btn btn-green" onclick="addIncome()">Save Income</button></div>
+  </div>
+</div>
+
+<div class="mov" id="add-expense-modal">
+  <div class="modal">
+    <div class="modal-title">Add Expense Entry</div>
+    <div class="fgrid">
+      <div class="fg fspan"><label class="fl">Description</label><input class="fi" id="exp-desc" type="text" placeholder="e.g. House rent"></div>
+      <div class="fg"><label class="fl">Amount (₹)</label><input class="fi" id="exp-amount" type="number" placeholder="12000"></div>
+      <div class="fg"><label class="fl">Category</label><select class="fi" id="exp-cat"><option>Housing</option><option>Utilities</option><option>Food</option><option>Transport</option><option>Education</option><option>Health</option><option>Insurance</option><option>NPS</option><option>Mutual Funds</option><option>Chit Funds</option><option>Entertainment</option><option>Shopping</option><option>Other</option></select></div>
+      <div class="fg"><label class="fl">Date</label><input class="fi" id="exp-date" type="date"></div>
+      <div class="fg fspan"><label class="fl">Notes</label><input class="fi" id="exp-notes" type="text" placeholder="Optional notes"></div>
+    </div>
+    <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('add-expense-modal')">Cancel</button><button class="btn btn-red" onclick="addExpense()">Save Expense</button></div>
+  </div>
+</div>
+
+<div class="mov" id="add-mf-modal">
+  <div class="modal">
+    <div class="modal-title">Add Mutual Fund</div>
+    <div class="fgrid">
+      <div class="fg fspan"><label class="fl">Fund Name</label><input class="fi" id="mf-name" type="text" placeholder="e.g. Nifty 50 Index Fund — Direct"></div>
+      <div class="fg"><label class="fl">Category</label><select class="fi" id="mf-cat"><option>India Index</option><option>India Active</option><option>US/International</option><option>Debt/Hybrid</option><option>ELSS</option></select></div>
+      <div class="fg"><label class="fl">Monthly SIP (₹)</label><input class="fi" id="mf-sip" type="number" placeholder="2000"></div>
+      <div class="fg"><label class="fl">Units Held</label><input class="fi" id="mf-units" type="number" placeholder="0" step="0.001"></div>
+      <div class="fg"><label class="fl">Current NAV (₹)</label><input class="fi" id="mf-nav" type="number" placeholder="0" step="0.01"></div>
+      <div class="fg"><label class="fl">Started</label><input class="fi" id="mf-started" type="text" placeholder="Mar-26"></div>
+    </div>
+    <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('add-mf-modal')">Cancel</button><button class="btn btn-gold" onclick="addMF()">Save Fund</button></div>
+  </div>
+</div>
+
+<div class="mov" id="add-chit-modal">
+  <div class="modal">
+    <div class="modal-title">Add Chit Fund</div>
+    <div class="fgrid">
+      <div class="fg fspan"><label class="fl">Chit Fund Name</label><input class="fi" id="chit-name" type="text" placeholder="e.g. Mahalakshmi — 10L"></div>
+      <div class="fg"><label class="fl">Chit Value (₹)</label><input class="fi" id="chit-value" type="number" placeholder="1000000"></div>
+      <div class="fg"><label class="fl">Total Months</label><input class="fi" id="chit-months" type="number" placeholder="20"></div>
+      <div class="fg"><label class="fl">Months Completed</label><input class="fi" id="chit-done" type="number" placeholder="0"></div>
+      <div class="fg"><label class="fl">Current Monthly (₹)</label><input class="fi" id="chit-monthly" type="number" placeholder="38700"></div>
+      <div class="fg"><label class="fl">Start Month</label><input class="fi" id="chit-start" type="text" placeholder="Jan-26"></div>
+      <div class="fg"><label class="fl">Commission %</label><input class="fi" id="chit-comm" type="number" placeholder="5" step="0.5"></div>
+      <div class="fg"><label class="fl">Status</label><select class="fi" id="chit-status"><option>Active</option><option>Prize Taken</option><option>Completing</option><option>Planned</option></select></div>
+    </div>
+    <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('add-chit-modal')">Cancel</button><button class="btn btn-gold" onclick="addChit()">Save Chit</button></div>
+  </div>
+</div>
+
+<div class="mov" id="add-chitpay-modal">
+  <div class="modal">
+    <div class="modal-title">Record Chit Payment</div>
+    <div class="fgrid">
+      <div class="fg"><label class="fl">Month</label><input class="fi" id="cp-month" type="text" placeholder="Mar-26"></div>
+      <div class="fg"><label class="fl">Chit Fund</label><select class="fi" id="cp-chit"></select></div>
+      <div class="fg"><label class="fl">Amount Paid (₹)</label><input class="fi" id="cp-amount" type="number" placeholder="38700"></div>
+      <div class="fg"><label class="fl">Status</label><select class="fi" id="cp-status"><option>Paid</option><option>Pending</option><option>Overdue</option></select></div>
+      <div class="fg fspan"><label class="fl">Notes</label><input class="fi" id="cp-notes" type="text"></div>
+    </div>
+    <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('add-chitpay-modal')">Cancel</button><button class="btn btn-gold" onclick="addChitPayment()">Save Payment</button></div>
+  </div>
+</div>
+
+<div class="mov" id="add-inv-modal">
+  <div class="modal">
+    <div class="modal-title">Add Investment</div>
+    <div class="fgrid">
+      <div class="fg fspan"><label class="fl">Investment Name</label><input class="fi" id="inv-name" type="text" placeholder="e.g. NPS Personal Tier 1"></div>
+      <div class="fg"><label class="fl">Type</label><select class="fi" id="inv-type"><option>NPS</option><option>Gold SGB</option><option>Gold ETF</option><option>Physical Gold</option><option>Direct Stocks India</option><option>US Stocks</option><option>PPF</option><option>FD</option><option>EPF</option><option>Real Estate</option><option>Other</option></select></div>
+      <div class="fg"><label class="fl">Monthly Amount (₹)</label><input class="fi" id="inv-monthly" type="number" placeholder="5000"></div>
+      <div class="fg"><label class="fl">Current Value (₹)</label><input class="fi" id="inv-value" type="number" placeholder="0"></div>
+      <div class="fg"><label class="fl">Target Value (₹)</label><input class="fi" id="inv-target" type="number" placeholder="500000"></div>
+      <div class="fg"><label class="fl">Notes</label><input class="fi" id="inv-notes" type="text" placeholder="e.g. 80C benefit"></div>
+    </div>
+    <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('add-inv-modal')">Cancel</button><button class="btn btn-gold" onclick="addInvestment()">Save Investment</button></div>
+  </div>
+</div>
+
+<div class="mov" id="add-ins-modal">
+  <div class="modal">
+    <div class="modal-title">Add Insurance Policy</div>
+    <div class="fgrid">
+      <div class="fg fspan"><label class="fl">Policy Name</label><input class="fi" id="ins-name" type="text" placeholder="e.g. LIC Term Insurance"></div>
+      <div class="fg"><label class="fl">Type</label><select class="fi" id="ins-type"><option>Term Life</option><option>Life/Endowment</option><option>Health</option><option>Vehicle</option><option>Personal Accident</option><option>Other</option></select></div>
+      <div class="fg"><label class="fl">Annual Premium (₹)</label><input class="fi" id="ins-premium" type="number" placeholder="15600"></div>
+      <div class="fg"><label class="fl">Sum Assured (₹)</label><input class="fi" id="ins-assured" type="number" placeholder="5000000"></div>
+      <div class="fg"><label class="fl">Renewal Date</label><input class="fi" id="ins-renewal" type="date"></div>
+      <div class="fg"><label class="fl">Status</label><select class="fi" id="ins-status"><option>Active</option><option>Lapsed</option><option>Maturing</option></select></div>
+    </div>
+    <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('add-ins-modal')">Cancel</button><button class="btn btn-gold" onclick="addInsurance()">Save Policy</button></div>
+  </div>
+</div>
+
+<div class="mov" id="add-goal-modal">
+  <div class="modal">
+    <div class="modal-title">Add Financial Goal</div>
+    <div class="fgrid">
+      <div class="fg fspan"><label class="fl">Goal Name</label><input class="fi" id="goal-name" type="text" placeholder="e.g. Home Down Payment"></div>
+      <div class="fg"><label class="fl">Target Amount (₹)</label><input class="fi" id="goal-target" type="number" placeholder="500000"></div>
+      <div class="fg"><label class="fl">Timeline (years)</label><input class="fi" id="goal-years" type="number" placeholder="5"></div>
+      <div class="fg"><label class="fl">Saved So Far (₹)</label><input class="fi" id="goal-saved" type="number" placeholder="0"></div>
+    </div>
+    <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('add-goal-modal')">Cancel</button><button class="btn btn-gold" onclick="addGoal()">Save Goal</button></div>
+  </div>
+</div>
+
+<div class="mov" id="add-asset-modal">
+  <div class="modal">
+    <div class="modal-title">Add Asset</div>
+    <div class="fgrid">
+      <div class="fg fspan"><label class="fl">Asset Name</label><input class="fi" id="asset-name" type="text" placeholder="e.g. Savings Account"></div>
+      <div class="fg"><label class="fl">Type</label><select class="fi" id="asset-type"><option>Cash/Savings</option><option>Mutual Funds</option><option>NPS</option><option>Chit Fund</option><option>Stocks</option><option>Gold</option><option>PPF/FD</option><option>Real Estate</option><option>Vehicle</option><option>Other</option></select></div>
+      <div class="fg"><label class="fl">Current Value (₹)</label><input class="fi" id="asset-value" type="number" placeholder="0"></div>
+      <div class="fg fspan"><label class="fl">Notes</label><input class="fi" id="asset-notes" type="text"></div>
+    </div>
+    <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('add-asset-modal')">Cancel</button><button class="btn btn-gold" onclick="addAsset()">Save Asset</button></div>
+  </div>
+</div>
+
+<div class="mov" id="add-liab-modal">
+  <div class="modal">
+    <div class="modal-title">Add Liability</div>
+    <div class="fgrid">
+      <div class="fg fspan"><label class="fl">Liability Name</label><input class="fi" id="liab-name" type="text" placeholder="e.g. Personal Loan"></div>
+      <div class="fg"><label class="fl">Type</label><select class="fi" id="liab-type"><option>Personal Loan</option><option>Vehicle Loan</option><option>Home Loan</option><option>Credit Card</option><option>Other</option></select></div>
+      <div class="fg"><label class="fl">Outstanding Amount (₹)</label><input class="fi" id="liab-amount" type="number" placeholder="0"></div>
+      <div class="fg fspan"><label class="fl">Notes</label><input class="fi" id="liab-notes" type="text"></div>
+    </div>
+    <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('add-liab-modal')">Cancel</button><button class="btn btn-gold" onclick="addLiability()">Save Liability</button></div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+// CONFIGURATION & AUTH
+// ═══════════════════════════════════════════════════════════════
+const SHEETS_SCOPE = 'https://www.googleapis.com/auth/spreadsheets';
+const DISCOVERY_DOC = 'https://sheets.googleapis.com/$discovery/rest?version=v4';
+
+let gToken = null;
+let spreadsheetId = localStorage.getItem('fn_sheet_id') || '';
+let clientId = localStorage.getItem('fn_client_id') || '';
+let currentMonth = new Date().toLocaleDateString('en-IN',{month:'short',year:'2-digit'}).replace(' ','-');
+let selectedMonth = currentMonth;
+let userData = { name:'User', email:'' };
+
+// DATA CACHE
+let cache = {
+  income: [], expenses: [], mf: [], chits: [], chitPayments: [],
+  investments: [], insurance: [], goals: [], assets: [], liabilities: [],
+  emergencyBalance: 0
+};
+
+// SHEET NAMES
+const SHEETS = {
+  income: 'Income', expenses: 'Expenses', mf: 'MutualFunds', chits: 'ChitFunds',
+  chitPayments: 'ChitPayments', investments: 'Investments', insurance: 'Insurance',
+  goals: 'Goals', assets: 'Assets', liabilities: 'Liabilities', config: 'Config'
+};
+
+const CAT_COLORS = {
+  Housing:'#F59E0B',Utilities:'#60A5FA',Food:'#22C55E',Transport:'#3B82F6',
+  Education:'#EC4899',Health:'#14B8A6',Insurance:'#F97316',NPS:'#8B5CF6',
+  'Mutual Funds':'#3B82F6',Chit:'#C9A84C','Chit Funds':'#C9A84C',Entertainment:'#F43F5E',
+  Shopping:'#A78BFA',Other:'#6B7280',Salary:'#22C55E',Business:'#C9A84C',
+  Freelance:'#3B82F6','Chit Payout':'#C9A84C',Dividends:'#22C55E'
+};
+
+// ── SETUP ────────────────────────────────────────────────────────
+function switchSetupTab(tab) {
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById('tab-connect').style.display = tab==='connect'?'block':'none';
+  document.getElementById('tab-guide').style.display = tab==='guide'?'block':'none';
+}
+
+function showSetupAlert(msg, type='error') {
+  const el = document.getElementById('setup-alert');
+  el.innerHTML = `<div class="alert alert-${type}">${msg}</div>`;
+}
+
+async function startAuth() {
+  const cid = document.getElementById('clientId').value.trim();
+  const sid = document.getElementById('sheetId').value.trim();
+  if (!cid) { showSetupAlert('Please enter your Google OAuth Client ID'); return; }
+  localStorage.setItem('fn_client_id', cid);
+  if (sid) localStorage.setItem('fn_sheet_id', sid);
+  clientId = cid;
+  spreadsheetId = sid;
+  showSetupAlert('Opening Google sign-in...', 'info');
+  document.getElementById('connectBtn').disabled = true;
+  try {
+    await loadGoogleScripts();
+    initTokenClient();
+  } catch(e) {
+    showSetupAlert('Failed to load Google API: '+e.message);
+    document.getElementById('connectBtn').disabled = false;
+  }
+}
+
+function loadGoogleScripts() {
+  return new Promise((res,rej) => {
+    if (window.google && window.google.accounts) { res(); return; }
+    const s = document.createElement('script');
+    s.src = 'https://accounts.google.com/gsi/client';
+    s.onload = res; s.onerror = rej;
+    document.head.appendChild(s);
+  });
+}
+
+let tokenClient;
+function initTokenClient() {
+  tokenClient = google.accounts.oauth2.initTokenClient({
+    client_id: clientId,
+    scope: SHEETS_SCOPE,
+    callback: async(resp) => {
+      if (resp.error) { showSetupAlert('Auth error: '+resp.error); document.getElementById('connectBtn').disabled=false; return; }
+      gToken = resp.access_token;
+      await onAuthSuccess();
+    }
+  });
+  tokenClient.requestAccessToken({prompt:'consent'});
+}
+
+async function onAuthSuccess() {
+  try {
+    // Get user info
+    const r = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+      headers:{Authorization:'Bearer '+gToken}
+    });
+    const u = await r.json();
+    userData = { name: u.name||u.email||'User', email: u.email||'' };
+    document.getElementById('user-name').textContent = userData.name.split(' ')[0];
+    document.getElementById('user-avatar').textContent = (userData.name[0]||'U').toUpperCase();
+
+    if (!spreadsheetId) {
+      await createSpreadsheet();
+    } else {
+      await verifySpreadsheet();
+    }
+    await initSheets();
+    showApp();
+    await syncAll();
+  } catch(e) {
+    showSetupAlert('Error: '+e.message);
+    document.getElementById('connectBtn').disabled=false;
+  }
+}
+
+async function createSpreadsheet() {
+  showSetupAlert('Creating your FinNova spreadsheet in Google Drive...', 'info');
+  const r = await sheetsAPI('POST', 'https://sheets.googleapis.com/v4/spreadsheets', {
+    properties:{title:'FinNova — Personal Finance'},
+    sheets: Object.values(SHEETS).map(t=>({properties:{title:t}}))
+  });
+  spreadsheetId = r.spreadsheetId;
+  localStorage.setItem('fn_sheet_id', spreadsheetId);
+  showSetupAlert('Spreadsheet created! Initialising...', 'success');
+}
+
+async function verifySpreadsheet() {
+  const r = await sheetsAPI('GET', `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}?fields=sheets.properties.title`);
+  const existing = r.sheets.map(s=>s.properties.title);
+  const missing = Object.values(SHEETS).filter(s=>!existing.includes(s));
+  if (missing.length > 0) {
+    await sheetsAPI('POST', `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}:batchUpdate`, {
+      requests: missing.map(title=>({addSheet:{properties:{title}}}))
+    });
+  }
+}
+
+async function initSheets() {
+  // Write headers if sheets are empty
+  const headers = {
+    [SHEETS.income]: [['ID','Description','Category','Amount','Date','Month','Notes']],
+    [SHEETS.expenses]: [['ID','Description','Category','Amount','Date','Month','Notes']],
+    [SHEETS.mf]: [['ID','Name','Category','SIP','Started','Units','NAV','Notes']],
+    [SHEETS.chits]: [['ID','Name','Value','Months','Done','Monthly','StartMonth','Commission','Status']],
+    [SHEETS.chitPayments]: [['ID','Month','ChitName','Amount','Status','Notes']],
+    [SHEETS.investments]: [['ID','Name','Type','Monthly','CurrentValue','Target','Notes']],
+    [SHEETS.insurance]: [['ID','Name','Type','AnnualPremium','Assured','Renewal','Status']],
+    [SHEETS.goals]: [['ID','Name','Target','Years','Saved','Notes']],
+    [SHEETS.assets]: [['ID','Name','Type','Value','Updated','Notes']],
+    [SHEETS.liabilities]: [['ID','Name','Type','Amount','Updated','Notes']],
+  };
+  const requests = [];
+  for (const [sheet, rows] of Object.entries(headers)) {
+    const check = await getRange(`${sheet}!A1`);
+    if (!check || !check[0]) {
+      requests.push({ range:`${sheet}!A1`, values:rows });
+    }
+  }
+  if (requests.length > 0) {
+    await batchUpdate(requests);
+  }
+}
+
+function showApp() {
+  document.getElementById('setup-screen').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+  setToday();
+  buildMonthTabs();
+}
+
+// ── GOOGLE SHEETS API ─────────────────────────────────────────────
+async function sheetsAPI(method, url, body) {
+  const opts = {
+    method,
+    headers:{'Authorization':'Bearer '+gToken,'Content-Type':'application/json'}
+  };
+  if (body) opts.body = JSON.stringify(body);
+  const r = await fetch(url, opts);
+  if (!r.ok) {
+    const e = await r.json();
+    throw new Error(e.error?.message || 'API error '+r.status);
+  }
+  return r.json();
+}
+
+async function getRange(range) {
+  try {
+    const r = await sheetsAPI('GET', `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${encodeURIComponent(range)}`);
+    return r.values || [];
+  } catch { return []; }
+}
+
+async function appendRow(sheet, row) {
+  await sheetsAPI('POST',
+    `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${sheet}!A1:append?valueInputOption=RAW&insertDataOption=INSERT_ROWS`,
+    {values:[row]}
+  );
+}
+
+async function batchUpdate(data) {
+  await sheetsAPI('POST',
+    `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values:batchUpdate`,
+    {valueInputOption:'RAW', data}
+  );
+}
+
+async function deleteRow(sheet, rowIndex) {
+  await sheetsAPI('POST', `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}:batchUpdate`, {
+    requests:[{deleteDimension:{range:{sheetId:await getSheetId(sheet),dimension:'ROWS',startIndex:rowIndex,endIndex:rowIndex+1}}}]
+  });
+}
+
+let sheetIdCache = {};
+async function getSheetId(title) {
+  if (sheetIdCache[title]) return sheetIdCache[title];
+  const r = await sheetsAPI('GET', `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}?fields=sheets.properties`);
+  r.sheets.forEach(s=>sheetIdCache[s.properties.title]=s.properties.sheetId);
+  return sheetIdCache[title];
+}
+
+function uid() { return Date.now().toString(36)+Math.random().toString(36).slice(2,6); }
+
+// ── SYNC ALL ──────────────────────────────────────────────────────
+async function syncAll() {
+  updateSyncStatus('syncing');
+  try {
+    await Promise.all([
+      loadData('income', SHEETS.income),
+      loadData('expenses', SHEETS.expenses),
+      loadData('mf', SHEETS.mf),
+      loadData('chits', SHEETS.chits),
+      loadData('chitPayments', SHEETS.chitPayments),
+      loadData('investments', SHEETS.investments),
+      loadData('insurance', SHEETS.insurance),
+      loadData('goals', SHEETS.goals),
+      loadData('assets', SHEETS.assets),
+      loadData('liabilities', SHEETS.liabilities),
+    ]);
+    renderCurrentPage();
+    updateSyncStatus('synced');
+    document.getElementById('last-sync').textContent = 'Synced ' + new Date().toLocaleTimeString();
+    toast('Data synced with Google Sheets', 'success');
+  } catch(e) {
+    updateSyncStatus('error');
+    toast('Sync error: '+e.message, 'error');
+  }
+}
+
+async function loadData(key, sheetName) {
+  const rows = await getRange(`${sheetName}!A2:Z1000`);
+  cache[key] = rows.filter(r=>r[0]);
+}
+
+function updateSyncStatus(state) {
+  const el = document.getElementById('sb-sync-status');
+  if (state==='syncing') el.textContent = '⏳ Syncing...';
+  else if (state==='synced') el.textContent = '✓ Synced';
+  else el.textContent = '! Sync error';
+}
+
+// ── NAVIGATION ──────────────────────────────────────────────────────
+const PAGE_META = {
+  'dashboard':['Dashboard','Your complete financial overview'],
+  'income-expense':['Income & Expenses','Track every rupee in and out'],
+  'mutual-funds':['Mutual Funds','Your SIP & portfolio tracker'],
+  'chit-funds':['Chit Funds','Payment log & tracker'],
+  'investments':['Investments','NPS, Gold, Stocks & more'],
+  'insurance':['Insurance','Policy management'],
+  'tax':['Tax Planning','80C, 80D & NPS deductions'],
+  'goals':['Goals & Emergency Fund','Plan for the future'],
+  'health':['Financial Health','Scores & action plan'],
+  'monthly':['Monthly Tracker','Month-by-month view'],
+  'networth':['Net Worth','Assets minus liabilities'],
+};
+
+function showPage(id, el) {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.ni').forEach(n=>n.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  if(el) el.classList.add('active');
+  const [t,s] = PAGE_META[id]||[id,''];
+  document.getElementById('page-title').textContent = t;
+  document.getElementById('page-sub').textContent = s;
+  renderPage(id);
+}
+
+function renderCurrentPage() {
+  const active = document.querySelector('.page.active');
+  if(active) renderPage(active.id.replace('page-',''));
+}
+
+function renderPage(id) {
+  const fn = {
+    'dashboard':renderDashboard,'income-expense':renderIE,'mutual-funds':renderMF,
+    'chit-funds':renderChits,'investments':renderInvestments,'insurance':renderInsurance,
+    'tax':renderTax,'goals':renderGoals,'health':renderHealth,'monthly':renderMonthly,
+    'networth':renderNetWorth
+  }[id];
+  if(fn) fn();
+}
+
+// ── HELPERS ────────────────────────────────────────────────────────
+const INR = n => '₹'+Math.abs(Math.round(n)).toLocaleString('en-IN');
+const PCT = n => (Math.round(n*10)/10)+'%';
+
+function setToday() {
+  ['inc-date','exp-date','ins-renewal'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(el && el.type==='date') el.value = new Date().toISOString().slice(0,10);
+  });
+}
+
+function getMonthFromDate(dateStr) {
+  const d = new Date(dateStr);
+  return d.toLocaleDateString('en-IN',{month:'short',year:'2-digit'}).replace(' ','-');
+}
+
+function buildMonthTabs() {
+  const months = [];
+  const now = new Date();
+  for(let i=5;i>=0;i--) {
+    const d = new Date(now.getFullYear(), now.getMonth()-i, 1);
+    months.push(d.toLocaleDateString('en-IN',{month:'short',year:'2-digit'}).replace(' ','-'));
+  }
+  ['ie-month-tabs','monthly-tabs'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(!el) return;
+    el.innerHTML = months.map(m=>`<button class="month-tab ${m===selectedMonth?'active':''}" onclick="selectMonth('${m}',this,'${id}')">${m}</button>`).join('');
+  });
+}
+
+function selectMonth(m, btn, containerId) {
+  selectedMonth = m;
+  document.querySelectorAll(`#${containerId} .month-tab`).forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderCurrentPage();
+}
+
+// ── DASHBOARD ────────────────────────────────────────────────────────
+function renderDashboard() {
+  const now = currentMonth;
+  const inc = cache.income.filter(r=>r[5]===now);
+  const exp = cache.expenses.filter(r=>r[5]===now);
+  const totalInc = inc.reduce((s,r)=>s+Number(r[3]||0),0);
+  const totalExp = exp.reduce((s,r)=>s+Number(r[3]||0),0);
+  const surplus = totalInc - totalExp;
+  const mfVal = cache.mf.reduce((s,r)=>s+Number(r[5]||0)*Number(r[6]||0),0);
+  const chitPaid = cache.chitPayments.reduce((s,r)=>s+Number(r[3]||0),0);
+  const assets = cache.assets.reduce((s,r)=>s+Number(r[3]||0),0);
+  const liabs = cache.liabilities.reduce((s,r)=>s+Number(r[3]||0),0);
+  const invested = cache.investments.reduce((s,r)=>s+Number(r[3]||0),0)*12+mfVal;
+
+  document.getElementById('d-income').textContent = INR(totalInc);
+  document.getElementById('d-expenses').textContent = INR(totalExp);
+  document.getElementById('d-surplus').textContent = INR(surplus);
+  document.getElementById('d-surplus-pct').textContent = totalInc>0 ? PCT(surplus/totalInc*100)+' savings rate' : '—';
+  document.getElementById('d-surplus').className = 'kpi-val '+(surplus>=0?'up':'dn');
+  document.getElementById('d-invested').textContent = INR(mfVal+invested);
+  document.getElementById('d-chits').textContent = INR(chitPaid);
+  document.getElementById('d-networth').textContent = INR(assets-liabs);
+
+  // Recent transactions
+  const all = [
+    ...cache.income.map(r=>({...r,_type:'income'})),
+    ...cache.expenses.map(r=>({...r,_type:'expense'}))
+  ].sort((a,b)=>new Date(b[4])-new Date(a[4])).slice(0,10);
+
+  document.getElementById('dash-recent').innerHTML = all.map(r=>`
+    <tr>
+      <td>${r[1]||'—'}</td>
+      <td><span class="badge ${r._type==='income'?'badge-green':'badge-amber'}">${r[2]||'—'}</span></td>
+      <td style="font-family:var(--fm);color:${r._type==='income'?'var(--green-text)':'var(--red-text)'}">
+        ${r._type==='income'?'+':'-'}${INR(r[3])}
+      </td>
+      <td style="color:var(--text3);font-size:12px">${r[4]||'—'}</td>
+    </tr>`).join('') || '<tr><td colspan="4" style="text-align:center;color:var(--text3);padding:24px">No transactions yet</td></tr>';
+
+  // Category breakdown
+  const catTotals = {};
+  cache.expenses.filter(r=>r[5]===now).forEach(r=>{
+    const cat = r[2]||'Other';
+    catTotals[cat] = (catTotals[cat]||0)+Number(r[3]||0);
+  });
+  const maxVal = Math.max(...Object.values(catTotals),1);
+  document.getElementById('dash-cat-breakdown').innerHTML = Object.entries(catTotals).sort((a,b)=>b[1]-a[1]).map(([cat,amt])=>`
+    <div style="margin-bottom:12px">
+      <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px">
+        <span style="color:var(--text2);font-weight:600">${cat}</span>
+        <span style="font-family:var(--fm);color:var(--text1)">${INR(amt)}</span>
+      </div>
+      <div class="progress"><div class="progress-fill" style="background:${CAT_COLORS[cat]||'#6B7280'};width:${(amt/maxVal*100).toFixed(0)}%"></div></div>
+    </div>`).join('') || '<div class="empty"><div class="empty-icon">📊</div><div class="empty-title">No expenses this month</div></div>';
+}
+
+// ── INCOME & EXPENSES ───────────────────────────────────────────────
+function renderIE() {
+  const m = selectedMonth;
+  const inc = cache.income.filter(r=>r[5]===m);
+  const exp = cache.expenses.filter(r=>r[5]===m);
+  const totalInc = inc.reduce((s,r)=>s+Number(r[3]||0),0);
+  const totalExp = exp.reduce((s,r)=>s+Number(r[3]||0),0);
+  const surplus = totalInc-totalExp;
+
+  document.getElementById('ie-income').textContent = INR(totalInc);
+  document.getElementById('ie-expenses').textContent = INR(totalExp);
+  document.getElementById('ie-surplus').textContent = INR(surplus);
+  document.getElementById('ie-rate').textContent = totalInc>0 ? PCT(surplus/totalInc*100) : '0%';
+  document.getElementById('ie-inc-total').textContent = INR(totalInc);
+  document.getElementById('ie-exp-total').textContent = INR(totalExp);
+  document.getElementById('ie-inc-count').textContent = inc.length+' entries';
+  document.getElementById('ie-exp-count').textContent = exp.length+' entries';
+
+  const renderList = (items, type, containerId) => {
+    if(!items.length) {
+      document.getElementById(containerId).innerHTML = `<div class="empty"><div class="empty-icon">${type==='income'?'💰':'💸'}</div><div class="empty-title">No ${type} for ${m}</div><div class="empty-sub">Click + Add to get started</div></div>`;
+      return;
+    }
+    document.getElementById(containerId).innerHTML = items.map((r,i)=>`
+      <div class="entry-row" style="grid-template-columns:10px 1fr auto auto auto auto">
+        <div class="entry-dot" style="background:${CAT_COLORS[r[2]]||'#6B7280'}"></div>
+        <div><div class="entry-name">${r[1]||'—'}</div><div class="entry-note">${r[2]||''}${r[6]?' · '+r[6]:''}</div></div>
+        <span class="badge ${type==='income'?'badge-green':'badge-amber'}" style="font-size:10px">${r[2]||''}</span>
+        <div class="${type==='income'?'entry-inc':'entry-exp'}">${type==='income'?'+':'-'}${INR(r[3])}</div>
+        <div class="entry-date">${r[4]||''}</div>
+        <button class="del-btn" onclick="deleteEntry('${type==='income'?SHEETS.income:SHEETS.expenses}','${type}',${i+1})">✕</button>
+      </div>`).join('');
+  };
+  renderList(inc,'income','ie-income-list');
+  renderList(exp,'expense','ie-expense-list');
+}
+
+// ── MUTUAL FUNDS ─────────────────────────────────────────────────────
+function renderMF() {
+  const total = cache.mf.reduce((s,r)=>s+Number(r[5]||0)*Number(r[6]||0),0);
+  const sip = cache.mf.reduce((s,r)=>s+Number(r[3]||0),0);
+  document.getElementById('mf-total').textContent = INR(total);
+  document.getElementById('mf-sip').textContent = INR(sip);
+  document.getElementById('mf-invested').textContent = total>0?INR(total):'₹0';
+  document.getElementById('mf-returns').textContent = '—';
+
+  document.getElementById('mf-table').innerHTML = cache.mf.map((r,i)=>{
+    const val = Number(r[5]||0)*Number(r[6]||0);
+    return `<tr>
+      <td><div style="font-weight:600">${r[1]||'—'}</div><div style="font-size:11px;color:var(--text3)">${r[7]||''}</div></td>
+      <td><span class="badge badge-blue" style="font-size:10px">${r[2]||''}</span></td>
+      <td style="font-family:var(--fm)">${INR(r[3]||0)}/mo</td>
+      <td style="font-family:var(--fm)">${Number(r[5]||0).toFixed(3)}</td>
+      <td style="font-family:var(--fm)">${INR(r[6]||0)}</td>
+      <td style="font-family:var(--fm);font-weight:700;color:var(--gold)">${INR(val)}</td>
+      <td>—</td>
+      <td><button class="del-btn" onclick="deleteEntry('${SHEETS.mf}','mf',${i+1})">✕</button></td>
+    </tr>`;
+  }).join('') || '<tr><td colspan="8" style="text-align:center;color:var(--text3);padding:24px">No funds added yet</td></tr>';
+
+  updateProjection();
+}
+
+function updateProjection() {
+  const sip = Number(document.getElementById('proj-sip')?.value||5000);
+  const periods = [1,3,5,10,15,20];
+  document.getElementById('sip-projection').innerHTML = periods.map(yr=>{
+    const mo = yr*12;
+    const r = 0.12/12;
+    const val = sip*(((1+r)**mo-1)/r)*(1+r);
+    return `<div class="stat"><div class="stat-label">${yr} Year${yr>1?'s':''}</div><div class="stat-val" style="font-size:14px;color:var(--gold)">${INR(val)}</div></div>`;
+  }).join('');
+}
+
+// ── CHIT FUNDS ────────────────────────────────────────────────────────
+function renderChits() {
+  const chits = cache.chits;
+  const payments = cache.chitPayments;
+  const totalMonthly = chits.reduce((s,r)=>s+Number(r[5]||0),0);
+  const totalPaid = payments.reduce((s,r)=>s+Number(r[3]||0),0);
+  const totalPayout = chits.reduce((s,r)=>s+Number(r[2]||0)*0.95,0);
+
+  document.getElementById('cf-count').textContent = chits.length;
+  document.getElementById('cf-monthly').textContent = INR(totalMonthly);
+  document.getElementById('cf-paid').textContent = INR(totalPaid);
+  document.getElementById('cf-payout').textContent = INR(totalPayout);
+
+  // Chit cards
+  const colors = ['#C9A84C','#14B8A6','#3B82F6','#8B5CF6','#F43F5E','#22C55E'];
+  document.getElementById('chit-cards').innerHTML = chits.map((r,i)=>{
+    const done = Number(r[4]||0), total = Number(r[3]||0);
+    const pct = total>0 ? Math.round(done/total*100) : 0;
+    const color = colors[i%colors.length];
+    const paid = payments.filter(p=>p[2]===r[1]).reduce((s,p)=>s+Number(p[3]||0),0);
+    return `<div class="chit-card">
+      <div class="chit-stripe" style="background:${color}"></div>
+      <div style="padding-left:10px">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
+          <div><div style="font-family:var(--fh);font-size:14px;font-weight:700">${r[1]||'Chit'}</div>
+          <div style="font-size:11px;color:var(--text3)">${r[6]||''} · ${INR(r[5]||0)}/month</div></div>
+          <span class="badge badge-${r[8]==='Active'?'green':r[8]==='Planned'?'gold':'amber'}">${r[8]||'Active'}</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:4px;font-size:12px"><span style="color:var(--text3)">Chit value</span><span style="font-weight:700">${INR(r[2]||0)}</span></div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:4px;font-size:12px"><span style="color:var(--text3)">Month</span><span style="font-weight:700">${done}/${total}</span></div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:12px"><span style="color:var(--text3)">Total paid</span><span style="font-weight:700;color:${color}">${INR(paid)}</span></div>
+        <div class="progress"><div class="progress-fill" style="background:${color};width:${pct}%"></div></div>
+        <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text3);margin-top:4px"><span>${pct}% done</span><span>${total-done} months left</span></div>
+      </div>
+    </div>`;
+  }).join('') || '<div style="grid-column:1/-1"><div class="empty"><div class="empty-icon">🏦</div><div class="empty-title">No chit funds added</div></div></div>';
+
+  // Payment log
+  const sortedPay = [...payments].sort((a,b)=>b[1]>a[1]?1:-1);
+  const cumMap = {};
+  const logRows = sortedPay.map((r,i)=>{
+    const key = r[2];
+    cumMap[key] = (cumMap[key]||0)+Number(r[3]||0);
+    return `<tr>
+      <td style="font-family:var(--fm);font-weight:600">${r[1]||'—'}</td>
+      <td style="color:var(--gold)">${r[2]||'—'}</td>
+      <td style="font-family:var(--fm)">${INR(r[3]||0)}</td>
+      <td style="font-family:var(--fm);color:var(--text2)">${INR(cumMap[key])}</td>
+      <td><span class="badge badge-${r[4]==='Paid'?'green':r[4]==='Pending'?'amber':'red'}">${r[4]||'—'}</span></td>
+      <td><button class="del-btn" onclick="deleteEntry('${SHEETS.chitPayments}','chitPayments',${i+1})">✕</button></td>
+    </tr>`;
+  });
+  document.getElementById('chit-log').innerHTML = logRows.join('') || '<tr><td colspan="6" style="text-align:center;color:var(--text3);padding:24px">No payments logged yet</td></tr>';
+
+  // Populate chit dropdown in payment modal
+  const sel = document.getElementById('cp-chit');
+  if(sel) sel.innerHTML = chits.map(r=>`<option>${r[1]}</option>`).join('');
+}
+
+// ── INVESTMENTS ──────────────────────────────────────────────────────
+function renderInvestments() {
+  const invs = cache.investments;
+  const byType = t => invs.filter(r=>r[2]===t||r[1].toLowerCase().includes(t.toLowerCase())).reduce((s,r)=>s+Number(r[4]||0),0);
+  document.getElementById('inv-nps').textContent = INR(byType('NPS'));
+  document.getElementById('inv-gold').textContent = INR(byType('Gold'));
+  document.getElementById('inv-stocks').textContent = INR(byType('Stocks'));
+  const other = invs.reduce((s,r)=>s+Number(r[4]||0),0)-byType('NPS')-byType('Gold')-byType('Stocks');
+  document.getElementById('inv-other').textContent = INR(Math.max(0,other));
+
+  document.getElementById('inv-table').innerHTML = invs.map((r,i)=>`
+    <tr>
+      <td style="font-weight:600">${r[1]||'—'}</td>
+      <td><span class="badge badge-teal" style="font-size:10px">${r[2]||'—'}</span></td>
+      <td style="font-family:var(--fm)">${INR(r[3]||0)}/mo</td>
+      <td style="font-family:var(--fm);font-weight:700;color:var(--gold)">${INR(r[4]||0)}</td>
+      <td style="font-family:var(--fm);color:var(--text3)">${INR(r[5]||0)}</td>
+      <td style="font-size:12px;color:var(--text3)">${r[6]||''}</td>
+      <td><button class="del-btn" onclick="deleteEntry('${SHEETS.investments}','investments',${i+1})">✕</button></td>
+    </tr>`).join('') || '<tr><td colspan="7" style="text-align:center;color:var(--text3);padding:24px">No investments added yet</td></tr>';
+}
+
+// ── INSURANCE ────────────────────────────────────────────────────────
+function renderInsurance() {
+  const ins = cache.insurance;
+  const annual = ins.reduce((s,r)=>s+Number(r[3]||0),0);
+  document.getElementById('ins-annual').textContent = INR(annual);
+  document.getElementById('ins-monthly').textContent = INR(annual/12);
+  document.getElementById('ins-count').textContent = ins.length;
+
+  document.getElementById('ins-table').innerHTML = ins.map((r,i)=>`
+    <tr>
+      <td style="font-weight:600">${r[1]||'—'}</td>
+      <td><span class="badge badge-amber" style="font-size:10px">${r[2]||'—'}</span></td>
+      <td style="font-family:var(--fm)">${INR(r[3]||0)}/yr</td>
+      <td style="font-family:var(--fm)">${r[4]?INR(r[4]):'—'}</td>
+      <td style="font-size:12px;color:var(--text3)">${r[5]||'—'}</td>
+      <td><span class="badge badge-${r[6]==='Active'?'green':'red'}">${r[6]||'Active'}</span></td>
+      <td><button class="del-btn" onclick="deleteEntry('${SHEETS.insurance}','insurance',${i+1})">✕</button></td>
+    </tr>`).join('') || '<tr><td colspan="7" style="text-align:center;color:var(--text3);padding:24px">No policies added yet</td></tr>';
+}
+
+// ── TAX PLANNING ──────────────────────────────────────────────────────
+function renderTax() {
+  const invs = cache.investments;
+  const ins = cache.insurance;
+  const npsAnnual = invs.filter(r=>r[2]==='NPS').reduce((s,r)=>s+Number(r[3]||0),0)*12;
+  const lifeIns = ins.filter(r=>r[2]==='Life/Endowment'||r[2]==='Term Life').reduce((s,r)=>s+Number(r[3]||0),0);
+  const health = ins.filter(r=>r[2]==='Health').reduce((s,r)=>s+Number(r[3]||0),0);
+  const total80c = Math.min(npsAnnual+lifeIns, 150000);
+  const nps80ccd = Math.min(npsAnnual, 50000);
+  const tax80d = Math.min(health, 25000);
+  const totalSaved = (total80c+nps80ccd+tax80d)*0.05;
+
+  document.getElementById('tax-80c').textContent = INR(total80c);
+  document.getElementById('tax-nps').textContent = INR(nps80ccd);
+  document.getElementById('tax-80d').textContent = INR(tax80d);
+  document.getElementById('tax-saved').textContent = INR(totalSaved);
+
+  const items80c = [
+    ['NPS Personal (Tier 1)', INR(npsAnnual), '80C + 80CCD(1)'],
+    ['Life Insurance Premium', INR(lifeIns), '80C'],
+    ['ELSS Mutual Funds', '₹0', '80C (add in MF)'],
+    ['PPF Contribution', '₹0', '80C'],
+    ['Term Insurance Premium', INR(ins.filter(r=>r[2]==='Term Life').reduce((s,r)=>s+Number(r[3]||0),0)), '80C'],
+  ];
+  document.getElementById('tax-80c-list').innerHTML = items80c.map(([name,val,type])=>`
+    <div class="entry-row" style="grid-template-columns:1fr auto auto">
+      <div><div class="entry-name">${name}</div><div class="entry-note">${type}</div></div>
+      <div style="font-family:var(--fm);font-weight:700;color:var(--gold)">${val}</div>
+      <span class="badge badge-green" style="font-size:10px">Eligible</span>
+    </div>`).join('');
+
+  const other80 = [
+    ['Health Insurance (80D)', INR(tax80d), `Max ₹25,000`],
+    ['NPS Extra (80CCD1B)', INR(nps80ccd), `₹50K extra over 80C`],
+    ['Parents Health Ins', '₹0', '₹50K if parents > 60'],
+  ];
+  document.getElementById('tax-other-list').innerHTML = other80.map(([name,val,note])=>`
+    <div class="entry-row" style="grid-template-columns:1fr auto">
+      <div><div class="entry-name">${name}</div><div class="entry-note">${note}</div></div>
+      <div style="font-family:var(--fm);font-weight:700;color:var(--teal)">${val}</div>
+    </div>`).join('');
+}
+
+// ── GOALS ──────────────────────────────────────────────────────────────
+function renderGoals() {
+  const monthlyExp = cache.expenses.filter(r=>r[5]===currentMonth).reduce((s,r)=>s+Number(r[3]||0),0);
+  const target = monthlyExp * 6;
+  document.getElementById('ef-monthly').textContent = INR(monthlyExp);
+  document.getElementById('ef-target').textContent = INR(target);
+  const bal = Number(cache.emergencyBalance||document.getElementById('ef-balance')?.value||0);
+  const pct = target>0?Math.min(100,bal/target*100):0;
+  document.getElementById('ef-progress').style.width = pct+'%';
+  document.getElementById('ef-pct').textContent = Math.round(pct)+'% funded';
+  document.getElementById('ef-shortfall').textContent = 'Shortfall: '+INR(Math.max(0,target-bal));
+
+  const rate = 0.12/12;
+  document.getElementById('goals-table').innerHTML = cache.goals.map((r,i)=>{
+    const target_ = Number(r[2]||0), yrs = Number(r[3]||0), saved = Number(r[4]||0);
+    const mo = yrs*12;
+    const sipNeeded = mo>0&&target_>0 ? target_/((((1+rate)**mo-1)/rate)*(1+rate)) : 0;
+    const pct_ = target_>0?Math.min(100,saved/target_*100):0;
+    return `<tr>
+      <td style="font-weight:600">${r[1]||'—'}</td>
+      <td style="font-family:var(--fm)">${INR(target_)}</td>
+      <td style="font-family:var(--fm)">${yrs} yrs</td>
+      <td style="font-family:var(--fm);font-weight:700;color:var(--gold)">${INR(sipNeeded)}</td>
+      <td style="font-family:var(--fm)">${INR(saved)}</td>
+      <td style="min-width:100px">
+        <div class="progress" style="height:6px;margin-bottom:3px"><div class="progress-fill" style="background:var(--teal);width:${pct_.toFixed(0)}%"></div></div>
+        <span style="font-size:10px;color:var(--text3)">${pct_.toFixed(0)}%</span>
+      </td>
+      <td><button class="del-btn" onclick="deleteEntry('${SHEETS.goals}','goals',${i+1})">✕</button></td>
+    </tr>`;
+  }).join('') || '<tr><td colspan="7" style="text-align:center;color:var(--text3);padding:24px">No goals added yet</td></tr>';
+}
+
+function saveEmergencyFund() {
+  cache.emergencyBalance = Number(document.getElementById('ef-balance').value||0);
+  renderGoals();
+}
+
+// ── FINANCIAL HEALTH ────────────────────────────────────────────────────
+function renderHealth() {
+  const inc = cache.income.filter(r=>r[5]===currentMonth).reduce((s,r)=>s+Number(r[3]||0),0)||22000;
+  const exp = cache.expenses.filter(r=>r[5]===currentMonth).reduce((s,r)=>s+Number(r[3]||0),0);
+  const surplus = inc-exp;
+  const mfSip = cache.mf.reduce((s,r)=>s+Number(r[3]||0),0);
+  const chitTotal = cache.chits.reduce((s,r)=>s+Number(r[5]||0),0);
+  const efBal = cache.emergencyBalance||0;
+
+  const savingsRate = inc>0?surplus/inc*100:0;
+  const efMonths = exp>0?efBal/exp:0;
+  const invRate = inc>0?(mfSip)/inc*100:0;
+  const chitRatio = inc>0?chitTotal/inc*100:0;
+
+  const metrics = [
+    {label:'Savings Rate', val:PCT(savingsRate), target:'≥ 20%', ok:savingsRate>=20, warn:savingsRate>=10, action:'Save at least 20% of income before investing aggressively'},
+    {label:'Emergency Fund', val:efMonths.toFixed(1)+' months', target:'≥ 6 months', ok:efMonths>=6, warn:efMonths>=3, action:'Build to 6 months of expenses in liquid fund first'},
+    {label:'MF Investment Rate', val:PCT(invRate), target:'≥ 15%', ok:invRate>=15, warn:invRate>=5, action:'Start with ₹2,000/month in Nifty 50 Index Fund'},
+    {label:'Chit Commitment vs Income', val:PCT(chitRatio), target:'< 100%', ok:chitRatio<=100, warn:chitRatio<=200, action:'Chit payments should not exceed income — document funding source'},
+    {label:'NPS Contributing', val:cache.investments.some(r=>r[2]==='NPS')?'Yes':'No', target:'Yes', ok:cache.investments.some(r=>r[2]==='NPS'), warn:false, action:'NPS gives 80C + extra 80CCD(1B) ₹50,000 deduction'},
+    {label:'Health Insurance', val:cache.insurance.some(r=>r[2]==='Health')?'Active':'None', target:'Active', ok:cache.insurance.some(r=>r[2]==='Health'), warn:false, action:'Ensure health cover is ₹5L+ for the family'},
+  ];
+
+  document.getElementById('health-metrics').innerHTML = metrics.map(m=>`
+    <div style="display:grid;grid-template-columns:1.5fr 1fr 1fr auto 2fr;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--border)">
+      <div style="font-weight:600;font-size:13px">${m.label}</div>
+      <div style="font-family:var(--fm);font-size:13px;color:var(--gold)">${m.val}</div>
+      <div style="font-size:12px;color:var(--text3)">${m.target}</div>
+      <span class="badge badge-${m.ok?'green':m.warn?'amber':'red'}">${m.ok?'✅ Good':m.warn?'⚠️ Improve':'❌ Critical'}</span>
+      <div style="font-size:12px;color:var(--text2)">${m.action}</div>
+    </div>`).join('');
+
+  const actions = [
+    {pri:'🔴 Urgent',bg:'var(--red-bg)',fc:'var(--red-text)',action:'Build Emergency Fund first (3-4L in liquid fund)'},
+    {pri:'🔴 Urgent',bg:'var(--red-bg)',fc:'var(--red-text)',action:'Clarify funding for chit payments exceeding salary'},
+    {pri:'🟡 Important',bg:'var(--amber-bg)',fc:'var(--amber)',action:'Review Life Insurance policy — likely endowment with low returns'},
+    {pri:'🟡 Important',bg:'var(--amber-bg)',fc:'var(--amber)',action:'Start Nifty 50 Index Fund SIP — even ₹2,000/month'},
+    {pri:'🟢 Medium term',bg:'var(--green-bg)',fc:'var(--green-text)',action:'Add US equity exposure via S&P 500 fund'},
+    {pri:'🟢 Medium term',bg:'var(--green-bg)',fc:'var(--green-text)',action:'Invest in Sovereign Gold Bonds (next RBI tranche)'},
+    {pri:'🔵 Long term',bg:'var(--blue-bg)',fc:'#93C5FD',action:'Maximise NPS extra ₹50,000 deduction (80CCD1B)'},
+  ];
+
+  document.getElementById('action-plan').innerHTML = actions.map(a=>`
+    <div style="display:flex;gap:12px;padding:10px;border-radius:var(--rs);background:${a.bg};margin-bottom:8px;align-items:center">
+      <span style="font-size:12px;font-weight:700;color:${a.fc};white-space:nowrap;min-width:100px">${a.pri}</span>
+      <span style="font-size:13px;color:var(--text1)">${a.action}</span>
+    </div>`).join('');
+}
+
+// ── MONTHLY TRACKER ───────────────────────────────────────────────────
+function renderMonthly() {
+  const m = selectedMonth;
+  const inc = cache.income.filter(r=>r[5]===m).reduce((s,r)=>s+Number(r[3]||0),0);
+  const exp = cache.expenses.filter(r=>r[5]===m).reduce((s,r)=>s+Number(r[3]||0),0);
+  const surplus = inc-exp;
+  document.getElementById('mt-income').textContent = INR(inc);
+  document.getElementById('mt-expenses').textContent = INR(exp);
+  document.getElementById('mt-surplus').textContent = INR(surplus);
+  document.getElementById('mt-surplus').className = 'kpi-val '+(surplus>=0?'up':'dn');
+  document.getElementById('mt-rate').textContent = inc>0?PCT(surplus/inc*100):'0%';
+
+  const cats = {};
+  cache.expenses.filter(r=>r[5]===m).forEach(r=>{
+    const c = r[2]||'Other';
+    cats[c] = (cats[c]||0)+Number(r[3]||0);
+  });
+  const maxCat = Math.max(...Object.values(cats),1);
+  document.getElementById('mt-breakdown').innerHTML = Object.entries(cats).sort((a,b)=>b[1]-a[1]).map(([cat,amt])=>`
+    <div style="display:grid;grid-template-columns:130px 1fr 80px;align-items:center;gap:12px;margin-bottom:10px">
+      <span style="font-size:12px;font-weight:600;color:var(--text2)">${cat}</span>
+      <div class="progress"><div class="progress-fill" style="background:${CAT_COLORS[cat]||'#6B7280'};width:${(amt/maxCat*100).toFixed(0)}%"></div></div>
+      <span style="font-family:var(--fm);font-size:12px;text-align:right;color:var(--text1)">${INR(amt)}</span>
+    </div>`).join('') || '<div class="empty"><div class="empty-icon">📊</div><div class="empty-title">No expenses for '+m+'</div></div>';
+}
+
+// ── NET WORTH ───────────────────────────────────────────────────────────
+function renderNetWorth() {
+  const assets = cache.assets.reduce((s,r)=>s+Number(r[3]||0),0);
+  const liabs = cache.liabilities.reduce((s,r)=>s+Number(r[3]||0),0);
+  const nw = assets-liabs;
+  document.getElementById('nw-assets').textContent = INR(assets);
+  document.getElementById('nw-liab').textContent = INR(liabs);
+  document.getElementById('nw-total').textContent = INR(nw);
+  document.getElementById('nw-change').textContent = '—';
+  document.getElementById('nw-total').className = 'kpi-val '+(nw>=0?'up':'dn');
+
+  document.getElementById('assets-table').innerHTML = cache.assets.map((r,i)=>`
+    <tr>
+      <td style="font-weight:600">${r[1]||'—'}</td>
+      <td><span class="badge badge-green" style="font-size:10px">${r[2]||'—'}</span></td>
+      <td style="font-family:var(--fm);font-weight:700;color:var(--green-text)">${INR(r[3]||0)}</td>
+      <td style="font-size:12px;color:var(--text3)">${new Date().toLocaleDateString()}</td>
+      <td><button class="del-btn" onclick="deleteEntry('${SHEETS.assets}','assets',${i+1})">✕</button></td>
+    </tr>`).join('') || '<tr><td colspan="5" style="text-align:center;color:var(--text3);padding:24px">No assets yet</td></tr>';
+
+  document.getElementById('liab-table').innerHTML = cache.liabilities.map((r,i)=>`
+    <tr>
+      <td style="font-weight:600">${r[1]||'—'}</td>
+      <td><span class="badge badge-red" style="font-size:10px">${r[2]||'—'}</span></td>
+      <td style="font-family:var(--fm);font-weight:700;color:var(--red-text)">${INR(r[3]||0)}</td>
+      <td style="font-size:12px;color:var(--text3)">${new Date().toLocaleDateString()}</td>
+      <td><button class="del-btn" onclick="deleteEntry('${SHEETS.liabilities}','liabilities',${i+1})">✕</button></td>
+    </tr>`).join('') || '<tr><td colspan="5" style="text-align:center;color:var(--text3);padding:24px">No liabilities yet</td></tr>';
+}
+
+// ── DATA CRUD ───────────────────────────────────────────────────────────
+async function addIncome() {
+  const desc=v('inc-desc'),amt=v('inc-amount'),cat=v('inc-cat'),date=v('inc-date'),notes=v('inc-notes');
+  if(!desc||!amt){toast('Enter description and amount','error');return;}
+  const month = getMonthFromDate(date||new Date().toISOString().slice(0,10));
+  const row = [uid(),desc,cat,amt,date||new Date().toISOString().slice(0,10),month,notes];
+  await save(SHEETS.income,'income',row,'add-income-modal');
+}
+
+async function addExpense() {
+  const desc=v('exp-desc'),amt=v('exp-amount'),cat=v('exp-cat'),date=v('exp-date'),notes=v('exp-notes');
+  if(!desc||!amt){toast('Enter description and amount','error');return;}
+  const month = getMonthFromDate(date||new Date().toISOString().slice(0,10));
+  const row = [uid(),desc,cat,amt,date||new Date().toISOString().slice(0,10),month,notes];
+  await save(SHEETS.expenses,'expenses',row,'add-expense-modal');
+}
+
+async function addMF() {
+  const row=[uid(),v('mf-name'),v('mf-cat'),v('mf-sip')||0,v('mf-started')||'—',v('mf-units')||0,v('mf-nav')||0,''];
+  await save(SHEETS.mf,'mf',row,'add-mf-modal');
+}
+
+async function addChit() {
+  const row=[uid(),v('chit-name'),v('chit-value')||0,v('chit-months')||20,v('chit-done')||0,v('chit-monthly')||0,v('chit-start')||'—',v('chit-comm')||5,v('chit-status')||'Active'];
+  await save(SHEETS.chits,'chits',row,'add-chit-modal');
+}
+
+async function addChitPayment() {
+  const row=[uid(),v('cp-month'),v('cp-chit'),v('cp-amount')||0,v('cp-status')||'Paid',v('cp-notes')];
+  await save(SHEETS.chitPayments,'chitPayments',row,'add-chitpay-modal');
+}
+
+async function addInvestment() {
+  const row=[uid(),v('inv-name'),v('inv-type'),v('inv-monthly')||0,v('inv-value')||0,v('inv-target')||0,v('inv-notes')];
+  await save(SHEETS.investments,'investments',row,'add-inv-modal');
+}
+
+async function addInsurance() {
+  const row=[uid(),v('ins-name'),v('ins-type'),v('ins-premium')||0,v('ins-assured')||0,v('ins-renewal')||'',v('ins-status')||'Active'];
+  await save(SHEETS.insurance,'insurance',row,'add-ins-modal');
+}
+
+async function addGoal() {
+  const row=[uid(),v('goal-name'),v('goal-target')||0,v('goal-years')||5,v('goal-saved')||0,''];
+  await save(SHEETS.goals,'goals',row,'add-goal-modal');
+}
+
+async function addAsset() {
+  const row=[uid(),v('asset-name'),v('asset-type'),v('asset-value')||0,new Date().toLocaleDateString(),v('asset-notes')];
+  await save(SHEETS.assets,'assets',row,'add-asset-modal');
+}
+
+async function addLiability() {
+  const row=[uid(),v('liab-name'),v('liab-type'),v('liab-amount')||0,new Date().toLocaleDateString(),v('liab-notes')];
+  await save(SHEETS.liabilities,'liabilities',row,'add-liab-modal');
+}
+
+async function save(sheet, cacheKey, row, modalId) {
+  try {
+    await appendRow(sheet, row);
+    cache[cacheKey].push(row);
+    closeModal(modalId);
+    renderCurrentPage();
+    toast('Saved to Google Sheets ✓', 'success');
+  } catch(e) {
+    toast('Error saving: '+e.message, 'error');
+  }
+}
+
+async function deleteEntry(sheet, cacheKey, idx) {
+  if(!confirm('Delete this entry?')) return;
+  try {
+    await deleteRow(sheet, idx);
+    cache[cacheKey].splice(idx-1,1);
+    renderCurrentPage();
+    toast('Deleted', 'success');
+  } catch(e) {
+    toast('Error: '+e.message,'error');
+  }
+}
+
+// ── UTILS ─────────────────────────────────────────────────────────────
+function v(id){const el=document.getElementById(id);return el?el.value.trim():'';}
+function openModal(id){document.getElementById(id).classList.add('open');setToday();}
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+document.querySelectorAll('.mov').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open');}));
+
+function toast(msg, type='success') {
+  const t = document.getElementById('toast');
+  const el = document.createElement('div');
+  el.className = 'toast-item '+(type==='success'?'success':'error');
+  el.innerHTML = `<span>${type==='success'?'✓':'✕'}</span><span>${msg}</span>`;
+  t.appendChild(el);
+  setTimeout(()=>el.remove(),3000);
+}
+
+function signOut() {
+  if(!confirm('Sign out? Your data stays in Google Sheets.')) return;
+  gToken=null;
+  document.getElementById('app').style.display='none';
+  document.getElementById('setup-screen').style.display='flex';
+  document.getElementById('connectBtn').disabled=false;
+  document.getElementById('setup-alert').innerHTML='';
+}
+
+// ── AUTO-RECONNECT ─────────────────────────────────────────────────
+window.addEventListener('load', async()=>{
+  const savedCid = localStorage.getItem('fn_client_id');
+  const savedSid = localStorage.getItem('fn_sheet_id');
+  if(savedCid) document.getElementById('clientId').value = savedCid;
+  if(savedSid) document.getElementById('sheetId').value = savedSid;
+});
+</script>
+</body>
+</html>
