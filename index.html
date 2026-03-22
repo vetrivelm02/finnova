@@ -956,9 +956,10 @@ async function loadCache(key){
 // ── GOLD RATES (Yahoo Finance — free, no API key) ─────
 async function fetchGold(){
   try{
-    const [gcRes,fxRes]=await Promise.all([
-      fetch('https://query1.finance.yahoo.com/v8/finance/chart/GC%3DF?interval=1d&range=2d'),
-      fetch('https://query1.finance.yahoo.com/v8/finance/chart/USDINR%3DX?interval=1d&range=2d')
+    const PROXY = 'https://script.google.com/macros/s/AKfycbyOqF2gt0tculAtyKwFbirEHlkO-Sl_fzfFVYgebdWj-C8Vb-YiHnP2K6L1Le7QNow_Mw/exec';
+    const [gcRes, fxRes] = await Promise.all([
+        fetch(`${PROXY}?symbol=GC=F`),
+        fetch(`${PROXY}?symbol=USDINR=X`)
     ]);
     const [gcData,fxData]=await Promise.all([gcRes.json(),fxRes.json()]);
 
