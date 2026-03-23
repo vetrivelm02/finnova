@@ -4,359 +4,180 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FinNova — Personal Finance</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>
-/* ═══════════════════════════════════════════
-   CONFIGURATION — Edit these two values once
-   Sheet ID is safe to put here: it requires
-   your Google OAuth login to access the data
-═══════════════════════════════════════════ */
-:root {
-  --cream:#FAF8F3; --cream2:#F2EFE8; --cream3:#E8E3D8;
-  --ink:#1C1A16; --ink2:#3D3A32; --ink3:#6B6760;
-  --gold:#B8960C; --gold2:#D4AF37; --gold3:#F5EDD3; --gold4:#7A6208;
-  --sage:#4A6741; --sage-bg:#EEF3ED;
-  --rose:#8B3A3A; --rose-bg:#F5EDED;
-  --sky:#2B5C8A; --sky-bg:#EAF0F7;
-  --sand:#C49A3C; --sand-bg:#FBF5E6;
-  --border:#DDD8CC; --border2:#C8C2B4;
-  --white:#FFFFFF;
-  --sh:0 1px 3px rgba(28,26,22,.06), 0 2px 8px rgba(28,26,22,.04);
-  --sh-md:0 4px 20px rgba(28,26,22,.08);
-  --sh-lg:0 12px 48px rgba(28,26,22,.12);
-  --r:12px; --rs:7px; --rl:20px;
-  --ff:'DM Sans',sans-serif;
-  --fh:'Playfair Display',serif;
-  --fm:'DM Mono',monospace;
-}
-*{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:var(--ff);background:var(--cream);color:var(--ink);font-size:14px;line-height:1.6;}
-h1,h2,h3{font-family:var(--fh);}
-::-webkit-scrollbar{width:5px;height:5px;}
-::-webkit-scrollbar-track{background:var(--cream2);}
-::-webkit-scrollbar-thumb{background:var(--cream3);border-radius:3px;}
-a{color:var(--gold4);text-decoration:none;}
-a:hover{text-decoration:underline;}
-
-/* ── LOGIN ─────────────────────────────────────── */
-#login-screen{min-height:100vh;display:flex;background:var(--cream);position:relative;overflow:hidden;}
-.login-deco{position:absolute;inset:0;pointer-events:none;overflow:hidden;}
-.login-deco::before{content:'';position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(184,150,12,.08) 0%,transparent 70%);top:-200px;right:-200px;}
-.login-deco::after{content:'';position:absolute;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(74,103,65,.05) 0%,transparent 70%);bottom:-150px;left:-100px;}
-.login-left{flex:1;display:flex;flex-direction:column;justify-content:center;padding:72px 64px;position:relative;z-index:1;max-width:620px;}
-.login-logo{display:flex;align-items:center;gap:13px;margin-bottom:56px;}
-.login-mark{width:46px;height:46px;background:var(--ink);border-radius:13px;display:flex;align-items:center;justify-content:center;font-family:var(--fh);font-weight:700;font-size:17px;color:var(--gold2);}
-.login-brand{font-family:var(--fh);font-size:20px;font-weight:600;color:var(--ink);}
-.login-brand span{color:var(--gold);}
-.login-h1{font-family:var(--fh);font-size:52px;font-weight:700;color:var(--ink);line-height:1.12;letter-spacing:-.5px;margin-bottom:20px;}
-.login-h1 em{color:var(--gold);font-style:italic;}
-.login-desc{color:var(--ink3);font-size:16px;line-height:1.75;max-width:440px;margin-bottom:48px;}
-.login-features{display:flex;flex-direction:column;gap:12px;}
-.login-feat{display:flex;align-items:center;gap:12px;font-size:14px;color:var(--ink2);}
-.login-feat-dot{width:7px;height:7px;border-radius:50%;background:var(--gold2);flex-shrink:0;}
-.login-right{width:480px;display:flex;align-items:center;justify-content:center;padding:40px;position:relative;z-index:1;}
-.login-card{background:var(--white);border:1px solid var(--border);border-radius:24px;padding:48px 40px;width:100%;box-shadow:var(--sh-lg);}
-.login-card-eyebrow{font-size:11px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:var(--gold);margin-bottom:16px;}
-.login-card-h2{font-family:var(--fh);font-size:26px;font-weight:700;color:var(--ink);margin-bottom:8px;}
-.login-card-sub{color:var(--ink3);font-size:14px;margin-bottom:32px;line-height:1.6;}
-
-/* CONFIG INPUTS */
-.cfg-label{display:block;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.6px;color:var(--ink3);margin-bottom:6px;}
-.cfg-input{width:100%;padding:11px 14px;background:var(--cream);border:1px solid var(--border);border-radius:var(--rs);color:var(--ink);font-size:13px;font-family:var(--fm);outline:none;transition:border-color .2s;}
-.cfg-input:focus{border-color:var(--gold);background:var(--white);}
-.cfg-group{margin-bottom:16px;}
-.cfg-note{font-size:11px;color:var(--ink3);margin-top:5px;line-height:1.5;}
-.login-divider{display:flex;align-items:center;gap:12px;margin:24px 0;color:var(--ink3);font-size:12px;}
-.login-divider::before,.login-divider::after{content:'';flex:1;height:1px;background:var(--border);}
-.google-btn{width:100%;padding:13px;background:var(--ink);color:var(--white);border:none;border-radius:var(--rs);font-size:14px;font-weight:600;font-family:var(--ff);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:opacity .2s;}
-.google-btn:hover{opacity:.88;}
-.google-btn:disabled{opacity:.5;cursor:not-allowed;}
-.google-btn svg{width:18px;height:18px;flex-shrink:0;}
-.login-hint{text-align:center;font-size:12px;color:var(--ink3);margin-top:14px;line-height:1.6;}
-#login-alert{margin-bottom:14px;}
-.alert{padding:11px 14px;border-radius:var(--rs);font-size:13px;display:flex;align-items:flex-start;gap:7px;line-height:1.5;}
-.alert-err{background:var(--rose-bg);border:1px solid rgba(139,58,58,.2);color:var(--rose);}
-.alert-ok{background:var(--sage-bg);border:1px solid rgba(74,103,65,.2);color:var(--sage);}
-.alert-info{background:var(--sky-bg);border:1px solid rgba(43,92,138,.2);color:var(--sky);}
-
-/* ── APP SHELL ───────────────────────────────────── */
-#app{display:none;min-height:100vh;}
-.sidebar{width:244px;min-height:100vh;background:var(--white);border-right:1px solid var(--border);position:fixed;top:0;left:0;display:flex;flex-direction:column;z-index:100;}
-.sb-top{padding:22px 18px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:11px;}
-.sb-mark{width:32px;height:32px;background:var(--ink);border-radius:9px;display:flex;align-items:center;justify-content:center;font-family:var(--fh);font-weight:700;font-size:13px;color:var(--gold2);flex-shrink:0;}
-.sb-name{font-family:var(--fh);font-size:15px;font-weight:600;color:var(--ink);}
-.sb-name span{color:var(--gold);}
-.sb-tagline{font-size:10px;color:var(--ink3);margin-top:1px;}
-.sb-nav{padding:12px 10px;flex:1;overflow-y:auto;}
-.sb-section{font-size:9px;font-weight:600;letter-spacing:1.4px;text-transform:uppercase;color:var(--ink3);padding:12px 10px 4px;}
-.ni{display:flex;align-items:center;gap:9px;padding:9px 11px;border-radius:var(--rs);cursor:pointer;color:var(--ink2);font-size:13px;font-weight:500;transition:all .15s;margin-bottom:1px;user-select:none;}
-.ni:hover{background:var(--cream2);color:var(--ink);}
-.ni.active{background:var(--ink);color:var(--white);}
-.ni.active .ni-icon{color:var(--gold2);}
-.ni-icon{font-size:14px;width:17px;text-align:center;color:var(--ink3);}
-.ni.active .ni-icon{color:var(--gold2);}
-.ni-badge{margin-left:auto;background:var(--rose);color:var(--white);font-size:10px;font-weight:700;padding:1px 6px;border-radius:10px;}
-.sb-gold-pill{margin:0 10px 12px;background:var(--gold3);border:1px solid rgba(184,150,12,.3);border-radius:var(--rs);padding:10px 12px;cursor:pointer;transition:background .15s;}
-.sb-gold-pill:hover{background:var(--sand-bg);}
-.sb-gold-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.6px;color:var(--gold4);margin-bottom:3px;}
-.sb-gold-price{font-family:var(--fm);font-size:15px;font-weight:500;color:var(--ink);}
-.sb-gold-sub{font-size:11px;color:var(--ink3);margin-top:1px;}
-.sb-footer{padding:12px 10px;border-top:1px solid var(--border);}
-.sb-user{display:flex;align-items:center;gap:9px;padding:8px 11px;border-radius:var(--rs);cursor:pointer;transition:background .15s;}
-.sb-user:hover{background:var(--cream2);}
-.sb-av{width:30px;height:30px;border-radius:50%;background:var(--ink);display:flex;align-items:center;justify-content:center;font-weight:600;font-size:11px;color:var(--gold2);flex-shrink:0;}
-.sb-uname{font-size:12px;font-weight:600;color:var(--ink);}
-.sb-sync{font-size:10px;color:var(--ink3);}
-.sb-out{margin-left:auto;background:none;border:none;color:var(--ink3);cursor:pointer;font-size:13px;transition:color .15s;}
-.sb-out:hover{color:var(--rose);}
-
-.main{margin-left:244px;min-height:100vh;}
-.topbar{background:var(--white);border-bottom:1px solid var(--border);height:56px;padding:0 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;}
-.tb-left h1{font-family:var(--fh);font-size:17px;font-weight:600;color:var(--ink);}
-.tb-left p{font-size:11px;color:var(--ink3);}
-.tb-right{display:flex;align-items:center;gap:8px;}
-.tb-btn{display:flex;align-items:center;gap:5px;padding:7px 14px;border-radius:var(--rs);border:1px solid var(--border2);background:var(--white);color:var(--ink2);font-size:12px;font-weight:600;cursor:pointer;transition:all .15s;}
-.tb-btn:hover{background:var(--cream2);border-color:var(--border2);color:var(--ink);}
-.tb-btn.primary{background:var(--ink);color:var(--white);border-color:var(--ink);}
-.tb-btn.primary:hover{opacity:.88;}
-.tb-sync{font-size:11px;color:var(--ink3);font-family:var(--fm);}
-
-.page{padding:24px;display:none;animation:pageIn .2s ease;}
-.page.active{display:block;}
-@keyframes pageIn{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}
-
-/* ── COMPONENTS ─────────────────────────────────── */
-.kgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px;}
-.kpi{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:18px;position:relative;overflow:hidden;box-shadow:var(--sh);}
-.kpi::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;}
-.kpi.gold::after{background:var(--gold2);}
-.kpi.sage::after{background:var(--sage);}
-.kpi.rose::after{background:var(--rose);}
-.kpi.sky::after{background:var(--sky);}
-.kpi.ink::after{background:var(--ink);}
-.kpi.sand::after{background:var(--sand);}
-.kpi-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.6px;color:var(--ink3);margin-bottom:8px;}
-.kpi-val{font-family:var(--fh);font-size:22px;font-weight:700;color:var(--ink);margin-bottom:5px;}
-.kpi-sub{font-size:12px;color:var(--ink3);}
-.kpi-icon{position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:26px;opacity:.1;}
-.up{color:var(--sage);}
-.dn{color:var(--rose);}
-.neu{color:var(--ink3);}
-
-.card{background:var(--white);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;margin-bottom:16px;box-shadow:var(--sh);}
-.card-head{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:var(--white);}
-.card-head-l h3{font-family:var(--fh);font-size:15px;font-weight:600;color:var(--ink);}
-.card-head-l p{font-size:12px;color:var(--ink3);margin-top:2px;}
-.card-body{padding:18px 20px;}
-.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
-.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;}
-.g6040{display:grid;grid-template-columns:3fr 2fr;gap:14px;}
-.mb14{margin-bottom:14px;}
-
-/* ── GOLD RATES WIDGET ──────────────────────────── */
-.gold-widget{background:var(--white);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;margin-bottom:16px;box-shadow:var(--sh);}
-.gold-widget-head{background:var(--ink);padding:16px 20px;display:flex;align-items:center;justify-content:space-between;}
-.gold-widget-title{font-family:var(--fh);font-size:15px;font-weight:600;color:var(--white);}
-.gold-widget-sub{font-size:11px;color:rgba(255,255,255,.5);margin-top:1px;}
-.gold-refresh{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:var(--rs);padding:5px 12px;color:var(--white);font-size:12px;font-weight:600;cursor:pointer;transition:background .15s;font-family:var(--ff);}
-.gold-refresh:hover{background:rgba(255,255,255,.2);}
-.gold-rates-grid{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border);}
-.gold-rate-cell{padding:16px 20px;border-right:1px solid var(--border);}
-.gold-rate-cell:last-child{border-right:none;}
-.grc-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.6px;color:var(--ink3);margin-bottom:5px;}
-.grc-val{font-family:var(--fh);font-size:19px;font-weight:700;color:var(--ink);}
-.grc-unit{font-size:11px;color:var(--ink3);margin-top:2px;font-family:var(--fm);}
-.grc-change{display:inline-flex;align-items:center;gap:3px;font-size:11px;font-weight:600;margin-top:4px;padding:2px 7px;border-radius:10px;}
-.grc-up{background:var(--sage-bg);color:var(--sage);}
-.grc-dn{background:var(--rose-bg);color:var(--rose);}
-.grc-neu{background:var(--cream2);color:var(--ink3);}
-.gold-purity-row{display:grid;grid-template-columns:repeat(4,1fr);}
-.gold-purity-cell{padding:12px 20px;border-right:1px solid var(--border);background:var(--cream);}
-.gold-purity-cell:last-child{border-right:none;}
-.gpc-purity{font-size:11px;font-weight:700;color:var(--gold4);text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px;}
-.gpc-price{font-family:var(--fm);font-size:14px;font-weight:500;color:var(--ink);}
-.gpc-sub{font-size:11px;color:var(--ink3);}
-.gold-impact-band{background:var(--gold3);border-top:1px solid rgba(184,150,12,.2);padding:12px 20px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
-.gib-label{font-size:12px;color:var(--gold4);font-weight:600;}
-.gib-calc{font-family:var(--fm);font-size:13px;color:var(--ink);background:var(--white);border:1px solid rgba(184,150,12,.3);border-radius:var(--rs);padding:4px 10px;}
-.gold-formula{padding:14px 20px;border-top:1px solid var(--border);background:var(--cream);}
-.gf-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--ink3);margin-bottom:6px;}
-.gf-formula{font-family:var(--fm);font-size:12px;color:var(--ink2);line-height:1.8;}
-.gf-formula span{color:var(--gold4);font-weight:500;}
-.gold-loading{padding:32px;text-align:center;color:var(--ink3);font-size:13px;}
-.gold-error{padding:16px 20px;color:var(--rose);font-size:13px;background:var(--rose-bg);border-top:1px solid rgba(139,58,58,.15);}
-
-/* ── BUTTONS ─────────────────────────────────────── */
-.btn{display:inline-flex;align-items:center;gap:5px;padding:8px 16px;border-radius:var(--rs);font-size:13px;font-weight:600;cursor:pointer;border:none;transition:all .15s;font-family:var(--ff);}
-.btn-ink{background:var(--ink);color:var(--white);}
-.btn-ink:hover{opacity:.88;}
-.btn-outline{background:none;border:1px solid var(--border2);color:var(--ink2);}
-.btn-outline:hover{background:var(--cream2);color:var(--ink);}
-.btn-sage{background:var(--sage-bg);color:var(--sage);border:1px solid rgba(74,103,65,.2);}
-.btn-rose{background:var(--rose-bg);color:var(--rose);border:1px solid rgba(139,58,58,.2);}
-.btn-gold{background:var(--gold3);color:var(--gold4);border:1px solid rgba(184,150,12,.25);}
-.btn-sm{padding:5px 12px;font-size:12px;}
-
-/* ── TABLE ────────────────────────────────────────── */
-.tbl-wrap{overflow-x:auto;}
-table{width:100%;border-collapse:collapse;}
-th{padding:9px 16px;text-align:left;font-size:11px;font-weight:600;color:var(--ink3);text-transform:uppercase;letter-spacing:.5px;background:var(--cream);border-bottom:1px solid var(--border);}
-td{padding:12px 16px;font-size:13px;border-bottom:1px solid var(--border);color:var(--ink);}
-tr:last-child td{border-bottom:none;}
-tr:hover td{background:var(--cream2);}
-
-/* ── BADGES ──────────────────────────────────────── */
-.badge{display:inline-flex;align-items:center;padding:3px 9px;border-radius:12px;font-size:11px;font-weight:700;}
-.badge-sage{background:var(--sage-bg);color:var(--sage);}
-.badge-rose{background:var(--rose-bg);color:var(--rose);}
-.badge-sky{background:var(--sky-bg);color:var(--sky);}
-.badge-gold{background:var(--gold3);color:var(--gold4);}
-.badge-ink{background:var(--cream3);color:var(--ink2);}
-.badge-sand{background:var(--sand-bg);color:#7A5810;}
-
-/* ── FORM ────────────────────────────────────────── */
-.fi{width:100%;padding:10px 13px;background:var(--cream);border:1px solid var(--border);border-radius:var(--rs);color:var(--ink);font-size:13px;outline:none;transition:border-color .2s;font-family:var(--ff);}
-.fi:focus{border-color:var(--gold);background:var(--white);}
-select.fi{cursor:pointer;}
-.fl{font-size:11px;font-weight:600;color:var(--ink3);text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:5px;}
-.fg{margin-bottom:13px;}
-.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
-.fspan{grid-column:1/-1;}
-
-/* ── MODAL ──────────────────────────────────────── */
-.mov{display:none;position:fixed;inset:0;background:rgba(28,26,22,.4);z-index:200;align-items:center;justify-content:center;backdrop-filter:blur(3px);}
-.mov.open{display:flex;}
-.modal{background:var(--white);border:1px solid var(--border);border-radius:20px;padding:28px;width:500px;max-width:96vw;box-shadow:var(--sh-lg);animation:mIn .2s ease;}
-@keyframes mIn{from{opacity:0;transform:scale(.96);}to{opacity:1;transform:none;}}
-.modal-title{font-family:var(--fh);font-size:19px;font-weight:700;color:var(--ink);margin-bottom:20px;}
-.modal-footer{display:flex;gap:8px;justify-content:flex-end;margin-top:18px;padding-top:16px;border-top:1px solid var(--border);}
-
-/* ── ENTRY ROWS ─────────────────────────────────── */
-.entry-row{display:grid;align-items:center;padding:10px 16px;border-bottom:1px solid var(--border);gap:9px;transition:background .12s;}
-.entry-row:last-child{border-bottom:none;}
-.entry-row:hover{background:var(--cream2);}
-.entry-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
-.entry-name{font-size:13px;font-weight:600;color:var(--ink);}
-.entry-note{font-size:11px;color:var(--ink3);}
-.entry-inc{font-family:var(--fm);font-size:13px;font-weight:600;color:var(--sage);}
-.entry-exp{font-family:var(--fm);font-size:13px;font-weight:600;color:var(--rose);}
-.entry-date{font-size:11px;color:var(--ink3);font-family:var(--fm);}
-.del-btn{background:none;border:none;color:var(--ink3);cursor:pointer;font-size:13px;padding:2px 5px;border-radius:4px;}
-.del-btn:hover{background:var(--rose-bg);color:var(--rose);}
-
-/* ── PROGRESS ───────────────────────────────────── */
-.progress{background:var(--cream2);border-radius:20px;height:5px;overflow:hidden;}
-.progress-fill{height:5px;border-radius:20px;transition:width .4s;}
-
-/* ── STAT ───────────────────────────────────────── */
-.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px;}
-.stat{background:var(--cream);border-radius:var(--rs);padding:13px;text-align:center;border:1px solid var(--border);}
-.stat-label{font-size:11px;color:var(--ink3);margin-bottom:3px;}
-.stat-val{font-family:var(--fh);font-size:16px;font-weight:700;color:var(--ink);}
-
-/* ── TOAST ──────────────────────────────────────── */
-#toast{position:fixed;bottom:20px;right:20px;z-index:500;display:flex;flex-direction:column;gap:7px;}
-.toast-item{background:var(--white);border:1px solid var(--border);border-radius:var(--rs);padding:11px 16px;font-size:13px;color:var(--ink);box-shadow:var(--sh-md);animation:toastIn .3s ease;display:flex;align-items:center;gap:7px;}
-.toast-ok{border-color:rgba(74,103,65,.3);background:var(--sage-bg);}
-.toast-err{border-color:rgba(139,58,58,.3);background:var(--rose-bg);}
-@keyframes toastIn{from{opacity:0;transform:translateX(16px);}to{opacity:1;transform:none;}}
-
-.empty{text-align:center;padding:40px 20px;color:var(--ink3);}
-.empty-icon{font-size:32px;margin-bottom:10px;opacity:.4;}
-.empty-title{font-size:15px;font-weight:600;color:var(--ink2);margin-bottom:4px;font-family:var(--fh);}
-
-.month-tabs{display:flex;gap:4px;overflow-x:auto;padding-bottom:4px;margin-bottom:14px;}
-.month-tab{flex-shrink:0;padding:5px 13px;border-radius:16px;border:1px solid var(--border);background:none;color:var(--ink2);font-size:12px;font-weight:600;cursor:pointer;transition:all .15s;font-family:var(--ff);}
-.month-tab.active{background:var(--ink);color:var(--white);border-color:var(--ink);}
-
-@media(max-width:768px){.sidebar{transform:translateX(-100%);}.main{margin-left:0;}.kgrid{grid-template-columns:1fr 1fr;}.g2,.g3,.g6040{grid-template-columns:1fr;}}
-</style>
+<link rel="stylesheet" href="style.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 </head>
 <body>
 
-<!-- ═══════════ LOGIN ═══════════ -->
+<!-- ═══════════════════════════════════════
+   LOGIN SCREEN
+═══════════════════════════════════════ -->
 <div id="login-screen">
-  <div class="login-deco"></div>
+  <div class="login-bg">
+    <div class="login-bg-grid"></div>
+    <div class="login-bg-glow"></div>
+    <div class="login-bg-glow2"></div>
+  </div>
+
   <div class="login-left">
     <div class="login-logo">
-      <div class="login-mark">FN</div>
-      <div class="login-brand">Fin<span>Nova</span></div>
+      <div class="login-logo-mark">FN</div>
+      <div class="login-logo-name">Fin<span>Nova</span></div>
     </div>
-    <h1 class="login-h1">Your wealth,<br><em>clearly seen.</em></h1>
-    <p class="login-desc">A personal finance portal backed entirely by your own Google Sheet. Your data stays in your Google account — always private, always yours.</p>
-    <div class="login-features">
-      <div class="login-feat"><div class="login-feat-dot"></div>Income, expenses & budget tracking</div>
-      <div class="login-feat"><div class="login-feat-dot"></div>Chit funds, NPS, Mutual Funds tracker</div>
-      <div class="login-feat"><div class="login-feat-dot"></div>Live Comex gold & MCX India rates</div>
-      <div class="login-feat"><div class="login-feat-dot"></div>Tax planning — 80C, 80D, NPS deductions</div>
-      <div class="login-feat"><div class="login-feat-dot"></div>Goals, emergency fund & net worth</div>
+    <div class="login-eyebrow">Personal Finance Portal</div>
+    <h1 class="login-h1">Your Wealth<span>Clearly Seen.</span></h1>
+    <p class="login-desc">A professional-grade finance portal backed entirely by your own Google Sheet. Every number, every rupee — tracked, analysed, visualised.</p>
+    <div class="login-stats">
+      <div>
+        <div class="login-stat-num">13</div>
+        <div class="login-stat-label">Modules</div>
+      </div>
+      <div class="login-stat-divider"></div>
+      <div>
+        <div class="login-stat-num">₹0</div>
+        <div class="login-stat-label">Cost</div>
+      </div>
+      <div class="login-stat-divider"></div>
+      <div>
+        <div class="login-stat-num">Live</div>
+        <div class="login-stat-label">Gold Rates</div>
+      </div>
     </div>
   </div>
+
   <div class="login-right">
     <div class="login-card">
-      <div class="login-card-eyebrow">Personal Finance Portal</div>
-      <h2 class="login-card-h2">Sign in to FinNova</h2>
-      <p class="login-card-sub">Connect with Google to sync your data to your own Google Sheet.</p>
+      <div class="login-card-tag">Secure Portal</div>
+      <h2 class="login-card-h2">Sign In</h2>
+      <p class="login-card-sub">Connect with Google to sync your data securely to your own private spreadsheet.</p>
+
       <div id="login-alert"></div>
-      <div class="cfg-group">
-        <input type="hidden" id="clientId">
+
+      <!-- These fields auto-hide when Client ID is pre-configured in app.js -->
+      <div id="clientId-group" class="fg">
+        <label class="fl">Google OAuth Client ID</label>
+        <input class="fi" id="clientId" type="text" placeholder="xxxx.apps.googleusercontent.com" autocomplete="off">
       </div>
-      <div class="cfg-group">
-        <input type="hidden" id="sheetId">
+      <div id="sheetId-group" class="fg">
+        <label class="fl">Google Sheet ID <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:11px;color:var(--t3)">(blank = auto-create)</span></label>
+        <input class="fi" id="sheetId" type="text" placeholder="From sheet URL: .../d/YOUR_ID/...">
       </div>
+      <div id="form-instructions" style="margin-bottom:16px;font-size:12px;color:var(--t3);line-height:1.6">
+        Your Client ID and Sheet ID are never sent to any server — they're used directly in your browser to authenticate with Google.
+      </div>
+
       <button class="google-btn" id="connectBtn" onclick="startAuth()">
-        <svg viewBox="0 0 24 24"><path fill="#EA4335" d="M5.26 9.77A7.19 7.19 0 0 1 12 4.8a7.12 7.12 0 0 1 5.07 2.04l3.73-3.73A12 12 0 0 0 12 0C7.38 0 3.37 2.69 1.33 6.62l3.93 3.15z"/><path fill="#34A853" d="M16.04 18.01A7.19 7.19 0 0 1 12 19.2a7.19 7.19 0 0 1-6.69-4.54l-3.95 3.05A12 12 0 0 0 12 24c3.24 0 6.14-1.17 8.38-3.08l-4.34-2.91z"/><path fill="#4A90D9" d="M20.38 18.92A12 12 0 0 0 24 12c0-.73-.07-1.44-.2-2.13H12v4.52h6.85a5.85 5.85 0 0 1-2.47 3.62l4 2.91z"/><path fill="#FBBC05" d="M5.31 14.66A7.22 7.22 0 0 1 4.8 12c0-.93.17-1.82.46-2.65L1.33 6.62A12 12 0 0 0 0 12c0 1.94.46 3.77 1.28 5.38l4.03-2.72z"/></svg>
+        <svg viewBox="0 0 24 24">
+          <path fill="#EA4335" d="M5.26 9.77A7.19 7.19 0 0 1 12 4.8a7.12 7.12 0 0 1 5.07 2.04l3.73-3.73A12 12 0 0 0 12 0C7.38 0 3.37 2.69 1.33 6.62l3.93 3.15z"/>
+          <path fill="#34A853" d="M16.04 18.01A7.19 7.19 0 0 1 12 19.2a7.19 7.19 0 0 1-6.69-4.54l-3.95 3.05A12 12 0 0 0 12 24c3.24 0 6.14-1.17 8.38-3.08l-4.34-2.91z"/>
+          <path fill="#4A90D9" d="M20.38 18.92A12 12 0 0 0 24 12c0-.73-.07-1.44-.2-2.13H12v4.52h6.85a5.85 5.85 0 0 1-2.47 3.62l4 2.91z"/>
+          <path fill="#FBBC05" d="M5.31 14.66A7.22 7.22 0 0 1 4.8 12c0-.93.17-1.82.46-2.65L1.33 6.62A12 12 0 0 0 0 12c0 1.94.46 3.77 1.28 5.38l4.03-2.72z"/>
+        </svg>
         Continue with Google
       </button>
-      <p class="login-hint">Your financial data is stored only in your Google Sheet.<br>Nothing is sent to any third-party server.</p>
+
+      <div class="login-security">
+        <span class="login-security-icon">🔒</span>
+        <span>Your financial data is stored only in your Google Sheet. FinNova never stores or transmits your data to any external server.</span>
+      </div>
     </div>
   </div>
 </div>
 
-<!-- ═══════════ APP ═══════════ -->
+<!-- ═══════════════════════════════════════
+   APP
+═══════════════════════════════════════ -->
 <div id="app">
-  <div class="sidebar">
-    <div class="sb-top">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar" id="sidebar">
+    <div class="sb-brand">
       <div class="sb-mark">FN</div>
-      <div><div class="sb-name">Fin<span>Nova</span></div><div class="sb-tagline">Personal Finance</div></div>
+      <div class="sb-brand-text">
+        <div class="sb-name">Fin<span>Nova</span></div>
+        <div class="sb-tagline">Finance Portal</div>
+      </div>
     </div>
+    <button class="sb-collapse-btn" id="collapse-btn" onclick="toggleSidebar()">‹</button>
+
     <div class="sb-nav">
       <div class="sb-section">Overview</div>
-      <div class="ni active" onclick="showPage('dashboard',this)"><span class="ni-icon">◈</span> Dashboard</div>
+      <div class="ni active" data-label="Dashboard" onclick="showPage('dashboard',this)">
+        <span class="ni-icon">◈</span><span class="ni-label">Dashboard</span>
+      </div>
+
       <div class="sb-section">Money</div>
-      <div class="ni" onclick="showPage('ie',this)"><span class="ni-icon">⇅</span> Income & Expenses</div>
-      <div class="ni" onclick="showPage('mf',this)"><span class="ni-icon">◫</span> Mutual Funds</div>
+      <div class="ni" data-label="Income & Expenses" onclick="showPage('ie',this)">
+        <span class="ni-icon">⇅</span><span class="ni-label">Income & Expenses</span>
+      </div>
+      <div class="ni" data-label="Mutual Funds" onclick="showPage('mf',this)">
+        <span class="ni-icon">◫</span><span class="ni-label">Mutual Funds</span>
+      </div>
+
       <div class="sb-section">Gold</div>
-      <div class="ni" onclick="showPage('gold',this)"><span class="ni-icon">◎</span> Gold Rates & Analysis</div>
+      <div class="ni" data-label="Gold Rates" onclick="showPage('gold',this)">
+        <span class="ni-icon">◎</span><span class="ni-label">Gold Rates & Analysis</span>
+      </div>
+
       <div class="sb-section">Products</div>
-      <div class="ni" onclick="showPage('chits',this)"><span class="ni-icon">◉</span> Chit Funds</div>
-      <div class="ni" onclick="showPage('inv',this)"><span class="ni-icon">↗</span> Investments</div>
-      <div class="ni" onclick="showPage('ins',this)"><span class="ni-icon">◌</span> Insurance</div>
+      <div class="ni" data-label="Chit Funds" onclick="showPage('chits',this)">
+        <span class="ni-icon">◉</span><span class="ni-label">Chit Funds</span>
+      </div>
+      <div class="ni" data-label="Investments" onclick="showPage('inv',this)">
+        <span class="ni-icon">↗</span><span class="ni-label">Investments</span>
+      </div>
+      <div class="ni" data-label="Insurance" onclick="showPage('ins',this)">
+        <span class="ni-icon">◌</span><span class="ni-label">Insurance</span>
+      </div>
+
       <div class="sb-section">Planning</div>
-      <div class="ni" onclick="showPage('tax',this)"><span class="ni-icon">⊞</span> Tax Planning</div>
-      <div class="ni" onclick="showPage('goals',this)"><span class="ni-icon">⊙</span> Goals & Emergency</div>
-      <div class="ni" onclick="showPage('health',this)"><span class="ni-icon">❤</span> Financial Health</div>
+      <div class="ni" data-label="Tax Planning" onclick="showPage('tax',this)">
+        <span class="ni-icon">⊞</span><span class="ni-label">Tax Planning</span>
+      </div>
+      <div class="ni" data-label="Goals" onclick="showPage('goals',this)">
+        <span class="ni-icon">⊙</span><span class="ni-label">Goals & Emergency</span>
+      </div>
+      <div class="ni" data-label="Health Score" onclick="showPage('health',this)">
+        <span class="ni-icon">❤</span><span class="ni-label">Financial Health</span>
+      </div>
+
       <div class="sb-section">Reports</div>
-      <div class="ni" onclick="showPage('monthly',this)"><span class="ni-icon">▦</span> Monthly Tracker</div>
-      <div class="ni" onclick="showPage('nw',this)"><span class="ni-icon">◆</span> Net Worth</div>
+      <div class="ni" data-label="Monthly" onclick="showPage('monthly',this)">
+        <span class="ni-icon">▦</span><span class="ni-label">Monthly Tracker</span>
+      </div>
+      <div class="ni" data-label="Net Worth" onclick="showPage('nw',this)">
+        <span class="ni-icon">◆</span><span class="ni-label">Net Worth</span>
+      </div>
     </div>
-    <div class="sb-gold-pill" onclick="showPage('gold',null)">
+
+    <!-- Live gold price pill in sidebar -->
+    <div class="sb-gold-widget" onclick="showPage('gold',null)">
       <div class="sb-gold-label">Comex Gold</div>
-      <div class="sb-gold-price" id="sb-comex">Loading...</div>
-      <div class="sb-gold-sub" id="sb-mcx">MCX India: —</div>
+      <div class="sb-gold-price" id="sb-gold-price">Loading…</div>
+      <div class="sb-gold-sub" id="sb-gold-sub">MCX India: —</div>
     </div>
+
     <div class="sb-footer">
       <div class="sb-user">
         <div class="sb-av" id="user-av">?</div>
-        <div><div class="sb-uname" id="user-name">Loading</div><div class="sb-sync" id="sb-sync">● Synced</div></div>
-        <button class="sb-out" onclick="signOut()">⏻</button>
+        <div class="sb-user-info">
+          <div class="sb-uname" id="user-name">Loading</div>
+          <div class="sb-sync" id="sb-sync">● Synced</div>
+        </div>
+        <button class="sb-out" onclick="signOut()" title="Sign out">⏻</button>
       </div>
     </div>
   </div>
 
-  <div class="main">
+  <!-- MAIN CONTENT -->
+  <div class="main" id="main-content">
+
+    <!-- TOPBAR -->
     <div class="topbar">
-      <div class="tb-left"><h1 id="page-title">Dashboard</h1><p id="page-sub">Your complete financial overview</p></div>
+      <div>
+        <div class="tb-title" id="tb-title">Dashboard</div>
+        <div class="tb-sub"   id="tb-sub">Your complete financial overview</div>
+      </div>
       <div class="tb-right">
         <span class="tb-sync" id="last-sync">—</span>
         <button class="tb-btn" onclick="syncAll()">↻ Sync</button>
@@ -364,1157 +185,443 @@ select.fi{cursor:pointer;}
       </div>
     </div>
 
-    <!-- DASHBOARD -->
+    <!-- ── DASHBOARD ── -->
     <div class="page active" id="page-dashboard">
       <div class="kgrid">
         <div class="kpi gold"><div class="kpi-icon">₹</div><div class="kpi-label">Monthly Income</div><div class="kpi-val" id="d-inc">—</div><div class="kpi-sub">This month</div></div>
-        <div class="kpi rose"><div class="kpi-icon">↓</div><div class="kpi-label">Expenses</div><div class="kpi-val" id="d-exp">—</div><div class="kpi-sub">This month</div></div>
-        <div class="kpi sage"><div class="kpi-icon">↑</div><div class="kpi-label">Net Surplus</div><div class="kpi-val" id="d-sur">—</div><div class="kpi-sub" id="d-sur-pct">—</div></div>
-        <div class="kpi sky"><div class="kpi-icon">↗</div><div class="kpi-label">Invested</div><div class="kpi-val" id="d-inv">—</div><div class="kpi-sub">MF + NPS + Chits</div></div>
+        <div class="kpi red"><div class="kpi-icon">↓</div><div class="kpi-label">Expenses</div><div class="kpi-val" id="d-exp">—</div><div class="kpi-sub">This month</div></div>
+        <div class="kpi green"><div class="kpi-icon">↑</div><div class="kpi-label">Net Surplus</div><div class="kpi-val" id="d-sur">—</div><div class="kpi-sub" id="d-sur-pct">—</div></div>
+        <div class="kpi blue"><div class="kpi-icon">↗</div><div class="kpi-label">Invested</div><div class="kpi-val" id="d-inv">—</div><div class="kpi-sub">MF + NPS + Chits</div></div>
+      </div>
+      <div class="g2 mb">
+        <div class="kpi navy card-glass"><div class="kpi-label">Net Worth</div><div class="kpi-val" id="d-nw">—</div><div class="kpi-sub">Assets − Liabilities</div></div>
+        <div class="kpi amber"><div class="kpi-label">Gold Portfolio</div><div class="kpi-val" id="d-gold-mini">—</div><div class="kpi-sub" id="d-gold-mini-sub">Click Gold tab for live rates</div></div>
       </div>
 
-      <!-- Gold widget inline on dashboard -->
-      <div id="dash-gold-widget"></div>
+      <!-- Mini gold widget -->
+      <div class="card gold-widget mb" id="dash-gold-mini"></div>
+
+      <div class="g2 mb">
+        <div class="card">
+          <div class="card-head">
+            <div><div class="card-title">Cash Flow — 6 Months</div><div class="card-sub">Income vs expenses</div></div>
+          </div>
+          <div class="card-body">
+            <div class="chart-wrap" style="height:220px"><canvas id="cashflow-chart"></canvas></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-head"><div><div class="card-title">Surplus Trend</div><div class="card-sub">Monthly net savings</div></div></div>
+          <div class="card-body">
+            <div class="chart-wrap" style="height:220px"><canvas id="surplus-line"></canvas></div>
+          </div>
+        </div>
+      </div>
 
       <div class="g2">
         <div class="card">
-          <div class="card-head"><div class="card-head-l"><h3>Recent transactions</h3><p>Last 8 entries</p></div><button class="btn btn-outline btn-sm" onclick="showPage('ie',null)">View all →</button></div>
+          <div class="card-head"><div><div class="card-title">Recent Transactions</div><div class="card-sub">Latest 8 entries</div></div><button class="btn btn-outline btn-sm" onclick="showPage('ie',null)">View all →</button></div>
           <div class="tbl-wrap"><table><thead><tr><th>Description</th><th>Category</th><th>Amount</th><th>Date</th></tr></thead><tbody id="d-recent"></tbody></table></div>
         </div>
         <div class="card">
-          <div class="card-head"><div class="card-head-l"><h3>Spending by category</h3><p>This month</p></div></div>
-          <div class="card-body" id="d-cats"></div>
+          <div class="card-head"><div><div class="card-title">Spending Breakdown</div><div class="card-sub">This month by category</div></div></div>
+          <div class="card-body">
+            <div class="chart-wrap" style="height:170px;margin-bottom:14px"><canvas id="exp-donut-dash"></canvas></div>
+            <div id="exp-donut-legend"></div>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- INCOME & EXPENSES -->
+    <!-- ── INCOME & EXPENSES ── -->
     <div class="page" id="page-ie">
       <div class="kgrid">
-        <div class="kpi sage"><div class="kpi-label">Income</div><div class="kpi-val" id="ie-inc">—</div></div>
-        <div class="kpi rose"><div class="kpi-label">Expenses</div><div class="kpi-val" id="ie-exp">—</div></div>
+        <div class="kpi green"><div class="kpi-label">Income</div><div class="kpi-val" id="ie-inc">—</div></div>
+        <div class="kpi red"><div class="kpi-label">Expenses</div><div class="kpi-val" id="ie-exp">—</div></div>
         <div class="kpi gold"><div class="kpi-label">Surplus</div><div class="kpi-val" id="ie-sur">—</div></div>
-        <div class="kpi sky"><div class="kpi-label">Savings Rate</div><div class="kpi-val" id="ie-rate">—</div></div>
+        <div class="kpi navy"><div class="kpi-label">Savings Rate</div><div class="kpi-val" id="ie-rate">—</div></div>
       </div>
       <div class="month-tabs" id="ie-tabs"></div>
       <div class="g2">
         <div class="card">
-          <div class="card-head"><div class="card-head-l"><h3>Income</h3><p id="ie-ic">—</p></div><button class="btn btn-sage btn-sm" onclick="openModal('add-inc-modal')">+ Income</button></div>
+          <div class="card-head"><div><div class="card-title">Income</div><div class="card-sub" id="ie-ic">—</div></div><button class="btn btn-green btn-sm" onclick="openModal('add-inc-modal')">+ Add Income</button></div>
           <div id="ie-inc-list"></div>
-          <div style="padding:10px 16px;border-top:1px solid var(--border);display:flex;justify-content:space-between"><span style="font-size:12px;color:var(--ink3)">Total</span><span style="font-family:var(--fm);font-weight:600;color:var(--sage)" id="ie-inc-tot">—</span></div>
+          <div style="padding:11px 18px;border-top:1px solid var(--bdr);display:flex;justify-content:space-between;align-items:center">
+            <span style="font-size:12px;color:var(--t3);font-family:var(--fh);font-weight:600;letter-spacing:.4px;text-transform:uppercase">Total</span>
+            <span style="font-family:var(--fm);font-weight:700;color:var(--green)" id="ie-inc-tot">—</span>
+          </div>
         </div>
         <div class="card">
-          <div class="card-head"><div class="card-head-l"><h3>Expenses</h3><p id="ie-ec">—</p></div><button class="btn btn-rose btn-sm" onclick="openModal('add-exp-modal')">+ Expense</button></div>
+          <div class="card-head"><div><div class="card-title">Expenses</div><div class="card-sub" id="ie-ec">—</div></div><button class="btn btn-red btn-sm" onclick="openModal('add-exp-modal')">+ Add Expense</button></div>
           <div id="ie-exp-list"></div>
-          <div style="padding:10px 16px;border-top:1px solid var(--border);display:flex;justify-content:space-between"><span style="font-size:12px;color:var(--ink3)">Total</span><span style="font-family:var(--fm);font-weight:600;color:var(--rose)" id="ie-exp-tot">—</span></div>
+          <div style="padding:11px 18px;border-top:1px solid var(--bdr);display:flex;justify-content:space-between;align-items:center">
+            <span style="font-size:12px;color:var(--t3);font-family:var(--fh);font-weight:600;letter-spacing:.4px;text-transform:uppercase">Total</span>
+            <span style="font-family:var(--fm);font-weight:700;color:var(--red)" id="ie-exp-tot">—</span>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- MUTUAL FUNDS -->
+    <!-- ── MUTUAL FUNDS ── -->
     <div class="page" id="page-mf">
       <div class="kgrid">
-        <div class="kpi sky"><div class="kpi-label">Portfolio Value</div><div class="kpi-val" id="mf-val">—</div></div>
+        <div class="kpi blue"><div class="kpi-label">Portfolio Value</div><div class="kpi-val" id="mf-val">—</div></div>
         <div class="kpi gold"><div class="kpi-label">Monthly SIP</div><div class="kpi-val" id="mf-sip">—</div></div>
-        <div class="kpi sage"><div class="kpi-label">India Index</div><div class="kpi-val" id="mf-idx">—</div></div>
-        <div class="kpi ink"><div class="kpi-label">US/Intl Funds</div><div class="kpi-val" id="mf-us">—</div></div>
+        <div class="kpi green"><div class="kpi-label">India Index</div><div class="kpi-val" id="mf-idx">—</div></div>
+        <div class="kpi teal"><div class="kpi-label">US/Intl Funds</div><div class="kpi-val" id="mf-us">—</div></div>
       </div>
-      <div class="card mb14">
-        <div class="card-head"><div class="card-head-l"><h3>Fund holdings</h3><p>Update NAV monthly from AMC / MF Central</p></div><button class="btn btn-ink btn-sm" onclick="openModal('add-mf-modal')">+ Add Fund</button></div>
-        <div class="tbl-wrap"><table><thead><tr><th>Fund Name</th><th>Category</th><th>SIP/mo</th><th>Units</th><th>NAV</th><th>Value</th><th></th></tr></thead><tbody id="mf-tbl"></tbody></table></div>
+      <div class="g7030 mb">
+        <div class="card">
+          <div class="card-head"><div><div class="card-title">Fund Holdings</div><div class="card-sub">Update NAV monthly from AMC / MF Central</div></div><button class="btn btn-navy btn-sm" onclick="openModal('add-mf-modal')">+ Add Fund</button></div>
+          <div class="tbl-wrap"><table><thead><tr><th>Fund Name</th><th>Category</th><th>SIP/mo</th><th>Units</th><th>NAV</th><th>Value</th><th></th></tr></thead><tbody id="mf-tbl"></tbody></table></div>
+        </div>
+        <div class="card">
+          <div class="card-head"><div><div class="card-title">Allocation</div></div></div>
+          <div class="card-body"><div class="chart-wrap" style="height:200px"><canvas id="mf-pie"></canvas></div></div>
+        </div>
       </div>
       <div class="card">
-        <div class="card-head"><div class="card-head-l"><h3>SIP projection — 12% CAGR</h3></div></div>
+        <div class="card-head"><div><div class="card-title">SIP Projection — 12% CAGR</div></div></div>
         <div class="card-body">
-          <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap">
-            <label style="font-size:13px;color:var(--ink2)">Monthly SIP:</label>
-            <input type="number" class="fi" style="width:130px" id="proj-sip" value="5000" oninput="updateProj()">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap">
+            <label style="font-family:var(--fh);font-size:12px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--t2)">Monthly SIP Amount:</label>
+            <input type="number" class="fi" style="width:140px" id="proj-sip" value="5000" oninput="updateProj()">
           </div>
-          <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:8px" id="proj-out"></div>
+          <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:10px" id="proj-out"></div>
         </div>
       </div>
     </div>
 
-    <!-- GOLD RATES -->
+    <!-- ── GOLD RATES ── -->
     <div class="page" id="page-gold">
-      <div class="card mb14">
-        <div class="card-head"><div class="card-head-l"><h3>About this data</h3></div></div>
-        <div class="card-body">
-          <div class="alert alert-info">
-            <span>ℹ</span><span>Comex gold price is fetched live from Yahoo Finance (GC=F futures). USD/INR from Yahoo Finance (USDINR=X). Indian gold price is calculated using the standard formula. Data refreshes every 5 minutes. Always verify with MCX / IBJA before trading.</span>
-          </div>
+      <div class="kgrid">
+        <div class="kpi gold"><div class="kpi-label">Comex Gold</div><div class="kpi-val" id="g-comex">—</div><div class="kpi-sub">USD/troy oz</div></div>
+        <div class="kpi amber"><div class="kpi-label">USD / INR</div><div class="kpi-val" id="g-fx">—</div><div class="kpi-sub">Live rate</div></div>
+        <div class="kpi navy"><div class="kpi-label">MCX India (24K)</div><div class="kpi-val" id="g-mcx">—</div><div class="kpi-sub">Per 10 grams</div></div>
+        <div class="kpi green"><div class="kpi-label">24K Per Gram</div><div class="kpi-val" id="g-gram">—</div><div class="kpi-sub">Indicative</div></div>
+      </div>
+
+      <div class="card gold-widget mb" id="gold-full-widget">
+        <div class="gold-loading">
+          <div class="skeleton sk-line w50" style="margin:0 auto 8px"></div>
+          <div class="skeleton sk-line w30" style="margin:0 auto"></div>
         </div>
       </div>
-      <div id="gold-full-widget"></div>
-      <div class="g2">
+
+      <div class="g2 mb">
         <div class="card">
-          <div class="card-head"><div class="card-head-l"><h3>Impact calculator</h3><p>How Comex moves affect your Indian gold holdings</p></div></div>
+          <div class="card-head"><div><div class="card-title">Your Gold Holdings Calculator</div><div class="card-sub">See current value and Comex sensitivity</div></div></div>
           <div class="card-body">
-            <div class="fgrid">
+            <div class="fgrid" style="margin-bottom:16px">
               <div class="fg"><label class="fl">Your gold (grams)</label><input class="fi" id="gold-grams" type="number" value="100" oninput="calcGoldImpact()"></div>
-              <div class="fg"><label class="fl">Purity</label><select class="fi" id="gold-purity" onchange="calcGoldImpact()"><option value="1">24K (999)</option><option value="0.9167">22K (916)</option><option value="0.75">18K (750)</option></select></div>
+              <div class="fg"><label class="fl">Purity</label>
+                <select class="fi" id="gold-purity" onchange="calcGoldImpact()">
+                  <option value="1">24K (999)</option>
+                  <option value="0.9167">22K (916)</option>
+                  <option value="0.75">18K (750)</option>
+                  <option value="0.585">14K (585)</option>
+                </select>
+              </div>
             </div>
-            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px" id="gold-impact-out"></div>
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px" id="gold-impact-out">
+              <div class="stat"><div class="stat-label">Current Value</div><div class="stat-val">—</div></div>
+              <div class="stat"><div class="stat-label">Today's Change</div><div class="stat-val">—</div></div>
+              <div class="stat"><div class="stat-label">If Comex +$1</div><div class="stat-val">—</div></div>
+            </div>
           </div>
         </div>
         <div class="card">
-          <div class="card-head"><div class="card-head-l"><h3>Price formula explained</h3></div></div>
+          <div class="card-head"><div><div class="card-title">MCX Price Formula</div></div></div>
           <div class="card-body">
-            <div style="font-size:13px;color:var(--ink2);line-height:2">
-              <div><strong style="color:var(--gold4)">MCX base</strong> = (Comex $/oz × USD/INR) ÷ 31.1035 × 10</div>
-              <div><strong style="color:var(--gold4)">Import duty</strong> = +15% on MCX base</div>
-              <div><strong style="color:var(--gold4)">AGST</strong> = +3% on (base + duty)</div>
-              <div style="margin-top:8px;padding:10px;background:var(--gold3);border-radius:var(--rs);font-family:var(--fm);font-size:12px" id="gold-formula-live">Formula loading...</div>
-              <div style="margin-top:10px;font-size:12px;color:var(--ink3)">Note: Actual jeweller price includes making charges (₹200-600/g). Bank gold coin includes premium (~3-5%). MCX rate is nearest futures price.</div>
+            <div style="font-size:13px;color:var(--t2);line-height:2.2">
+              <div><strong style="font-family:var(--fh);color:var(--gold4);letter-spacing:.3px">BASE</strong> = (Comex $/oz × USD/INR) ÷ 31.1035 × 10</div>
+              <div><strong style="font-family:var(--fh);color:var(--gold4);letter-spacing:.3px">DUTY</strong> = Base × 1.15 &nbsp;(+15% import duty)</div>
+              <div><strong style="font-family:var(--fh);color:var(--gold4);letter-spacing:.3px">GST</strong> &nbsp;= Duty × 1.03 &nbsp;(+3% GST)</div>
             </div>
+            <div style="margin-top:14px;padding:12px;background:var(--bg);border:1px solid var(--bdr);border-radius:var(--r-sm);font-family:var(--fm);font-size:12px;color:var(--t1)" id="gold-formula-live">Fetching rates…</div>
+            <div style="margin-top:10px;font-size:11px;color:var(--t3);line-height:1.6">Note: Actual jeweller price includes making charges (₹200–600/g). Bank gold coin includes 3–5% premium. MCX shows nearest futures price.</div>
           </div>
         </div>
       </div>
+
       <div class="card">
-        <div class="card-head"><div class="card-head-l"><h3>Comex $1 movement → Indian gold impact</h3><p>Per Troy oz movement in Comex futures</p></div></div>
-        <div class="card-body" id="gold-sensitivity"></div>
+        <div class="card-head"><div><div class="card-title">Comex Sensitivity Table</div><div class="card-sub">Every $1 move in Comex → this much change in Indian gold price</div></div></div>
+        <div class="tbl-wrap" id="gold-sensitivity"></div>
       </div>
     </div>
 
-    <!-- CHIT FUNDS -->
+    <!-- ── CHIT FUNDS ── -->
     <div class="page" id="page-chits">
       <div class="kgrid">
         <div class="kpi gold"><div class="kpi-label">Active Chits</div><div class="kpi-val" id="cf-n">—</div></div>
-        <div class="kpi sky"><div class="kpi-label">Monthly Total</div><div class="kpi-val" id="cf-mo">—</div></div>
-        <div class="kpi sage"><div class="kpi-label">Total Paid</div><div class="kpi-val" id="cf-paid">—</div></div>
-        <div class="kpi ink"><div class="kpi-label">Expected Payout</div><div class="kpi-val" id="cf-exp">—</div></div>
+        <div class="kpi blue"><div class="kpi-label">Monthly Total</div><div class="kpi-val" id="cf-mo">—</div></div>
+        <div class="kpi green"><div class="kpi-label">Total Paid</div><div class="kpi-val" id="cf-paid">—</div></div>
+        <div class="kpi teal"><div class="kpi-label">Expected Payout</div><div class="kpi-val" id="cf-exp">—</div></div>
       </div>
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
-        <h3 style="font-family:var(--fh);font-size:16px;font-weight:600">Chit groups</h3>
-        <button class="btn btn-ink" onclick="openModal('add-chit-modal')">+ Add Chit</button>
+      <div class="section-hdr">
+        <div class="section-hdr-title">Chit Groups</div>
+        <button class="btn btn-navy" onclick="openModal('add-chit-modal')">+ Add Chit Fund</button>
       </div>
-      <div class="g3 mb14" id="chit-cards"></div>
+      <div class="g3 mb" id="chit-cards"></div>
       <div class="card">
-        <div class="card-head"><div class="card-head-l"><h3>Payment log</h3></div><button class="btn btn-outline btn-sm" onclick="openModal('add-cpay-modal')">+ Record Payment</button></div>
-        <div class="tbl-wrap"><table><thead><tr><th>Month</th><th>Chit</th><th>Paid</th><th>Cumulative</th><th>Status</th><th></th></tr></thead><tbody id="chit-log"></tbody></table></div>
+        <div class="card-head"><div><div class="card-title">Payment Log</div><div class="card-sub">Monthly chit payment history</div></div><button class="btn btn-outline btn-sm" onclick="openModal('add-cpay-modal')">+ Record Payment</button></div>
+        <div class="tbl-wrap"><table><thead><tr><th>Month</th><th>Chit Fund</th><th>Paid (₹)</th><th>Cumulative</th><th>Status</th><th></th></tr></thead><tbody id="chit-log"></tbody></table></div>
       </div>
     </div>
 
-    <!-- INVESTMENTS -->
+    <!-- ── INVESTMENTS ── -->
     <div class="page" id="page-inv">
       <div class="kgrid">
-        <div class="kpi sage"><div class="kpi-label">NPS Corpus</div><div class="kpi-val" id="inv-nps">—</div></div>
-        <div class="kpi gold"><div class="kpi-label">Gold</div><div class="kpi-val" id="inv-gold">—</div></div>
-        <div class="kpi sky"><div class="kpi-label">Direct Stocks</div><div class="kpi-val" id="inv-stk">—</div></div>
-        <div class="kpi ink"><div class="kpi-label">PPF / FD</div><div class="kpi-val" id="inv-oth">—</div></div>
+        <div class="kpi teal"><div class="kpi-label">NPS Corpus</div><div class="kpi-val" id="inv-nps">—</div></div>
+        <div class="kpi gold"><div class="kpi-label">Gold Investments</div><div class="kpi-val" id="inv-gold">—</div></div>
+        <div class="kpi blue"><div class="kpi-label">Direct Stocks</div><div class="kpi-val" id="inv-stk">—</div></div>
+        <div class="kpi green"><div class="kpi-label">PPF / FD</div><div class="kpi-val" id="inv-oth">—</div></div>
       </div>
       <div class="card">
-        <div class="card-head"><div class="card-head-l"><h3>Investment portfolio</h3></div><button class="btn btn-ink btn-sm" onclick="openModal('add-inv-modal')">+ Add Investment</button></div>
+        <div class="card-head"><div><div class="card-title">Investment Portfolio</div><div class="card-sub">NPS · Gold · Direct Stocks · PPF · FD</div></div><button class="btn btn-navy btn-sm" onclick="openModal('add-inv-modal')">+ Add Investment</button></div>
         <div class="tbl-wrap"><table><thead><tr><th>Investment</th><th>Type</th><th>Monthly</th><th>Current Value</th><th>Target</th><th>Notes</th><th></th></tr></thead><tbody id="inv-tbl"></tbody></table></div>
       </div>
     </div>
 
-    <!-- INSURANCE -->
+    <!-- ── INSURANCE ── -->
     <div class="page" id="page-ins">
       <div class="kgrid">
         <div class="kpi gold"><div class="kpi-label">Annual Premium</div><div class="kpi-val" id="ins-ann">—</div></div>
-        <div class="kpi sky"><div class="kpi-label">Monthly Equiv</div><div class="kpi-val" id="ins-mo">—</div></div>
-        <div class="kpi sage"><div class="kpi-label">Active Policies</div><div class="kpi-val" id="ins-n">—</div></div>
-        <div class="kpi ink"><div class="kpi-label">80D Claimed</div><div class="kpi-val" id="ins-80d">—</div></div>
+        <div class="kpi blue"><div class="kpi-label">Monthly Equiv</div><div class="kpi-val" id="ins-mo">—</div></div>
+        <div class="kpi green"><div class="kpi-label">Active Policies</div><div class="kpi-val" id="ins-n">—</div></div>
+        <div class="kpi teal"><div class="kpi-label">80D Claimed</div><div class="kpi-val" id="ins-80d">—</div></div>
       </div>
-      <div class="card mb14">
-        <div class="card-head"><div class="card-head-l"><h3>Policies</h3></div><button class="btn btn-ink btn-sm" onclick="openModal('add-ins-modal')">+ Add Policy</button></div>
+      <div class="card mb">
+        <div class="card-head"><div><div class="card-title">Insurance Policies</div></div><button class="btn btn-navy btn-sm" onclick="openModal('add-ins-modal')">+ Add Policy</button></div>
         <div class="tbl-wrap"><table><thead><tr><th>Policy</th><th>Type</th><th>Annual</th><th>Coverage</th><th>Renewal</th><th>Status</th><th></th></tr></thead><tbody id="ins-tbl"></tbody></table></div>
       </div>
       <div class="card">
-        <div class="card-head"><div class="card-head-l"><h3>Recommendations</h3></div></div>
+        <div class="card-head"><div><div class="card-title">Recommendations</div></div></div>
         <div class="card-body" style="display:flex;flex-direction:column;gap:10px">
-          <div class="alert alert-ok"><span>✓</span><span><strong>Term Insurance:</strong> ₹1,300/month is reasonable. Confirm cover ≥ ₹50 Lakhs (20× annual income).</span></div>
-          <div class="alert alert-err"><span>⚠</span><span><strong>Life Insurance ₹1L/year:</strong> Traditional endowment gives only 4–6% returns. After 5+ years, calculate surrender value vs redirecting to index funds.</span></div>
-          <div class="alert alert-ok"><span>✓</span><span><strong>Health Insurance:</strong> ₹25k/year is good. Consider super top-up (₹50L cover) for ₹3–5k/year extra.</span></div>
-          <div class="alert alert-info"><span>+</span><span><strong>Gap:</strong> Personal Accident cover — ₹25L disability cover for ~₹600–1,000/year. Very cost-effective.</span></div>
+          <div class="alert alert-ok"><span>✓</span><span><strong>Term Insurance:</strong> ₹1,300/mo is good. Confirm cover ≥ ₹50L (20× annual income of ~₹2.64L).</span></div>
+          <div class="alert" style="background:var(--amber-bg);border-color:rgba(184,104,10,.2);color:var(--amber)"><span>⚠</span><span><strong>Life Insurance ₹1L/year:</strong> Endowment gives 4–6% only. After 5+ years, check surrender value vs index fund returns.</span></div>
+          <div class="alert alert-ok"><span>✓</span><span><strong>Health Insurance:</strong> ₹25k/year good. Add super top-up (₹50L cover) for ₹3–5k/year extra.</span></div>
+          <div class="alert alert-info"><span>+</span><span><strong>Gap:</strong> Personal Accident cover — ₹25L disability cover for ~₹600–1,000/year.</span></div>
         </div>
       </div>
     </div>
 
-    <!-- TAX -->
+    <!-- ── TAX PLANNING ── -->
     <div class="page" id="page-tax">
       <div class="kgrid">
-        <div class="kpi rose"><div class="kpi-label">80C Used</div><div class="kpi-val" id="tx-80c">—</div><div class="kpi-sub">Max ₹1,50,000</div></div>
-        <div class="kpi sage"><div class="kpi-label">80CCD(1B) NPS</div><div class="kpi-val" id="tx-nps">—</div><div class="kpi-sub">Extra ₹50,000</div></div>
-        <div class="kpi sky"><div class="kpi-label">80D Health</div><div class="kpi-val" id="tx-80d">—</div><div class="kpi-sub">Max ₹25,000</div></div>
-        <div class="kpi gold"><div class="kpi-label">Tax Saved (est.)</div><div class="kpi-val" id="tx-saved">—</div><div class="kpi-sub">At 5% slab</div></div>
+        <div class="kpi red"><div class="kpi-label">80C Used</div><div class="kpi-val" id="tx-80c">—</div><div class="kpi-sub">Max ₹1,50,000</div></div>
+        <div class="kpi green"><div class="kpi-label">80CCD(1B) NPS</div><div class="kpi-val" id="tx-nps">—</div><div class="kpi-sub">Extra ₹50,000</div></div>
+        <div class="kpi blue"><div class="kpi-label">80D Health</div><div class="kpi-val" id="tx-80d">—</div><div class="kpi-sub">Max ₹25,000</div></div>
+        <div class="kpi gold"><div class="kpi-label">Est. Tax Saved</div><div class="kpi-val" id="tx-saved">—</div><div class="kpi-sub">At 5% slab</div></div>
       </div>
       <div class="g2">
-        <div class="card"><div class="card-head"><div class="card-head-l"><h3>80C investments</h3><p>Max ₹1,50,000/year</p></div></div><div id="tx-80c-list"></div></div>
-        <div class="card"><div class="card-head"><div class="card-head-l"><h3>80D & other deductions</h3></div></div><div id="tx-other-list"></div></div>
+        <div class="card"><div class="card-head"><div><div class="card-title">80C Investments</div><div class="card-sub">Max ₹1,50,000/year</div></div></div><div id="tx-80c-list"></div></div>
+        <div class="card"><div class="card-head"><div><div class="card-title">80D & Other Deductions</div></div></div><div id="tx-other-list"></div></div>
       </div>
     </div>
 
-    <!-- GOALS -->
+    <!-- ── GOALS ── -->
     <div class="page" id="page-goals">
-      <div class="card mb14">
-        <div class="card-head"><div class="card-head-l"><h3>Emergency fund status</h3><p>Target: 6 months of expenses</p></div></div>
+      <div class="card mb">
+        <div class="card-head"><div><div class="card-title">Emergency Fund Status</div><div class="card-sub">Target: 6 months of expenses</div></div></div>
         <div class="card-body">
-          <div class="stat-grid">
-            <div class="stat"><div class="stat-label">Monthly expenses</div><div class="stat-val" id="ef-mo">—</div></div>
-            <div class="stat"><div class="stat-label">6-month target</div><div class="stat-val" id="ef-tgt">—</div></div>
-            <div class="stat"><div class="stat-label">Current balance</div><div class="stat-val"><input type="number" class="fi" id="ef-bal" placeholder="Enter balance" style="text-align:center;font-size:13px;font-weight:600" oninput="updateEF()"></div></div>
+          <div class="stat-grid" style="grid-template-columns:repeat(3,1fr)">
+            <div class="stat"><div class="stat-label">Monthly Expenses</div><div class="stat-val" id="ef-mo">—</div></div>
+            <div class="stat"><div class="stat-label">6-Month Target</div><div class="stat-val" id="ef-tgt">—</div></div>
+            <div class="stat"><div class="stat-label">Current Balance</div><div class="stat-val"><input type="number" class="fi" id="ef-bal" placeholder="Enter balance" style="text-align:center;font-weight:700;font-size:13px" oninput="updateEF()"></div></div>
           </div>
-          <div class="progress" style="height:8px;margin-bottom:6px"><div class="progress-fill" id="ef-prog" style="background:var(--gold2);width:0%"></div></div>
-          <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--ink3)"><span id="ef-pct">0% funded</span><span id="ef-gap">Shortfall: —</span></div>
+          <div class="progress" style="height:8px;margin-bottom:8px"><div class="progress-fill" id="ef-prog" style="background:var(--navy);width:0%"></div></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--t3)">
+            <span id="ef-pct">0% funded</span>
+            <span id="ef-gap">Shortfall: —</span>
+          </div>
         </div>
       </div>
       <div class="card">
-        <div class="card-head"><div class="card-head-l"><h3>Financial goals</h3><p>SIP needed at 12% CAGR</p></div><button class="btn btn-ink btn-sm" onclick="openModal('add-goal-modal')">+ Add Goal</button></div>
-        <div class="tbl-wrap"><table><thead><tr><th>Goal</th><th>Target</th><th>Years</th><th>SIP Needed/mo</th><th>Saved</th><th>Progress</th><th></th></tr></thead><tbody id="goals-tbl"></tbody></table></div>
+        <div class="card-head"><div><div class="card-title">Financial Goals</div><div class="card-sub">Monthly SIP needed at 12% CAGR</div></div><button class="btn btn-navy btn-sm" onclick="openModal('add-goal-modal')">+ Add Goal</button></div>
+        <div class="tbl-wrap"><table><thead><tr><th>Goal</th><th>Target</th><th>Years</th><th>SIP Needed</th><th>Saved So Far</th><th>Progress</th><th></th></tr></thead><tbody id="goals-tbl"></tbody></table></div>
       </div>
     </div>
 
-    <!-- HEALTH -->
+    <!-- ── FINANCIAL HEALTH ── -->
     <div class="page" id="page-health">
-      <div class="card mb14">
-        <div class="card-head"><div class="card-head-l"><h3>Financial health metrics</h3><p>6 key ratios scored</p></div></div>
+      <div class="card mb">
+        <div class="card-head"><div><div class="card-title">Financial Health Metrics</div><div class="card-sub">6 key ratios — scored automatically</div></div></div>
         <div class="card-body" id="health-metrics"></div>
       </div>
       <div class="card">
-        <div class="card-head"><div class="card-head-l"><h3>Priority action plan</h3></div></div>
+        <div class="card-head"><div><div class="card-title">Priority Action Plan</div></div></div>
         <div class="card-body" id="health-actions" style="display:flex;flex-direction:column;gap:8px"></div>
       </div>
     </div>
 
-    <!-- MONTHLY -->
+    <!-- ── MONTHLY TRACKER ── -->
     <div class="page" id="page-monthly">
       <div class="month-tabs" id="mo-tabs"></div>
       <div class="kgrid">
-        <div class="kpi sage"><div class="kpi-label">Income</div><div class="kpi-val" id="mo-inc">—</div></div>
-        <div class="kpi rose"><div class="kpi-label">Expenses</div><div class="kpi-val" id="mo-exp">—</div></div>
-        <div class="kpi gold"><div class="kpi-label">Surplus</div><div class="kpi-val" id="mo-sur">—</div></div>
-        <div class="kpi sky"><div class="kpi-label">Savings Rate</div><div class="kpi-val" id="mo-rate">—</div></div>
+        <div class="kpi green"><div class="kpi-label">Income</div><div class="kpi-val" id="mo-inc">—</div></div>
+        <div class="kpi red"><div class="kpi-label">Expenses</div><div class="kpi-val" id="mo-exp">—</div></div>
+        <div class="kpi gold"><div class="kpi-label">Surplus / Deficit</div><div class="kpi-val" id="mo-sur">—</div></div>
+        <div class="kpi navy"><div class="kpi-label">Savings Rate</div><div class="kpi-val" id="mo-rate">—</div></div>
       </div>
-      <div class="card"><div class="card-head"><div class="card-head-l"><h3>Category breakdown</h3></div></div><div class="card-body" id="mo-cats"></div></div>
+      <div class="card">
+        <div class="card-head"><div><div class="card-title">Category Breakdown</div></div></div>
+        <div class="card-body" id="mo-cats"></div>
+      </div>
     </div>
 
-    <!-- NET WORTH -->
+    <!-- ── NET WORTH ── -->
     <div class="page" id="page-nw">
       <div class="kgrid">
-        <div class="kpi sage"><div class="kpi-label">Total Assets</div><div class="kpi-val" id="nw-a">—</div></div>
-        <div class="kpi rose"><div class="kpi-label">Liabilities</div><div class="kpi-val" id="nw-l">—</div></div>
+        <div class="kpi green"><div class="kpi-label">Total Assets</div><div class="kpi-val" id="nw-a">—</div></div>
+        <div class="kpi red"><div class="kpi-label">Liabilities</div><div class="kpi-val" id="nw-l">—</div></div>
         <div class="kpi gold"><div class="kpi-label">Net Worth</div><div class="kpi-val" id="nw-t">—</div></div>
-        <div class="kpi sky"><div class="kpi-label">vs Last Entry</div><div class="kpi-val" id="nw-ch">—</div></div>
+        <div class="kpi navy"><div class="kpi-label">Change</div><div class="kpi-val" id="nw-ch">—</div></div>
       </div>
       <div class="g2">
-        <div class="card"><div class="card-head"><div class="card-head-l"><h3>Assets</h3></div><button class="btn btn-sage btn-sm" onclick="openModal('add-asset-modal')">+ Asset</button></div><div class="tbl-wrap"><table><thead><tr><th>Asset</th><th>Type</th><th>Value</th><th>Updated</th><th></th></tr></thead><tbody id="assets-tbl"></tbody></table></div></div>
-        <div class="card"><div class="card-head"><div class="card-head-l"><h3>Liabilities</h3></div><button class="btn btn-outline btn-sm" onclick="openModal('add-liab-modal')">+ Liability</button></div><div class="tbl-wrap"><table><thead><tr><th>Liability</th><th>Type</th><th>Amount</th><th>Updated</th><th></th></tr></thead><tbody id="liab-tbl"></tbody></table></div></div>
+        <div class="card">
+          <div class="card-head"><div><div class="card-title">Assets</div></div><button class="btn btn-green btn-sm" onclick="openModal('add-asset-modal')">+ Add Asset</button></div>
+          <div class="tbl-wrap"><table><thead><tr><th>Asset</th><th>Type</th><th>Value</th><th>Updated</th><th></th></tr></thead><tbody id="assets-tbl"></tbody></table></div>
+        </div>
+        <div class="card">
+          <div class="card-head"><div><div class="card-title">Liabilities</div></div><button class="btn btn-outline btn-sm" onclick="openModal('add-liab-modal')">+ Add Liability</button></div>
+          <div class="tbl-wrap"><table><thead><tr><th>Liability</th><th>Type</th><th>Amount</th><th>Updated</th><th></th></tr></thead><tbody id="liab-tbl"></tbody></table></div>
+        </div>
       </div>
     </div>
 
   </div><!-- /main -->
 </div><!-- /app -->
 
-<!-- ═══════════ MODALS ═══════════ -->
+<!-- ═══════════════════════════════════════
+   MODALS
+═══════════════════════════════════════ -->
 <div class="mov" id="add-inc-modal"><div class="modal">
-  <div class="modal-title">Add income</div>
+  <div class="modal-title">Add Income</div>
   <div class="fgrid">
     <div class="fg fspan"><label class="fl">Description</label><input class="fi" id="ii-desc" placeholder="e.g. Monthly salary"></div>
     <div class="fg"><label class="fl">Amount (₹)</label><input class="fi" id="ii-amt" type="number"></div>
     <div class="fg"><label class="fl">Category</label><select class="fi" id="ii-cat"><option>Salary</option><option>Business</option><option>Freelance</option><option>Chit Payout</option><option>Dividends</option><option>Other</option></select></div>
     <div class="fg"><label class="fl">Date</label><input class="fi" id="ii-date" type="date"></div>
-    <div class="fg fspan"><label class="fl">Notes</label><input class="fi" id="ii-note" placeholder="Optional"></div>
+    <div class="fg fspan"><label class="fl">Notes (optional)</label><input class="fi" id="ii-note" placeholder="Optional"></div>
   </div>
-  <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('add-inc-modal')">Cancel</button><button class="btn btn-sage" onclick="addIncome()">Save income</button></div>
+  <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('add-inc-modal')">Cancel</button><button class="btn btn-green" onclick="addIncome()">Save Income</button></div>
 </div></div>
 
 <div class="mov" id="add-exp-modal"><div class="modal">
-  <div class="modal-title">Add expense</div>
+  <div class="modal-title">Add Expense</div>
   <div class="fgrid">
     <div class="fg fspan"><label class="fl">Description</label><input class="fi" id="ei-desc" placeholder="e.g. House rent"></div>
     <div class="fg"><label class="fl">Amount (₹)</label><input class="fi" id="ei-amt" type="number"></div>
     <div class="fg"><label class="fl">Category</label><select class="fi" id="ei-cat"><option>Housing</option><option>Utilities</option><option>Food</option><option>Transport</option><option>Education</option><option>Health</option><option>Insurance</option><option>NPS</option><option>Mutual Funds</option><option>Chit Funds</option><option>Entertainment</option><option>Shopping</option><option>Other</option></select></div>
     <div class="fg"><label class="fl">Date</label><input class="fi" id="ei-date" type="date"></div>
-    <div class="fg fspan"><label class="fl">Notes</label><input class="fi" id="ei-note" placeholder="Optional"></div>
+    <div class="fg fspan"><label class="fl">Notes (optional)</label><input class="fi" id="ei-note" placeholder="Optional"></div>
   </div>
-  <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('add-exp-modal')">Cancel</button><button class="btn btn-rose" onclick="addExpense()">Save expense</button></div>
+  <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('add-exp-modal')">Cancel</button><button class="btn btn-red" onclick="addExpense()">Save Expense</button></div>
 </div></div>
 
 <div class="mov" id="add-mf-modal"><div class="modal">
-  <div class="modal-title">Add mutual fund</div>
+  <div class="modal-title">Add Mutual Fund</div>
   <div class="fgrid">
-    <div class="fg fspan"><label class="fl">Fund name</label><input class="fi" id="mfi-name" placeholder="e.g. Nifty 50 Index Fund — Direct"></div>
+    <div class="fg fspan"><label class="fl">Fund Name</label><input class="fi" id="mfi-name" placeholder="e.g. Nifty 50 Index — Direct"></div>
     <div class="fg"><label class="fl">Category</label><select class="fi" id="mfi-cat"><option>India Index</option><option>India Active</option><option>US/International</option><option>Debt/Hybrid</option><option>ELSS</option></select></div>
-    <div class="fg"><label class="fl">Monthly SIP (₹)</label><input class="fi" id="mfi-sip" type="number"></div>
-    <div class="fg"><label class="fl">Units held</label><input class="fi" id="mfi-units" type="number" step="0.001"></div>
-    <div class="fg"><label class="fl">Current NAV (₹)</label><input class="fi" id="mfi-nav" type="number" step="0.01"></div>
+    <div class="fg"><label class="fl">Monthly SIP (₹)</label><input class="fi" id="mfi-sip" type="number" placeholder="2000"></div>
+    <div class="fg"><label class="fl">Units Held</label><input class="fi" id="mfi-units" type="number" step="0.001" placeholder="0"></div>
+    <div class="fg"><label class="fl">Current NAV (₹)</label><input class="fi" id="mfi-nav" type="number" step="0.01" placeholder="0"></div>
     <div class="fg"><label class="fl">Started</label><input class="fi" id="mfi-start" placeholder="Mar-26"></div>
   </div>
-  <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('add-mf-modal')">Cancel</button><button class="btn btn-ink" onclick="addMF()">Save fund</button></div>
+  <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('add-mf-modal')">Cancel</button><button class="btn btn-navy" onclick="addMF()">Save Fund</button></div>
 </div></div>
 
 <div class="mov" id="add-chit-modal"><div class="modal">
-  <div class="modal-title">Add chit fund</div>
+  <div class="modal-title">Add Chit Fund</div>
   <div class="fgrid">
     <div class="fg fspan"><label class="fl">Name</label><input class="fi" id="ci-name" placeholder="e.g. Mahalakshmi 10L"></div>
-    <div class="fg"><label class="fl">Chit value (₹)</label><input class="fi" id="ci-val" type="number" placeholder="1000000"></div>
-    <div class="fg"><label class="fl">Total months</label><input class="fi" id="ci-mo" type="number" placeholder="20"></div>
-    <div class="fg"><label class="fl">Done months</label><input class="fi" id="ci-done" type="number" placeholder="0"></div>
-    <div class="fg"><label class="fl">Current monthly (₹)</label><input class="fi" id="ci-pm" type="number"></div>
-    <div class="fg"><label class="fl">Start month</label><input class="fi" id="ci-start" placeholder="Jan-26"></div>
+    <div class="fg"><label class="fl">Chit Value (₹)</label><input class="fi" id="ci-val" type="number" placeholder="1000000"></div>
+    <div class="fg"><label class="fl">Total Months</label><input class="fi" id="ci-mo" type="number" placeholder="20"></div>
+    <div class="fg"><label class="fl">Months Completed</label><input class="fi" id="ci-done" type="number" placeholder="0"></div>
+    <div class="fg"><label class="fl">Current Monthly (₹)</label><input class="fi" id="ci-pm" type="number"></div>
+    <div class="fg"><label class="fl">Start Month</label><input class="fi" id="ci-start" placeholder="Jan-26"></div>
     <div class="fg"><label class="fl">Commission %</label><input class="fi" id="ci-comm" type="number" placeholder="5"></div>
     <div class="fg"><label class="fl">Status</label><select class="fi" id="ci-status"><option>Active</option><option>Prize Taken</option><option>Completing</option><option>Planned</option></select></div>
   </div>
-  <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('add-chit-modal')">Cancel</button><button class="btn btn-gold" onclick="addChit()">Save chit</button></div>
+  <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('add-chit-modal')">Cancel</button><button class="btn btn-gold" onclick="addChit()">Save Chit</button></div>
 </div></div>
 
 <div class="mov" id="add-cpay-modal"><div class="modal">
-  <div class="modal-title">Record chit payment</div>
+  <div class="modal-title">Record Chit Payment</div>
   <div class="fgrid">
     <div class="fg"><label class="fl">Month</label><input class="fi" id="cp-mo" placeholder="Mar-26"></div>
-    <div class="fg"><label class="fl">Chit fund</label><select class="fi" id="cp-chit"></select></div>
+    <div class="fg"><label class="fl">Chit Fund</label><select class="fi" id="cp-chit"></select></div>
     <div class="fg"><label class="fl">Amount (₹)</label><input class="fi" id="cp-amt" type="number"></div>
     <div class="fg"><label class="fl">Status</label><select class="fi" id="cp-st"><option>Paid</option><option>Pending</option><option>Overdue</option></select></div>
     <div class="fg fspan"><label class="fl">Notes</label><input class="fi" id="cp-note"></div>
   </div>
-  <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('add-cpay-modal')">Cancel</button><button class="btn btn-gold" onclick="addChitPay()">Save payment</button></div>
+  <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('add-cpay-modal')">Cancel</button><button class="btn btn-gold" onclick="addChitPay()">Save Payment</button></div>
 </div></div>
 
 <div class="mov" id="add-inv-modal"><div class="modal">
-  <div class="modal-title">Add investment</div>
+  <div class="modal-title">Add Investment</div>
   <div class="fgrid">
     <div class="fg fspan"><label class="fl">Name</label><input class="fi" id="ivi-name" placeholder="e.g. NPS Personal Tier 1"></div>
     <div class="fg"><label class="fl">Type</label><select class="fi" id="ivi-type"><option>NPS</option><option>Gold SGB</option><option>Gold ETF</option><option>Physical Gold</option><option>Direct Stocks India</option><option>US Stocks</option><option>PPF</option><option>FD</option><option>EPF</option><option>Real Estate</option><option>Other</option></select></div>
     <div class="fg"><label class="fl">Monthly (₹)</label><input class="fi" id="ivi-mo" type="number"></div>
-    <div class="fg"><label class="fl">Current value (₹)</label><input class="fi" id="ivi-val" type="number"></div>
+    <div class="fg"><label class="fl">Current Value (₹)</label><input class="fi" id="ivi-val" type="number"></div>
     <div class="fg"><label class="fl">Target (₹)</label><input class="fi" id="ivi-tgt" type="number"></div>
     <div class="fg"><label class="fl">Notes</label><input class="fi" id="ivi-note"></div>
   </div>
-  <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('add-inv-modal')">Cancel</button><button class="btn btn-ink" onclick="addInv()">Save</button></div>
+  <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('add-inv-modal')">Cancel</button><button class="btn btn-navy" onclick="addInv()">Save</button></div>
 </div></div>
 
 <div class="mov" id="add-ins-modal"><div class="modal">
-  <div class="modal-title">Add insurance policy</div>
+  <div class="modal-title">Add Insurance Policy</div>
   <div class="fgrid">
-    <div class="fg fspan"><label class="fl">Policy name</label><input class="fi" id="ini-name" placeholder="e.g. LIC Term Insurance"></div>
+    <div class="fg fspan"><label class="fl">Policy Name</label><input class="fi" id="ini-name" placeholder="e.g. LIC Term Insurance"></div>
     <div class="fg"><label class="fl">Type</label><select class="fi" id="ini-type"><option>Term Life</option><option>Life/Endowment</option><option>Health</option><option>Vehicle</option><option>Personal Accident</option><option>Other</option></select></div>
-    <div class="fg"><label class="fl">Annual premium (₹)</label><input class="fi" id="ini-prem" type="number"></div>
-    <div class="fg"><label class="fl">Sum assured (₹)</label><input class="fi" id="ini-cov" type="number"></div>
-    <div class="fg"><label class="fl">Renewal date</label><input class="fi" id="ini-ren" type="date"></div>
+    <div class="fg"><label class="fl">Annual Premium (₹)</label><input class="fi" id="ini-prem" type="number"></div>
+    <div class="fg"><label class="fl">Sum Assured (₹)</label><input class="fi" id="ini-cov" type="number"></div>
+    <div class="fg"><label class="fl">Renewal Date</label><input class="fi" id="ini-ren" type="date"></div>
     <div class="fg"><label class="fl">Status</label><select class="fi" id="ini-st"><option>Active</option><option>Lapsed</option><option>Maturing</option></select></div>
   </div>
-  <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('add-ins-modal')">Cancel</button><button class="btn btn-ink" onclick="addIns()">Save policy</button></div>
+  <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('add-ins-modal')">Cancel</button><button class="btn btn-navy" onclick="addIns()">Save Policy</button></div>
 </div></div>
 
 <div class="mov" id="add-goal-modal"><div class="modal">
-  <div class="modal-title">Add financial goal</div>
+  <div class="modal-title">Add Financial Goal</div>
   <div class="fgrid">
-    <div class="fg fspan"><label class="fl">Goal name</label><input class="fi" id="gi-name" placeholder="e.g. Home down payment"></div>
-    <div class="fg"><label class="fl">Target (₹)</label><input class="fi" id="gi-tgt" type="number"></div>
+    <div class="fg fspan"><label class="fl">Goal Name</label><input class="fi" id="gi-name" placeholder="e.g. Home Down Payment"></div>
+    <div class="fg"><label class="fl">Target Amount (₹)</label><input class="fi" id="gi-tgt" type="number"></div>
     <div class="fg"><label class="fl">Timeline (years)</label><input class="fi" id="gi-yr" type="number"></div>
-    <div class="fg"><label class="fl">Saved so far (₹)</label><input class="fi" id="gi-saved" type="number"></div>
+    <div class="fg"><label class="fl">Saved So Far (₹)</label><input class="fi" id="gi-saved" type="number"></div>
   </div>
-  <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('add-goal-modal')">Cancel</button><button class="btn btn-ink" onclick="addGoal()">Save goal</button></div>
+  <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('add-goal-modal')">Cancel</button><button class="btn btn-navy" onclick="addGoal()">Save Goal</button></div>
 </div></div>
 
 <div class="mov" id="add-asset-modal"><div class="modal">
-  <div class="modal-title">Add asset</div>
+  <div class="modal-title">Add Asset</div>
   <div class="fgrid">
-    <div class="fg fspan"><label class="fl">Asset name</label><input class="fi" id="ai-name" placeholder="e.g. Savings account"></div>
+    <div class="fg fspan"><label class="fl">Asset Name</label><input class="fi" id="ai-name" placeholder="e.g. Savings Account"></div>
     <div class="fg"><label class="fl">Type</label><select class="fi" id="ai-type"><option>Cash/Savings</option><option>Mutual Funds</option><option>NPS</option><option>Chit Fund</option><option>Stocks</option><option>Gold</option><option>PPF/FD</option><option>Real Estate</option><option>Vehicle</option><option>Other</option></select></div>
-    <div class="fg"><label class="fl">Value (₹)</label><input class="fi" id="ai-val" type="number"></div>
+    <div class="fg"><label class="fl">Current Value (₹)</label><input class="fi" id="ai-val" type="number"></div>
     <div class="fg fspan"><label class="fl">Notes</label><input class="fi" id="ai-note"></div>
   </div>
-  <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('add-asset-modal')">Cancel</button><button class="btn btn-sage" onclick="addAsset()">Save asset</button></div>
+  <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('add-asset-modal')">Cancel</button><button class="btn btn-green" onclick="addAsset()">Save Asset</button></div>
 </div></div>
 
 <div class="mov" id="add-liab-modal"><div class="modal">
-  <div class="modal-title">Add liability</div>
+  <div class="modal-title">Add Liability</div>
   <div class="fgrid">
-    <div class="fg fspan"><label class="fl">Name</label><input class="fi" id="li-name" placeholder="e.g. Personal loan"></div>
+    <div class="fg fspan"><label class="fl">Liability Name</label><input class="fi" id="li-name" placeholder="e.g. Personal Loan"></div>
     <div class="fg"><label class="fl">Type</label><select class="fi" id="li-type"><option>Personal Loan</option><option>Vehicle Loan</option><option>Home Loan</option><option>Credit Card</option><option>Other</option></select></div>
-    <div class="fg"><label class="fl">Amount (₹)</label><input class="fi" id="li-amt" type="number"></div>
+    <div class="fg"><label class="fl">Outstanding (₹)</label><input class="fi" id="li-amt" type="number"></div>
     <div class="fg fspan"><label class="fl">Notes</label><input class="fi" id="li-note"></div>
   </div>
-  <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('add-liab-modal')">Cancel</button><button class="btn btn-rose" onclick="addLiab()">Save liability</button></div>
+  <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('add-liab-modal')">Cancel</button><button class="btn btn-red" onclick="addLiab()">Save Liability</button></div>
 </div></div>
 
+<!-- Toast container -->
 <div id="toast"></div>
 
-<script>
-// ═══════════════════════════════════════════════════
-// PRE-CONFIGURED SHEET ID
-// Replace the empty string below with your Sheet ID
-// (from the Google Sheets URL) — e.g. '1BxiMVs0XRA5...'
-// This is safe: the OAuth token is the real security.
-// Without logging in as YOU, nobody can touch this sheet.
-// ═══════════════════════════════════════════════════
-const PRECONFIGURED_CLIENT_ID = '728990426782-jk6n0e5ospehlcqgbtp81l1p3hc7ghst.apps.googleusercontent.com';
-const PRECONFIGURED_SHEET_ID  = '17KgNA83OabwZM3K8sOp2sFrbhSq-D2MH--JMluIhnVs';
-
-const SCOPES = 'https://www.googleapis.com/auth/spreadsheets';
-const SHEETS = {
-  income:'Income', expenses:'Expenses', mf:'MutualFunds',
-  chits:'ChitFunds', chitPay:'ChitPayments', inv:'Investments',
-  ins:'Insurance', goals:'Goals', assets:'Assets', liab:'Liabilities'
-};
-const CAT_COLORS = {
-  Housing:'#B8960C',Utilities:'#2B5C8A',Food:'#4A6741',Transport:'#2B5C8A',
-  Education:'#8B3A3A',Health:'#4A6741',Insurance:'#7A5810',NPS:'#4A6741',
-  'Mutual Funds':'#2B5C8A','Chit Funds':'#B8960C',Entertainment:'#8B3A3A',
-  Shopping:'#6B6760',Other:'#6B6760',Salary:'#4A6741',Business:'#B8960C',
-  Freelance:'#2B5C8A','Chit Payout':'#B8960C',Dividends:'#4A6741'
-};
-
-let gToken=null, sheetId=PRECONFIGURED_SHEET_ID||'', clientId='';
-let selMonth='', curMonth='';
-let cache={income:[],expenses:[],mf:[],chits:[],chitPay:[],inv:[],ins:[],goals:[],assets:[],liab:[]};
-let goldData={comex:0,usdinr:0,mcx:0,change:0,changePct:0,lastUpdate:null};
-let goldRefreshTimer=null;
-
-const INR=n=>'₹'+Math.abs(Math.round(n||0)).toLocaleString('en-IN');
-const PCT=n=>(Math.round((n||0)*10)/10)+'%';
-const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,5);
-
-// ── DATE UTILS ────────────────────────────────────────
-function toMonth(d){
-  const dt=new Date(d);
-  return dt.toLocaleDateString('en-IN',{month:'short',year:'2-digit'}).replace(' ','-');
-}
-function getCurrentMonth(){
-  return new Date().toLocaleDateString('en-IN',{month:'short',year:'2-digit'}).replace(' ','-');
-}
-
-// ── SETUP & AUTH ──────────────────────────────────────
-if (PRECONFIGURED_CLIENT_ID) {
-  document.getElementById('clientId').value = PRECONFIGURED_CLIENT_ID;
-  document.getElementById('clientId').readOnly = true;
-  document.getElementById('clientId').style.opacity = '.4';
-}
-if (PRECONFIGURED_SHEET_ID) {
-  document.getElementById('sheetId').value = PRECONFIGURED_SHEET_ID;
-  document.getElementById('sheetId').readOnly = true;
-  document.getElementById('sheetId').style.opacity = '.4';
-}
-
-function showAlert(msg,type='err'){
-  document.getElementById('login-alert').innerHTML=`<div class="alert alert-${type}">${msg}</div>`;
-}
-
-async function startAuth(){
-  const cid=document.getElementById('clientId').value.trim();
-  const sid=document.getElementById('sheetId').value.trim();
-  if(!cid){showAlert('Please enter your Google OAuth Client ID');return;}
-  localStorage.setItem('fn_cid',cid);
-  if(sid){localStorage.setItem('fn_sid',sid);sheetId=sid;}
-  clientId=cid;
-  showAlert('Opening Google sign-in…','info');
-  document.getElementById('connectBtn').disabled=true;
-  try{
-    await loadGIS();
-    google.accounts.oauth2.initTokenClient({
-      client_id:clientId,scope:SCOPES,
-      callback:async r=>{
-        if(r.error){showAlert('Auth error: '+r.error);document.getElementById('connectBtn').disabled=false;return;}
-        gToken=r.access_token;
-        await onAuth();
-      }
-    }).requestAccessToken({prompt:'consent'});
-  }catch(e){
-    showAlert('Failed: '+e.message);
-    document.getElementById('connectBtn').disabled=false;
-  }
-}
-
-function loadGIS(){
-  return new Promise((res,rej)=>{
-    if(window.google?.accounts){res();return;}
-    const s=document.createElement('script');
-    s.src='https://accounts.google.com/gsi/client';
-    s.onload=res;s.onerror=rej;
-    document.head.appendChild(s);
-  });
-}
-
-async function onAuth(){
-  try{
-    const u=await(await fetch('https://www.googleapis.com/oauth2/v3/userinfo',{headers:{Authorization:'Bearer '+gToken}})).json();
-    document.getElementById('user-name').textContent=(u.name||u.email||'User').split(' ')[0];
-    document.getElementById('user-av').textContent=((u.name||u.email||'U')[0]).toUpperCase();
-    if(!sheetId) await createSheet();
-    else await verifySheet();
-    await initSheetHeaders();
-    showApp();
-    await syncAll();
-    startGoldRefresh();
-  }catch(e){
-    showAlert('Error: '+e.message);
-    document.getElementById('connectBtn').disabled=false;
-  }
-}
-
-async function createSheet(){
-  const r=await api('POST','https://sheets.googleapis.com/v4/spreadsheets',{
-    properties:{title:'FinNova — Personal Finance'},
-    sheets:Object.values(SHEETS).map(t=>({properties:{title:t}}))
-  });
-  sheetId=r.spreadsheetId;
-  localStorage.setItem('fn_sid',sheetId);
-}
-
-async function verifySheet(){
-  const r=await api('GET',`https://sheets.googleapis.com/v4/spreadsheets/${sheetId}?fields=sheets.properties.title`);
-  const exist=r.sheets.map(s=>s.properties.title);
-  const missing=Object.values(SHEETS).filter(s=>!exist.includes(s));
-  if(missing.length) await api('POST',`https://sheets.googleapis.com/v4/spreadsheets/${sheetId}:batchUpdate`,{
-    requests:missing.map(t=>({addSheet:{properties:{title:t}}}))
-  });
-}
-
-async function initSheetHeaders(){
-  const hdrs={
-    [SHEETS.income]:[['ID','Desc','Cat','Amount','Date','Month','Notes']],
-    [SHEETS.expenses]:[['ID','Desc','Cat','Amount','Date','Month','Notes']],
-    [SHEETS.mf]:[['ID','Name','Cat','SIP','Start','Units','NAV','Notes']],
-    [SHEETS.chits]:[['ID','Name','Value','Months','Done','Monthly','StartMo','Comm','Status']],
-    [SHEETS.chitPay]:[['ID','Month','ChitName','Amount','Status','Notes']],
-    [SHEETS.inv]:[['ID','Name','Type','Monthly','Value','Target','Notes']],
-    [SHEETS.ins]:[['ID','Name','Type','Premium','Assured','Renewal','Status']],
-    [SHEETS.goals]:[['ID','Name','Target','Years','Saved','Notes']],
-    [SHEETS.assets]:[['ID','Name','Type','Value','Updated','Notes']],
-    [SHEETS.liab]:[['ID','Name','Type','Amount','Updated','Notes']],
-  };
-  const checks=await Promise.all(Object.keys(hdrs).map(s=>getRange(s+'!A1')));
-  const toWrite=[];
-  Object.keys(hdrs).forEach((s,i)=>{
-    if(!checks[i]?.[0]) toWrite.push({range:s+'!A1',values:hdrs[s]});
-  });
-  if(toWrite.length) await batchSet(toWrite);
-}
-
-function showApp(){
-  document.getElementById('login-screen').style.display='none';
-  document.getElementById('app').style.display='block';
-  setDateDefaults();
-}
-
-// ── SHEETS API ────────────────────────────────────────
-async function api(method,url,body){
-  const opts={method,headers:{Authorization:'Bearer '+gToken,'Content-Type':'application/json'}};
-  if(body) opts.body=JSON.stringify(body);
-  const r=await fetch(url,opts);
-  if(!r.ok){const e=await r.json();throw new Error(e.error?.message||'API '+r.status);}
-  return r.json();
-}
-
-async function getRange(range){
-  try{
-    const r=await api('GET',`https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${encodeURIComponent(range)}`);
-    return r.values||[];
-  }catch{return[];}
-}
-
-async function appendRow(sheet,row){
-  await api('POST',`https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${sheet}!A1:append?valueInputOption=RAW&insertDataOption=INSERT_ROWS`,{values:[row]});
-}
-
-async function batchSet(data){
-  await api('POST',`https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values:batchUpdate`,{valueInputOption:'RAW',data});
-}
-
-let sheetIdMap={};
-async function getSheetGid(title){
-  if(sheetIdMap[title]) return sheetIdMap[title];
-  const r=await api('GET',`https://sheets.googleapis.com/v4/spreadsheets/${sheetId}?fields=sheets.properties`);
-  r.sheets.forEach(s=>sheetIdMap[s.properties.title]=s.properties.sheetId);
-  return sheetIdMap[title];
-}
-
-async function deleteSheetRow(sheet,rowIdx){
-  const gid=await getSheetGid(sheet);
-  await api('POST',`https://sheets.googleapis.com/v4/spreadsheets/${sheetId}:batchUpdate`,{
-    requests:[{deleteDimension:{range:{sheetId:gid,dimension:'ROWS',startIndex:rowIdx,endIndex:rowIdx+1}}}]
-  });
-}
-
-// ── SYNC ─────────────────────────────────────────────
-async function syncAll(){
-  document.getElementById('sb-sync').textContent='⏳ Syncing…';
-  try{
-    await Promise.all(Object.keys(cache).map(k=>loadCache(k)));
-    renderCurrentPage();
-    updateGoldSidebar();
-    const now=new Date().toLocaleTimeString();
-    document.getElementById('last-sync').textContent='Synced '+now;
-    document.getElementById('sb-sync').textContent='● Synced';
-    toast('Synced with Google Sheets','ok');
-  }catch(e){
-    document.getElementById('sb-sync').textContent='! Error';
-    toast('Sync failed: '+e.message,'err');
-  }
-}
-
-async function loadCache(key){
-  const sheet=SHEETS[key];
-  if(!sheet) return;
-  const rows=await getRange(sheet+'!A2:Z500');
-  cache[key]=rows.filter(r=>r[0]);
-}
-
-// ── GOLD RATES (Yahoo Finance — free, no API key) ─────
-async function fetchGold(){
-  try{
-    const PROXY = 'https://script.google.com/macros/s/AKfycbyOqF2gt0tculAtyKwFbirEHlkO-Sl_fzfFVYgebdWj-C8Vb-YiHnP2K6L1Le7QNow_Mw/exec';
-    const [gcRes, fxRes] = await Promise.all([
-        fetch(`${PROXY}?symbol=GC=F`),
-        fetch(`${PROXY}?symbol=USDINR=X`)
-    ]);
-    const [gcData,fxData]=await Promise.all([gcRes.json(),fxRes.json()]);
-
-    const gcChart=gcData.chart.result[0];
-    const fxChart=fxData.chart.result[0];
-    const comex=gcChart.meta.regularMarketPrice||gcChart.meta.previousClose;
-    const prevComex=gcChart.meta.previousClose||comex;
-    const usdInr=fxChart.meta.regularMarketPrice||fxChart.meta.previousClose;
-
-    // MCX calculation: (Comex USD/oz × USDINR) / 31.1035 × 10 × import duty × GST
-    const base=(comex*usdInr)/31.1035*10;
-    const withDuty=base*1.15;   // +15% import duty
-    const mcx=withDuty*1.03;    // +3% GST → per 10g 24K
-    const prevBase=(prevComex*usdInr)/31.1035*10;
-    const prevMcx=prevBase*1.15*1.03;
-
-    goldData={
-      comex, usdinr:usdInr, mcx,
-      change:comex-prevComex,
-      changePct:((comex-prevComex)/prevComex)*100,
-      mcxChange:mcx-prevMcx,
-      lastUpdate:new Date()
-    };
-    updateGoldSidebar();
-    if(document.querySelector('.page.active')?.id==='page-dashboard') renderGoldWidget('dash-gold-widget');
-    if(document.querySelector('.page.active')?.id==='page-gold') renderGoldFull();
-    document.getElementById('gold-formula-live').textContent=
-      `= (${comex.toFixed(2)} × ${usdInr.toFixed(2)}) ÷ 31.1035 × 10 × 1.15 × 1.03 = ₹${Math.round(mcx).toLocaleString('en-IN')}/10g`;
-    calcGoldImpact();
-    renderGoldSensitivity();
-  }catch(e){
-    console.warn('Gold fetch error:',e);
-  }
-}
-
-function startGoldRefresh(){
-  fetchGold();
-  goldRefreshTimer=setInterval(fetchGold,5*60*1000);
-}
-
-function updateGoldSidebar(){
-  const {comex,usdinr,mcx,change,changePct}=goldData;
-  if(!comex) return;
-  const sign=change>=0?'+':'';
-  document.getElementById('sb-comex').textContent=`$${comex.toFixed(2)} (${sign}${changePct.toFixed(2)}%)`;
-  document.getElementById('sb-mcx').textContent=`MCX: ${INR(mcx)}/10g`;
-}
-
-function renderGoldWidget(containerId){
-  const {comex,usdinr,mcx,change,changePct,mcxChange,lastUpdate}=goldData;
-  if(!comex){
-    document.getElementById(containerId).innerHTML=`<div class="gold-widget"><div class="gold-widget-head"><div><div class="gold-widget-title">Live Gold Rates</div></div></div><div class="gold-loading">Fetching rates…</div></div>`;
-    return;
-  }
-  const up=change>=0;
-  const sign=up?'+':'';
-  const cls=up?'grc-up':'grc-dn';
-  const g24=mcx/10, g22=g24*(22/24), g18=g24*(18/24);
-  const time=lastUpdate?lastUpdate.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'}):'—';
-
-  document.getElementById(containerId).innerHTML=`
-  <div class="gold-widget">
-    <div class="gold-widget-head">
-      <div><div class="gold-widget-title">Live Gold Rates</div><div class="gold-widget-sub">Updated ${time} · Auto-refreshes every 5 min</div></div>
-      <button class="gold-refresh" onclick="fetchGold()">↻ Refresh</button>
-    </div>
-    <div class="gold-rates-grid">
-      <div class="gold-rate-cell">
-        <div class="grc-label">Comex Gold</div>
-        <div class="grc-val">$${comex.toFixed(2)}</div>
-        <div class="grc-unit">USD / Troy oz · NY Futures</div>
-        <div class="grc-change ${cls}">${sign}$${change.toFixed(2)} (${sign}${changePct.toFixed(2)}%)</div>
-      </div>
-      <div class="gold-rate-cell">
-        <div class="grc-label">USD / INR</div>
-        <div class="grc-val">₹${usdinr.toFixed(2)}</div>
-        <div class="grc-unit">Exchange rate</div>
-        <div class="grc-change grc-neu">Live rate</div>
-      </div>
-      <div class="gold-rate-cell">
-        <div class="grc-label">MCX India (24K)</div>
-        <div class="grc-val">${INR(mcx)}</div>
-        <div class="grc-unit">Per 10 grams · incl. duty+GST</div>
-        <div class="grc-change ${cls}">${sign}${INR(mcxChange)}/10g</div>
-      </div>
-      <div class="gold-rate-cell">
-        <div class="grc-label">24K per gram</div>
-        <div class="grc-val">${INR(g24)}</div>
-        <div class="grc-unit">Indicative MCX / 10</div>
-        <div class="grc-change grc-neu">Excl. making charges</div>
-      </div>
-    </div>
-    <div class="gold-purity-row">
-      <div class="gold-purity-cell"><div class="gpc-purity">24K (999)</div><div class="gpc-price">${INR(g24)}/g</div><div class="gpc-sub">${INR(mcx)}/10g</div></div>
-      <div class="gold-purity-cell"><div class="gpc-purity">22K (916)</div><div class="gpc-price">${INR(g22)}/g</div><div class="gpc-sub">${INR(g22*10)}/10g</div></div>
-      <div class="gold-purity-cell"><div class="gpc-purity">18K (750)</div><div class="gpc-price">${INR(g18)}/g</div><div class="gpc-sub">${INR(g18*10)}/10g</div></div>
-      <div class="gold-purity-cell"><div class="gpc-purity">Silver (999)</div><div class="gpc-price">See MCX</div><div class="gpc-sub">Not tracked</div></div>
-    </div>
-    <div class="gold-impact-band">
-      <span class="gib-label">If Comex moves $1:</span>
-      <span class="gib-calc">24K +${INR(usdinr/31.1035*10*1.15*1.03)}/10g</span>
-      <span class="gib-calc">per gram +${INR(usdinr/31.1035*1.15*1.03)}</span>
-      <span class="gib-calc">USD/INR effect: $1 Comex = ₹${((usdinr/31.1035)*10*1.15*1.03).toFixed(0)}/10g</span>
-    </div>
-  </div>`;
-}
-
-function renderGoldFull(){
-  renderGoldWidget('gold-full-widget');
-  calcGoldImpact();
-  renderGoldSensitivity();
-}
-
-function calcGoldImpact(){
-  const {mcx,usdinr}=goldData;
-  if(!mcx) return;
-  const grams=parseFloat(document.getElementById('gold-grams')?.value||100);
-  const purity=parseFloat(document.getElementById('gold-purity')?.value||1);
-  const g24=mcx/10, perGram=g24*purity;
-  const totalVal=perGram*grams;
-  const per1Comex=(usdinr/31.1035)*10*1.15*1.03/10*purity*grams;
-  const per100=per1Comex*100;
-  const el=document.getElementById('gold-impact-out');
-  if(!el) return;
-  el.innerHTML=`
-    <div class="stat"><div class="stat-label">Your gold value</div><div class="stat-val" style="color:var(--gold)">${INR(totalVal)}</div></div>
-    <div class="stat"><div class="stat-label">If Comex +$1</div><div class="stat-val" style="color:var(--sage)">+${INR(per1Comex)}</div></div>
-    <div class="stat"><div class="stat-label">If Comex +$100</div><div class="stat-val" style="color:var(--sage)">+${INR(per100)}</div></div>`;
-}
-
-function renderGoldSensitivity(){
-  const {usdinr}=goldData;
-  if(!usdinr){document.getElementById('gold-sensitivity').innerHTML='<div style="color:var(--ink3);font-size:13px">Loading rates…</div>';return;}
-  const perOz=(usdinr/31.1035)*1.15*1.03;
-  const rows=[
-    ['$1 Comex move',perOz*10,perOz,perOz*0.9167,perOz*0.75],
-    ['$10 Comex move',perOz*100,perOz*10,perOz*10*0.9167,perOz*10*0.75],
-    ['$50 Comex move',perOz*500,perOz*50,perOz*50*0.9167,perOz*50*0.75],
-    ['$100 Comex move',perOz*1000,perOz*100,perOz*100*0.9167,perOz*100*0.75],
-  ];
-  document.getElementById('gold-sensitivity').innerHTML=`
-    <table><thead><tr><th>Comex move</th><th>24K /10g</th><th>24K /g</th><th>22K /g</th><th>18K /g</th></tr></thead>
-    <tbody>${rows.map(r=>`<tr><td style="font-weight:600">${r[0]}</td>${r.slice(1).map(v=>`<td style="font-family:var(--fm)">+${INR(v)}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
-}
-
-// ── RENDERS ───────────────────────────────────────────
-function renderDashboard(){
-  const m=curMonth;
-  const inc=cache.income.filter(r=>r[5]===m), exp=cache.expenses.filter(r=>r[5]===m);
-  const ti=inc.reduce((s,r)=>s+Number(r[3]||0),0);
-  const te=exp.reduce((s,r)=>s+Number(r[3]||0),0);
-  const sur=ti-te;
-  const mfv=cache.mf.reduce((s,r)=>s+Number(r[5]||0)*Number(r[6]||0),0);
-  const chitPd=cache.chitPay.reduce((s,r)=>s+Number(r[3]||0),0);
-  document.getElementById('d-inc').textContent=INR(ti);
-  document.getElementById('d-exp').textContent=INR(te);
-  document.getElementById('d-sur').textContent=INR(sur);
-  document.getElementById('d-sur').className='kpi-val '+(sur>=0?'up':'dn');
-  document.getElementById('d-sur-pct').textContent=ti>0?PCT(sur/ti*100)+' savings rate':'—';
-  document.getElementById('d-inv').textContent=INR(mfv+chitPd);
-  renderGoldWidget('dash-gold-widget');
-
-  const all=[...inc.map(r=>({...r,_t:'i'})),...exp.map(r=>({...r,_t:'e'}))].sort((a,b)=>new Date(b[4])-new Date(a[4])).slice(0,8);
-  document.getElementById('d-recent').innerHTML=all.map(r=>`
-    <tr><td>${r[1]||'—'}</td><td><span class="badge badge-${r._t==='i'?'sage':'sand'}">${r[2]||'—'}</span></td>
-    <td style="font-family:var(--fm);color:var(--${r._t==='i'?'sage':'rose'})">${r._t==='i'?'+':'-'}${INR(r[3])}</td>
-    <td style="font-size:12px;color:var(--ink3)">${r[4]||'—'}</td></tr>`).join('')||'<tr><td colspan="4" style="text-align:center;color:var(--ink3);padding:24px">No entries yet</td></tr>';
-
-  const cats={};
-  exp.forEach(r=>{const c=r[2]||'Other';cats[c]=(cats[c]||0)+Number(r[3]||0);});
-  const max=Math.max(...Object.values(cats),1);
-  document.getElementById('d-cats').innerHTML=Object.entries(cats).sort((a,b)=>b[1]-a[1]).map(([c,v])=>`
-    <div style="margin-bottom:11px">
-      <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px">
-        <span style="color:var(--ink2);font-weight:600">${c}</span>
-        <span style="font-family:var(--fm)">${INR(v)}</span>
-      </div>
-      <div class="progress"><div class="progress-fill" style="background:${CAT_COLORS[c]||'#6B6760'};width:${(v/max*100).toFixed(0)}%"></div></div>
-    </div>`).join('')||'<div class="empty"><div class="empty-icon">📊</div><div class="empty-title">No expenses this month</div></div>';
-}
-
-function renderIE(){
-  const m=selMonth;
-  const inc=cache.income.filter(r=>r[5]===m), exp=cache.expenses.filter(r=>r[5]===m);
-  const ti=inc.reduce((s,r)=>s+Number(r[3]||0),0);
-  const te=exp.reduce((s,r)=>s+Number(r[3]||0),0);
-  const sur=ti-te;
-  document.getElementById('ie-inc').textContent=INR(ti);
-  document.getElementById('ie-exp').textContent=INR(te);
-  document.getElementById('ie-sur').textContent=INR(sur);
-  document.getElementById('ie-rate').textContent=ti>0?PCT(sur/ti*100):'0%';
-  document.getElementById('ie-inc-tot').textContent=INR(ti);
-  document.getElementById('ie-exp-tot').textContent=INR(te);
-  document.getElementById('ie-ic').textContent=inc.length+' entries';
-  document.getElementById('ie-ec').textContent=exp.length+' entries';
-
-  const mkList=(items,type,elId)=>{
-    if(!items.length){document.getElementById(elId).innerHTML=`<div class="empty"><div class="empty-icon">${type==='i'?'💰':'💸'}</div><div class="empty-title">No entries for ${m}</div></div>`;return;}
-    document.getElementById(elId).innerHTML=items.map((r,i)=>`
-      <div class="entry-row" style="grid-template-columns:9px 1fr auto auto auto auto">
-        <div class="entry-dot" style="background:${CAT_COLORS[r[2]]||'#6B6760'}"></div>
-        <div><div class="entry-name">${r[1]||'—'}</div><div class="entry-note">${r[2]||''}${r[6]?' · '+r[6]:''}</div></div>
-        <span class="badge badge-${type==='i'?'sage':'gold'}" style="font-size:10px">${r[2]||''}</span>
-        <div class="${type==='i'?'entry-inc':'entry-exp'}">${type==='i'?'+':'-'}${INR(r[3])}</div>
-        <div class="entry-date">${r[4]||''}</div>
-        <button class="del-btn" onclick="delEntry('${type==='i'?SHEETS.income:SHEETS.expenses}','${type==='i'?'income':'expenses'}',${i+1})">✕</button>
-      </div>`).join('');
-  };
-  mkList(inc,'i','ie-inc-list');
-  mkList(exp,'e','ie-exp-list');
-}
-
-function renderMF(){
-  const total=cache.mf.reduce((s,r)=>s+Number(r[5]||0)*Number(r[6]||0),0);
-  const sip=cache.mf.reduce((s,r)=>s+Number(r[3]||0),0);
-  const idx=cache.mf.filter(r=>r[2]==='India Index').reduce((s,r)=>s+Number(r[5]||0)*Number(r[6]||0),0);
-  const us=cache.mf.filter(r=>r[2]==='US/International').reduce((s,r)=>s+Number(r[5]||0)*Number(r[6]||0),0);
-  document.getElementById('mf-val').textContent=INR(total);
-  document.getElementById('mf-sip').textContent=INR(sip)+'/mo';
-  document.getElementById('mf-idx').textContent=INR(idx);
-  document.getElementById('mf-us').textContent=INR(us);
-  document.getElementById('mf-tbl').innerHTML=cache.mf.map((r,i)=>{
-    const v=Number(r[5]||0)*Number(r[6]||0);
-    return`<tr><td><div style="font-weight:600">${r[1]||'—'}</div><div style="font-size:11px;color:var(--ink3)">${r[7]||''}</div></td>
-    <td><span class="badge badge-sky" style="font-size:10px">${r[2]||'—'}</span></td>
-    <td style="font-family:var(--fm)">${INR(r[3]||0)}</td>
-    <td style="font-family:var(--fm)">${(+r[5]||0).toFixed(3)}</td>
-    <td style="font-family:var(--fm)">${INR(r[6]||0)}</td>
-    <td style="font-family:var(--fm);font-weight:600;color:var(--gold)">${INR(v)}</td>
-    <td><button class="del-btn" onclick="delEntry('${SHEETS.mf}','mf',${i+1})">✕</button></td></tr>`;
-  }).join('')||'<tr><td colspan="7" style="text-align:center;color:var(--ink3);padding:24px">No funds added yet</td></tr>';
-  updateProj();
-}
-
-function updateProj(){
-  const sip=Number(document.getElementById('proj-sip')?.value||5000);
-  document.getElementById('proj-out').innerHTML=[1,3,5,10,15,20].map(yr=>{
-    const mo=yr*12,r=0.12/12,v=sip*(((1+r)**mo-1)/r)*(1+r);
-    return`<div class="stat"><div class="stat-label">${yr} yr${yr>1?'s':''}</div><div class="stat-val" style="font-size:13px;color:var(--gold)">${INR(v)}</div></div>`;
-  }).join('');
-}
-
-function renderChits(){
-  const total=cache.chits.reduce((s,r)=>s+Number(r[5]||0),0);
-  const paid=cache.chitPay.reduce((s,r)=>s+Number(r[3]||0),0);
-  const payout=cache.chits.reduce((s,r)=>s+Number(r[2]||0)*0.95,0);
-  document.getElementById('cf-n').textContent=cache.chits.length;
-  document.getElementById('cf-mo').textContent=INR(total)+'/mo';
-  document.getElementById('cf-paid').textContent=INR(paid);
-  document.getElementById('cf-exp').textContent=INR(payout);
-  const cols=['#B8960C','#4A6741','#2B5C8A','#8B3A3A','#6B6760'];
-  document.getElementById('chit-cards').innerHTML=cache.chits.map((r,i)=>{
-    const done=+r[4]||0,tot=+r[3]||0,pct=tot>0?Math.round(done/tot*100):0;
-    const color=cols[i%cols.length];
-    const thisPaid=cache.chitPay.filter(p=>p[2]===r[1]).reduce((s,p)=>s+Number(p[3]||0),0);
-    return`<div class="card" style="border-left:3px solid ${color};margin-bottom:0">
-      <div class="card-body">
-        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
-          <div><div style="font-family:var(--fh);font-size:14px;font-weight:600">${r[1]||'Chit'}</div>
-          <div style="font-size:11px;color:var(--ink3)">${r[6]||''} · ${INR(r[5]||0)}/mo</div></div>
-          <span class="badge badge-${r[8]==='Active'?'sage':r[8]==='Planned'?'gold':'ink'}">${r[8]||'Active'}</span>
-        </div>
-        <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px"><span style="color:var(--ink3)">Value</span><span style="font-weight:600">${INR(r[2]||0)}</span></div>
-        <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px"><span style="color:var(--ink3)">Progress</span><span style="font-weight:600">${done}/${tot} months</span></div>
-        <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:10px"><span style="color:var(--ink3)">Paid so far</span><span style="font-weight:600;color:${color}">${INR(thisPaid)}</span></div>
-        <div class="progress"><div class="progress-fill" style="background:${color};width:${pct}%"></div></div>
-        <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--ink3);margin-top:4px"><span>${pct}% done</span><span>${tot-done} months left</span></div>
-      </div>
-    </div>`;
-  }).join('')||'<div style="grid-column:1/-1"><div class="empty"><div class="empty-icon">🏦</div><div class="empty-title">No chit funds added</div></div></div>';
-
-  const cumMap={};
-  document.getElementById('chit-log').innerHTML=cache.chitPay.map((r,i)=>{
-    cumMap[r[2]]=(cumMap[r[2]]||0)+Number(r[3]||0);
-    return`<tr><td style="font-family:var(--fm);font-weight:600">${r[1]||'—'}</td>
-    <td style="color:var(--gold4)">${r[2]||'—'}</td>
-    <td style="font-family:var(--fm)">${INR(r[3]||0)}</td>
-    <td style="font-family:var(--fm);color:var(--ink3)">${INR(cumMap[r[2]])}</td>
-    <td><span class="badge badge-${r[4]==='Paid'?'sage':r[4]==='Pending'?'gold':'rose'}">${r[4]||'—'}</span></td>
-    <td><button class="del-btn" onclick="delEntry('${SHEETS.chitPay}','chitPay',${i+1})">✕</button></td></tr>`;
-  }).join('')||'<tr><td colspan="6" style="text-align:center;color:var(--ink3);padding:24px">No payments logged yet</td></tr>';
-
-  const sel=document.getElementById('cp-chit');
-  if(sel) sel.innerHTML=cache.chits.map(r=>`<option>${r[1]}</option>`).join('');
-}
-
-function renderInv(){
-  const nps=cache.inv.filter(r=>r[2]==='NPS').reduce((s,r)=>s+Number(r[4]||0),0);
-  const gold=cache.inv.filter(r=>r[2]?.includes('Gold')).reduce((s,r)=>s+Number(r[4]||0),0);
-  const stk=cache.inv.filter(r=>r[2]?.includes('Stocks')).reduce((s,r)=>s+Number(r[4]||0),0);
-  document.getElementById('inv-nps').textContent=INR(nps);
-  document.getElementById('inv-gold').textContent=INR(gold);
-  document.getElementById('inv-stk').textContent=INR(stk);
-  document.getElementById('inv-oth').textContent=INR(cache.inv.filter(r=>r[2]==='PPF'||r[2]==='FD').reduce((s,r)=>s+Number(r[4]||0),0));
-  document.getElementById('inv-tbl').innerHTML=cache.inv.map((r,i)=>`
-    <tr><td style="font-weight:600">${r[1]||'—'}</td>
-    <td><span class="badge badge-sage" style="font-size:10px">${r[2]||'—'}</span></td>
-    <td style="font-family:var(--fm)">${INR(r[3]||0)}/mo</td>
-    <td style="font-family:var(--fm);font-weight:600;color:var(--gold)">${INR(r[4]||0)}</td>
-    <td style="font-family:var(--fm);color:var(--ink3)">${INR(r[5]||0)}</td>
-    <td style="font-size:12px;color:var(--ink3)">${r[6]||''}</td>
-    <td><button class="del-btn" onclick="delEntry('${SHEETS.inv}','inv',${i+1})">✕</button></td></tr>`).join('')||'<tr><td colspan="7" style="text-align:center;color:var(--ink3);padding:24px">No investments added yet</td></tr>';
-}
-
-function renderIns(){
-  const annual=cache.ins.reduce((s,r)=>s+Number(r[3]||0),0);
-  const health=cache.ins.filter(r=>r[2]==='Health').reduce((s,r)=>s+Number(r[3]||0),0);
-  document.getElementById('ins-ann').textContent=INR(annual);
-  document.getElementById('ins-mo').textContent=INR(annual/12)+'/mo';
-  document.getElementById('ins-n').textContent=cache.ins.length;
-  document.getElementById('ins-80d').textContent=INR(Math.min(health,25000));
-  document.getElementById('ins-tbl').innerHTML=cache.ins.map((r,i)=>`
-    <tr><td style="font-weight:600">${r[1]||'—'}</td>
-    <td><span class="badge badge-gold" style="font-size:10px">${r[2]||'—'}</span></td>
-    <td style="font-family:var(--fm)">${INR(r[3]||0)}/yr</td>
-    <td style="font-family:var(--fm)">${r[4]?INR(r[4]):'—'}</td>
-    <td style="font-size:12px;color:var(--ink3)">${r[5]||'—'}</td>
-    <td><span class="badge badge-${r[6]==='Active'?'sage':'rose'}">${r[6]||'Active'}</span></td>
-    <td><button class="del-btn" onclick="delEntry('${SHEETS.ins}','ins',${i+1})">✕</button></td></tr>`).join('')||'<tr><td colspan="7" style="text-align:center;color:var(--ink3);padding:24px">No policies added yet</td></tr>';
-}
-
-function renderTax(){
-  const npsAnn=cache.inv.filter(r=>r[2]==='NPS').reduce((s,r)=>s+Number(r[3]||0),0)*12;
-  const lifeIns=cache.ins.filter(r=>r[2]==='Life/Endowment'||r[2]==='Term Life').reduce((s,r)=>s+Number(r[3]||0),0);
-  const health=cache.ins.filter(r=>r[2]==='Health').reduce((s,r)=>s+Number(r[3]||0),0);
-  const t80c=Math.min(npsAnn+lifeIns,150000);
-  const tnps=Math.min(npsAnn,50000);
-  const t80d=Math.min(health,25000);
-  document.getElementById('tx-80c').textContent=INR(t80c);
-  document.getElementById('tx-nps').textContent=INR(tnps);
-  document.getElementById('tx-80d').textContent=INR(t80d);
-  document.getElementById('tx-saved').textContent=INR((t80c+tnps+t80d)*0.05);
-  const rows80c=[['NPS Personal Tier 1',INR(npsAnn),'80C + 80CCD(1)'],['Life Insurance Premium',INR(lifeIns),'80C'],['ELSS Mutual Funds','₹0','Add in MF sheet'],['PPF Contribution','₹0','Add in Investments'],['Term Insurance',INR(cache.ins.filter(r=>r[2]==='Term Life').reduce((s,r)=>s+Number(r[3]||0),0)),'80C']];
-  document.getElementById('tx-80c-list').innerHTML=rows80c.map(([n,v,t])=>`
-    <div class="entry-row" style="grid-template-columns:1fr auto auto">
-      <div><div class="entry-name">${n}</div><div class="entry-note">${t}</div></div>
-      <div style="font-family:var(--fm);font-weight:600;color:var(--gold)">${v}</div>
-      <span class="badge badge-sage" style="font-size:10px">Eligible</span>
-    </div>`).join('');
-  document.getElementById('tx-other-list').innerHTML=[['Health Insurance (80D)',INR(t80d),`Max ₹25,000`],['NPS Extra (80CCD1B)',INR(tnps),'₹50K extra over 80C'],['Parents Health Ins','₹0','₹50K if parents > 60']].map(([n,v,t])=>`
-    <div class="entry-row" style="grid-template-columns:1fr auto">
-      <div><div class="entry-name">${n}</div><div class="entry-note">${t}</div></div>
-      <div style="font-family:var(--fm);font-weight:600;color:var(--sky)">${v}</div>
-    </div>`).join('');
-}
-
-function renderGoals(){
-  const mo=selMonth||curMonth;
-  const moExp=cache.expenses.filter(r=>r[5]===mo).reduce((s,r)=>s+Number(r[3]||0),0);
-  const tgt=moExp*6;
-  document.getElementById('ef-mo').textContent=INR(moExp);
-  document.getElementById('ef-tgt').textContent=INR(tgt);
-  updateEF();
-  const r=0.12/12;
-  document.getElementById('goals-tbl').innerHTML=cache.goals.map((row,i)=>{
-    const t=+row[2]||0,y=+row[3]||0,s=+row[4]||0;
-    const mo2=y*12;
-    const sip=mo2>0&&t>0?t/((((1+r)**mo2-1)/r)*(1+r)):0;
-    const pct=t>0?Math.min(100,s/t*100):0;
-    return`<tr><td style="font-weight:600">${row[1]||'—'}</td>
-    <td style="font-family:var(--fm)">${INR(t)}</td>
-    <td>${y} yrs</td>
-    <td style="font-family:var(--fm);font-weight:600;color:var(--gold)">${INR(sip)}</td>
-    <td style="font-family:var(--fm)">${INR(s)}</td>
-    <td style="min-width:100px"><div class="progress" style="height:5px;margin-bottom:3px"><div class="progress-fill" style="background:var(--gold2);width:${pct.toFixed(0)}%"></div></div><span style="font-size:10px;color:var(--ink3)">${pct.toFixed(0)}%</span></td>
-    <td><button class="del-btn" onclick="delEntry('${SHEETS.goals}','goals',${i+1})">✕</button></td></tr>`;
-  }).join('')||'<tr><td colspan="7" style="text-align:center;color:var(--ink3);padding:24px">No goals added yet</td></tr>';
-}
-
-function updateEF(){
-  const moExp=cache.expenses.filter(r=>r[5]===(selMonth||curMonth)).reduce((s,r)=>s+Number(r[3]||0),0)||1;
-  const tgt=moExp*6;
-  const bal=Number(document.getElementById('ef-bal')?.value||0);
-  const pct=Math.min(100,bal/tgt*100);
-  if(document.getElementById('ef-prog')) document.getElementById('ef-prog').style.width=pct+'%';
-  if(document.getElementById('ef-pct')) document.getElementById('ef-pct').textContent=Math.round(pct)+'% funded';
-  if(document.getElementById('ef-gap')) document.getElementById('ef-gap').textContent='Shortfall: '+INR(Math.max(0,tgt-bal));
-}
-
-function renderHealth(){
-  const inc=cache.income.filter(r=>r[5]===curMonth).reduce((s,r)=>s+Number(r[3]||0),0)||22000;
-  const exp=cache.expenses.filter(r=>r[5]===curMonth).reduce((s,r)=>s+Number(r[3]||0),0);
-  const mfSip=cache.mf.reduce((s,r)=>s+Number(r[3]||0),0);
-  const chitTot=cache.chits.reduce((s,r)=>s+Number(r[5]||0),0);
-  const sur=inc-exp;
-  const svRate=inc>0?sur/inc*100:0;
-  const invRate=inc>0?mfSip/inc*100:0;
-  const chitRatio=inc>0?chitTot/inc*100:0;
-  const metrics=[
-    {l:'Savings rate',v:PCT(svRate),t:'≥ 20%',ok:svRate>=20,w:svRate>=10,a:'Save at least 20% of income monthly'},
-    {l:'Emergency fund',v:'Check Goals tab',t:'≥ 6 months',ok:false,w:true,a:'Build 6 months of expenses in liquid fund'},
-    {l:'MF investment rate',v:PCT(invRate),t:'≥ 15%',ok:invRate>=15,w:invRate>=5,a:'Start Nifty 50 Index Fund SIP — Direct plan'},
-    {l:'Chit commitment',v:PCT(chitRatio),t:'< 100%',ok:chitRatio<=100,w:chitRatio<=150,a:'Chit payments vs income — document funding'},
-    {l:'NPS active',v:cache.inv.some(r=>r[2]==='NPS')?'Yes':'Not added',t:'Yes',ok:cache.inv.some(r=>r[2]==='NPS'),w:false,a:'Add NPS in Investments tab'},
-    {l:'Health insurance',v:cache.ins.some(r=>r[2]==='Health')?'Active':'None',t:'Active',ok:cache.ins.some(r=>r[2]==='Health'),w:false,a:'Ensure family floater ≥ ₹5L'},
-  ];
-  document.getElementById('health-metrics').innerHTML=metrics.map(m=>`
-    <div style="display:grid;grid-template-columns:1.5fr 1fr 1fr 100px 2fr;gap:10px;align-items:center;padding:11px 0;border-bottom:1px solid var(--border)">
-      <div style="font-weight:600;font-size:13px">${m.l}</div>
-      <div style="font-family:var(--fm);font-size:13px;color:var(--gold4)">${m.v}</div>
-      <div style="font-size:12px;color:var(--ink3)">${m.t}</div>
-      <span class="badge badge-${m.ok?'sage':m.w?'gold':'rose'}">${m.ok?'✓ Good':m.w?'⚠ Improve':'✗ Critical'}</span>
-      <div style="font-size:12px;color:var(--ink2)">${m.a}</div>
-    </div>`).join('');
-  const actions=[
-    {p:'🔴 Urgent',c:'rose',t:'Build emergency fund (₹3–4L in liquid fund)'},
-    {p:'🔴 Urgent',c:'rose',t:'Clarify how chit payments (₹72k+) are funded vs salary'},
-    {p:'🟡 Important',c:'gold',t:'Review Life Insurance policy — likely endowment with low returns'},
-    {p:'🟡 Important',c:'gold',t:'Start Nifty 50 Index Fund SIP — even ₹2,000/month'},
-    {p:'🟢 Medium term',c:'sage',t:'Add US equity via S&P 500 fund (Mirae/Motilal)'},
-    {p:'🟢 Medium term',c:'sage',t:'Invest in Sovereign Gold Bonds (next RBI tranche)'},
-    {p:'🔵 Long term',c:'sky',t:'Maximise NPS 80CCD(1B) — extra ₹50,000 deduction'},
-  ];
-  document.getElementById('health-actions').innerHTML=actions.map(a=>`
-    <div style="display:flex;gap:10px;padding:10px 14px;border-radius:var(--rs);background:var(--${a.c==='rose'?'rose':a.c==='gold'?'sand':a.c==='sage'?'sage':a.c==='sky'?'sky':'cream'}-bg);border:1px solid rgba(0,0,0,.05);align-items:center">
-      <span style="font-size:12px;font-weight:700;color:var(--${a.c==='rose'?'rose':a.c==='gold'?'gold4':a.c==='sage'?'sage':a.c==='sky'?'sky':'ink3'});white-space:nowrap;min-width:90px">${a.p}</span>
-      <span style="font-size:13px;color:var(--ink)">${a.t}</span>
-    </div>`).join('');
-}
-
-function renderMonthly(){
-  const m=selMonth||curMonth;
-  const inc=cache.income.filter(r=>r[5]===m).reduce((s,r)=>s+Number(r[3]||0),0);
-  const exp=cache.expenses.filter(r=>r[5]===m).reduce((s,r)=>s+Number(r[3]||0),0);
-  const sur=inc-exp;
-  document.getElementById('mo-inc').textContent=INR(inc);
-  document.getElementById('mo-exp').textContent=INR(exp);
-  document.getElementById('mo-sur').textContent=INR(sur);
-  document.getElementById('mo-sur').className='kpi-val '+(sur>=0?'up':'dn');
-  document.getElementById('mo-rate').textContent=inc>0?PCT(sur/inc*100):'0%';
-  const cats={};
-  cache.expenses.filter(r=>r[5]===m).forEach(r=>{const c=r[2]||'Other';cats[c]=(cats[c]||0)+Number(r[3]||0);});
-  const max=Math.max(...Object.values(cats),1);
-  document.getElementById('mo-cats').innerHTML=Object.entries(cats).sort((a,b)=>b[1]-a[1]).map(([c,v])=>`
-    <div style="display:grid;grid-template-columns:130px 1fr 80px;align-items:center;gap:12px;margin-bottom:9px">
-      <span style="font-size:12px;font-weight:600;color:var(--ink2)">${c}</span>
-      <div class="progress"><div class="progress-fill" style="background:${CAT_COLORS[c]||'#6B6760'};width:${(v/max*100).toFixed(0)}%"></div></div>
-      <span style="font-family:var(--fm);font-size:12px;text-align:right">${INR(v)}</span>
-    </div>`).join('')||'<div class="empty"><div class="empty-icon">📊</div><div class="empty-title">No expenses for '+m+'</div></div>';
-}
-
-function renderNW(){
-  const a=cache.assets.reduce((s,r)=>s+Number(r[3]||0),0);
-  const l=cache.liab.reduce((s,r)=>s+Number(r[3]||0),0);
-  const nw=a-l;
-  document.getElementById('nw-a').textContent=INR(a);
-  document.getElementById('nw-l').textContent=INR(l);
-  document.getElementById('nw-t').textContent=INR(nw);
-  document.getElementById('nw-t').className='kpi-val '+(nw>=0?'up':'dn');
-  document.getElementById('nw-ch').textContent='—';
-  document.getElementById('assets-tbl').innerHTML=cache.assets.map((r,i)=>`
-    <tr><td style="font-weight:600">${r[1]||'—'}</td><td><span class="badge badge-sage" style="font-size:10px">${r[2]||'—'}</span></td>
-    <td style="font-family:var(--fm);font-weight:600;color:var(--sage)">${INR(r[3]||0)}</td>
-    <td style="font-size:12px;color:var(--ink3)">${new Date().toLocaleDateString()}</td>
-    <td><button class="del-btn" onclick="delEntry('${SHEETS.assets}','assets',${i+1})">✕</button></td></tr>`).join('')||'<tr><td colspan="5" style="text-align:center;color:var(--ink3);padding:24px">No assets yet</td></tr>';
-  document.getElementById('liab-tbl').innerHTML=cache.liab.map((r,i)=>`
-    <tr><td style="font-weight:600">${r[1]||'—'}</td><td><span class="badge badge-rose" style="font-size:10px">${r[2]||'—'}</span></td>
-    <td style="font-family:var(--fm);font-weight:600;color:var(--rose)">${INR(r[3]||0)}</td>
-    <td style="font-size:12px;color:var(--ink3)">${new Date().toLocaleDateString()}</td>
-    <td><button class="del-btn" onclick="delEntry('${SHEETS.liab}','liab',${i+1})">✕</button></td></tr>`).join('')||'<tr><td colspan="5" style="text-align:center;color:var(--ink3);padding:24px">No liabilities yet</td></tr>';
-}
-
-// ── DATA OPS ─────────────────────────────────────────
-async function saveRow(sheet,key,row,modalId){
-  try{await appendRow(sheet,row);cache[key].push(row);closeModal(modalId);renderCurrentPage();toast('Saved ✓','ok');}
-  catch(e){toast('Error: '+e.message,'err');}
-}
-
-async function delEntry(sheet,key,idx){
-  if(!confirm('Delete this entry?')) return;
-  try{await deleteSheetRow(sheet,idx);cache[key].splice(idx-1,1);renderCurrentPage();toast('Deleted','ok');}
-  catch(e){toast('Error: '+e.message,'err');}
-}
-
-function g(id){const e=document.getElementById(id);return e?e.value.trim():'';}
-function today(){return new Date().toISOString().slice(0,10);}
-
-async function addIncome(){const d=g('ii-date')||today(),m=toMonth(d);await saveRow(SHEETS.income,'income',[uid(),g('ii-desc'),g('ii-cat'),g('ii-amt'),d,m,g('ii-note')],'add-inc-modal');}
-async function addExpense(){const d=g('ei-date')||today(),m=toMonth(d);await saveRow(SHEETS.expenses,'expenses',[uid(),g('ei-desc'),g('ei-cat'),g('ei-amt'),d,m,g('ei-note')],'add-exp-modal');}
-async function addMF(){await saveRow(SHEETS.mf,'mf',[uid(),g('mfi-name'),g('mfi-cat'),g('mfi-sip')||0,g('mfi-start')||'—',g('mfi-units')||0,g('mfi-nav')||0,''],'add-mf-modal');}
-async function addChit(){await saveRow(SHEETS.chits,'chits',[uid(),g('ci-name'),g('ci-val')||0,g('ci-mo')||20,g('ci-done')||0,g('ci-pm')||0,g('ci-start')||'—',g('ci-comm')||5,g('ci-status')||'Active'],'add-chit-modal');}
-async function addChitPay(){await saveRow(SHEETS.chitPay,'chitPay',[uid(),g('cp-mo'),g('cp-chit'),g('cp-amt')||0,g('cp-st')||'Paid',g('cp-note')],'add-cpay-modal');}
-async function addInv(){await saveRow(SHEETS.inv,'inv',[uid(),g('ivi-name'),g('ivi-type'),g('ivi-mo')||0,g('ivi-val')||0,g('ivi-tgt')||0,g('ivi-note')],'add-inv-modal');}
-async function addIns(){await saveRow(SHEETS.ins,'ins',[uid(),g('ini-name'),g('ini-type'),g('ini-prem')||0,g('ini-cov')||0,g('ini-ren')||'',g('ini-st')||'Active'],'add-ins-modal');}
-async function addGoal(){await saveRow(SHEETS.goals,'goals',[uid(),g('gi-name'),g('gi-tgt')||0,g('gi-yr')||5,g('gi-saved')||0,''],'add-goal-modal');}
-async function addAsset(){await saveRow(SHEETS.assets,'assets',[uid(),g('ai-name'),g('ai-type'),g('ai-val')||0,today(),g('ai-note')],'add-asset-modal');}
-async function addLiab(){await saveRow(SHEETS.liab,'liab',[uid(),g('li-name'),g('li-type'),g('li-amt')||0,today(),g('li-note')],'add-liab-modal');}
-
-// ── NAVIGATION ────────────────────────────────────────
-const PAGE_META={dashboard:['Dashboard','Your complete financial overview'],ie:['Income & Expenses','Track every rupee in and out'],mf:['Mutual Funds','Portfolio & SIP tracker'],gold:['Gold Rates & Analysis','Live Comex + MCX India'],chits:['Chit Funds','Payment log & tracker'],inv:['Investments','NPS, Gold, Stocks & more'],ins:['Insurance','Policy management'],tax:['Tax Planning','80C, 80D & NPS deductions'],goals:['Goals & Emergency Fund','Plan your financial future'],health:['Financial Health','Scores & priority actions'],monthly:['Monthly Tracker','Month-by-month breakdown'],nw:['Net Worth','Assets minus liabilities']};
-
-function showPage(id,el){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.ni').forEach(n=>n.classList.remove('active'));
-  const pg=document.getElementById('page-'+id);
-  if(pg) pg.classList.add('active');
-  if(el) el.classList.add('active');
-  const[t,s]=PAGE_META[id]||[id,''];
-  document.getElementById('page-title').textContent=t;
-  document.getElementById('page-sub').textContent=s;
-  if(id==='gold'){renderGoldFull();}
-  else renderPage(id);
-}
-
-function renderCurrentPage(){
-  const a=document.querySelector('.page.active');
-  if(a) renderPage(a.id.replace('page-',''));
-}
-
-function renderPage(id){
-  const fn={dashboard:renderDashboard,ie:renderIE,mf:renderMF,chits:renderChits,inv:renderInv,ins:renderIns,tax:renderTax,goals:renderGoals,health:renderHealth,monthly:renderMonthly,nw:renderNW};
-  if(fn[id]) fn[id]();
-}
-
-function buildMonthTabs(){
-  const now=new Date();
-  const months=[];
-  for(let i=5;i>=0;i--){const d=new Date(now.getFullYear(),now.getMonth()-i,1);months.push(d.toLocaleDateString('en-IN',{month:'short',year:'2-digit'}).replace(' ','-'));}
-  ['ie-tabs','mo-tabs'].forEach(id=>{
-    const el=document.getElementById(id);
-    if(!el) return;
-    el.innerHTML=months.map(m=>`<button class="month-tab ${m===selMonth?'active':''}" onclick="selMo('${m}',this,'${id}')">${m}</button>`).join('');
-  });
-}
-
-function selMo(m,btn,cid){selMonth=m;document.querySelectorAll(`#${cid} .month-tab`).forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderCurrentPage();}
-
-function setDateDefaults(){['ii-date','ei-date','ini-ren'].forEach(id=>{const el=document.getElementById(id);if(el&&el.type==='date') el.value=today();});}
-
-function openModal(id){document.getElementById(id).classList.add('open');setDateDefaults();}
-function closeModal(id){document.getElementById(id).classList.remove('open');}
-// More robust version — works for dynamically added modals too
-document.addEventListener('click', e => {
-  if (e.target.classList.contains('mov')) {
-    e.target.classList.remove('open');
-  }
-});
-function toast(msg,type='ok'){
-  const t=document.getElementById('toast');
-  const el=document.createElement('div');
-  el.className='toast-item toast-'+type;
-  el.innerHTML=`<span>${type==='ok'?'✓':'✕'}</span><span>${msg}</span>`;
-  t.appendChild(el);
-  setTimeout(()=>el.remove(),3000);
-}
-
-function signOut(){
-  if(!confirm('Sign out?')) return;
-  gToken=null;
-  clearInterval(goldRefreshTimer);
-  document.getElementById('app').style.display='none';
-  document.getElementById('login-screen').style.display='flex';
-  document.getElementById('connectBtn').disabled=false;
-  document.getElementById('login-alert').innerHTML='';
-}
-</script>
+<script src="app.js"></script>
 </body>
 </html>
