@@ -4,21 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FinNova — Personal Finance</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&display=swap">
 <link rel="stylesheet" href="style.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 </head>
 <body>
 
-<!-- ═══════════════════════════════════════
-   LOGIN SCREEN
-═══════════════════════════════════════ -->
+<!-- ═══ LOGIN ═══ -->
 <div id="login-screen">
-  <div class="login-bg">
-    <div class="login-bg-grid"></div>
-    <div class="login-bg-glow"></div>
-    <div class="login-bg-glow2"></div>
-  </div>
-
+  <div class="login-bg"><div class="login-bg-grid"></div><div class="login-bg-glow"></div><div class="login-bg-glow2"></div></div>
   <div class="login-left">
     <div class="login-logo">
       <div class="login-logo-mark">FN</div>
@@ -26,167 +21,210 @@
     </div>
     <div class="login-eyebrow">Personal Finance Portal</div>
     <h1 class="login-h1">Your Wealth<span>Clearly Seen.</span></h1>
-    <p class="login-desc">A professional-grade finance portal backed entirely by your own Google Sheet. Every number, every rupee — tracked, analysed, visualised.</p>
+    <p class="login-desc">Professional-grade finance intelligence backed by your own Google Sheet. Every rupee tracked, analysed, and visualised.</p>
     <div class="login-stats">
-      <div>
-        <div class="login-stat-num">13</div>
-        <div class="login-stat-label">Modules</div>
-      </div>
+      <div><div class="login-stat-num">13</div><div class="login-stat-label">Modules</div></div>
       <div class="login-stat-divider"></div>
-      <div>
-        <div class="login-stat-num">₹0</div>
-        <div class="login-stat-label">Cost</div>
-      </div>
+      <div><div class="login-stat-num">₹0</div><div class="login-stat-label">Cost</div></div>
       <div class="login-stat-divider"></div>
-      <div>
-        <div class="login-stat-num">Live</div>
-        <div class="login-stat-label">Gold Rates</div>
-      </div>
+      <div><div class="login-stat-num">Live</div><div class="login-stat-label">Gold Rates</div></div>
     </div>
   </div>
-
   <div class="login-right">
     <div class="login-card">
       <div class="login-card-tag">Secure Portal</div>
       <h2 class="login-card-h2">Sign In</h2>
       <p class="login-card-sub">Connect with Google to sync your data securely to your own private spreadsheet.</p>
-
       <div id="login-alert"></div>
-
-      <!-- These fields auto-hide when Client ID is pre-configured in app.js -->
       <div id="clientId-group" class="fg">
         <label class="fl">Google OAuth Client ID</label>
         <input class="fi" id="clientId" type="text" placeholder="xxxx.apps.googleusercontent.com" autocomplete="off">
       </div>
       <div id="sheetId-group" class="fg">
-        <label class="fl">Google Sheet ID <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:11px;color:var(--t3)">(blank = auto-create)</span></label>
+        <label class="fl">Google Sheet ID <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:11px;color:var(--muted)">(blank = auto-create)</span></label>
         <input class="fi" id="sheetId" type="text" placeholder="From sheet URL: .../d/YOUR_ID/...">
       </div>
-      <div id="form-instructions" style="margin-bottom:16px;font-size:12px;color:var(--t3);line-height:1.6">
-        Your Client ID and Sheet ID are never sent to any server — they're used directly in your browser to authenticate with Google.
-      </div>
-
+      <div id="form-instructions" style="margin-bottom:14px;font-size:11px;color:var(--muted);line-height:1.6">Your IDs are used directly in your browser to authenticate with Google — never sent to any server.</div>
       <button class="google-btn" id="connectBtn" onclick="startAuth()">
-        <svg viewBox="0 0 24 24">
-          <path fill="#EA4335" d="M5.26 9.77A7.19 7.19 0 0 1 12 4.8a7.12 7.12 0 0 1 5.07 2.04l3.73-3.73A12 12 0 0 0 12 0C7.38 0 3.37 2.69 1.33 6.62l3.93 3.15z"/>
-          <path fill="#34A853" d="M16.04 18.01A7.19 7.19 0 0 1 12 19.2a7.19 7.19 0 0 1-6.69-4.54l-3.95 3.05A12 12 0 0 0 12 24c3.24 0 6.14-1.17 8.38-3.08l-4.34-2.91z"/>
-          <path fill="#4A90D9" d="M20.38 18.92A12 12 0 0 0 24 12c0-.73-.07-1.44-.2-2.13H12v4.52h6.85a5.85 5.85 0 0 1-2.47 3.62l4 2.91z"/>
-          <path fill="#FBBC05" d="M5.31 14.66A7.22 7.22 0 0 1 4.8 12c0-.93.17-1.82.46-2.65L1.33 6.62A12 12 0 0 0 0 12c0 1.94.46 3.77 1.28 5.38l4.03-2.72z"/>
-        </svg>
+        <svg viewBox="0 0 24 24"><path fill="#EA4335" d="M5.26 9.77A7.19 7.19 0 0 1 12 4.8a7.12 7.12 0 0 1 5.07 2.04l3.73-3.73A12 12 0 0 0 12 0C7.38 0 3.37 2.69 1.33 6.62l3.93 3.15z"/><path fill="#34A853" d="M16.04 18.01A7.19 7.19 0 0 1 12 19.2a7.19 7.19 0 0 1-6.69-4.54l-3.95 3.05A12 12 0 0 0 12 24c3.24 0 6.14-1.17 8.38-3.08l-4.34-2.91z"/><path fill="#4A90D9" d="M20.38 18.92A12 12 0 0 0 24 12c0-.73-.07-1.44-.2-2.13H12v4.52h6.85a5.85 5.85 0 0 1-2.47 3.62l4 2.91z"/><path fill="#FBBC05" d="M5.31 14.66A7.22 7.22 0 0 1 4.8 12c0-.93.17-1.82.46-2.65L1.33 6.62A12 12 0 0 0 0 12c0 1.94.46 3.77 1.28 5.38l4.03-2.72z"/></svg>
         Continue with Google
       </button>
-
-      <div class="login-security">
-        <span class="login-security-icon">🔒</span>
-        <span>Your financial data is stored only in your Google Sheet. FinNova never stores or transmits your data to any external server.</span>
-      </div>
+      <div class="login-security"><span style="font-size:14px;flex-shrink:0">🔒</span><span>Your financial data is stored only in your Google Sheet. FinNova never stores or transmits data to any server.</span></div>
     </div>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════
-   APP
-═══════════════════════════════════════ -->
+<!-- ═══ APP ═══ -->
 <div id="app">
 
   <!-- SIDEBAR -->
   <div class="sidebar" id="sidebar">
     <div class="sb-brand">
-      <div class="sb-mark">FN</div>
-      <div class="sb-brand-text">
-        <div class="sb-name">Fin<span>Nova</span></div>
-        <div class="sb-tagline">Finance Portal</div>
+      <div class="sb-brand-mark">FN</div>
+      <div class="sb-brand-text"><div class="sb-name">Fin<span>Nova</span></div><div class="sb-tagline">Personal Finance</div></div>
+      <button class="sb-collapse-btn" id="collapse-btn" onclick="toggleSidebar()">‹</button>
+    </div>
+    <!-- PROFILE CARD -->
+    <div onclick="toggleProfileDropdown(event)" id="sb-profile-card" style="margin:10px 10px 6px;background:linear-gradient(135deg,rgba(41,98,255,.14),rgba(110,64,255,.08));border:1px solid rgba(41,98,255,.22);border-radius:12px;padding:14px;cursor:pointer;transition:all .18s;overflow:hidden;position:relative;flex-shrink:0">
+      <div style="position:absolute;top:-30px;right:-30px;width:100px;height:100px;background:radial-gradient(circle,rgba(41,98,255,.18) 0%,transparent 70%);border-radius:50%;pointer-events:none"></div>
+      <div style="display:flex;align-items:center;gap:11px;position:relative;z-index:1">
+        <div style="position:relative;flex-shrink:0">
+          <div id="sb-av-img" style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#2962ff,#6e40ff);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;color:#fff;border:2.5px solid rgba(41,98,255,.45);overflow:hidden;transition:all .18s"><span id="sb-av-letter">?</span></div>
+          <div style="position:absolute;bottom:1px;right:1px;width:10px;height:10px;border-radius:50%;background:#22c55e;border:2px solid #0d1117"></div>
+        </div>
+        <div id="sb-profile-info-wrap" style="overflow:hidden;flex:1;transition:opacity .18s">
+          <div id="sb-prof-name" style="font-size:12.5px;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.3">Loading…</div>
+          <div id="sb-prof-email" style="font-size:10px;color:rgba(255,255,255,.38);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:1px">—</div>
+          <div style="display:inline-flex;align-items:center;gap:4px;margin-top:5px;font-size:9px;font-weight:700;color:#4ade80;background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.22);padding:2px 8px;border-radius:10px">● Connected</div>
+        </div>
       </div>
     </div>
-    <button class="sb-collapse-btn" id="collapse-btn" onclick="toggleSidebar()">‹</button>
-
     <div class="sb-nav">
       <div class="sb-section">Overview</div>
-      <div class="ni active" data-label="Dashboard" onclick="showPage('dashboard',this)">
-        <span class="ni-icon">◈</span><span class="ni-label">Dashboard</span>
-      </div>
-
+      <div class="ni active" data-label="Dashboard" onclick="showPage('dashboard',this)"><span class="ni-icon">◈</span><span class="ni-label">Dashboard</span></div>
       <div class="sb-section">Money</div>
-      <div class="ni" data-label="Income & Expenses" onclick="showPage('ie',this)">
-        <span class="ni-icon">⇅</span><span class="ni-label">Income & Expenses</span>
-      </div>
-      <div class="ni" data-label="Mutual Funds" onclick="showPage('mf',this)">
-        <span class="ni-icon">◫</span><span class="ni-label">Mutual Funds</span>
-      </div>
-
+      <div class="ni" data-label="Income & Expenses" onclick="showPage('ie',this)"><span class="ni-icon">⇅</span><span class="ni-label">Income & Expenses</span></div>
+      <div class="ni" data-label="Mutual Funds" onclick="showPage('mf',this)"><span class="ni-icon">◫</span><span class="ni-label">Mutual Funds</span></div>
       <div class="sb-section">Gold</div>
-      <div class="ni" data-label="Gold Rates" onclick="showPage('gold',this)">
-        <span class="ni-icon">◎</span><span class="ni-label">Gold Rates & Analysis</span>
-      </div>
-
+      <div class="ni" data-label="Gold Rates" onclick="showPage('gold',this)"><span class="ni-icon">◎</span><span class="ni-label">Gold Rates & Analysis</span></div>
       <div class="sb-section">Products</div>
-      <div class="ni" data-label="Chit Funds" onclick="showPage('chits',this)">
-        <span class="ni-icon">◉</span><span class="ni-label">Chit Funds</span>
-      </div>
-      <div class="ni" data-label="Investments" onclick="showPage('inv',this)">
-        <span class="ni-icon">↗</span><span class="ni-label">Investments</span>
-      </div>
-      <div class="ni" data-label="Insurance" onclick="showPage('ins',this)">
-        <span class="ni-icon">◌</span><span class="ni-label">Insurance</span>
-      </div>
-
+      <div class="ni" data-label="Chit Funds" onclick="showPage('chits',this)"><span class="ni-icon">◉</span><span class="ni-label">Chit Funds</span></div>
+      <div class="ni" data-label="Investments" onclick="showPage('inv',this)"><span class="ni-icon">↗</span><span class="ni-label">Investments</span></div>
+      <div class="ni" data-label="Insurance" onclick="showPage('ins',this)"><span class="ni-icon">◌</span><span class="ni-label">Insurance</span></div>
       <div class="sb-section">Planning</div>
-      <div class="ni" data-label="Tax Planning" onclick="showPage('tax',this)">
-        <span class="ni-icon">⊞</span><span class="ni-label">Tax Planning</span>
-      </div>
-      <div class="ni" data-label="Goals" onclick="showPage('goals',this)">
-        <span class="ni-icon">⊙</span><span class="ni-label">Goals & Emergency</span>
-      </div>
-      <div class="ni" data-label="Health Score" onclick="showPage('health',this)">
-        <span class="ni-icon">❤</span><span class="ni-label">Financial Health</span>
-      </div>
-
+      <div class="ni" data-label="Tax Planning" onclick="showPage('tax',this)"><span class="ni-icon">⊞</span><span class="ni-label">Tax Planning</span></div>
+      <div class="ni" data-label="Goals" onclick="showPage('goals',this)"><span class="ni-icon">⊙</span><span class="ni-label">Goals & Emergency</span></div>
+      <div class="ni" data-label="Health" onclick="showPage('health',this)"><span class="ni-icon">❤</span><span class="ni-label">Financial Health</span></div>
       <div class="sb-section">Reports</div>
-      <div class="ni" data-label="Monthly" onclick="showPage('monthly',this)">
-        <span class="ni-icon">▦</span><span class="ni-label">Monthly Tracker</span>
-      </div>
-      <div class="ni" data-label="Net Worth" onclick="showPage('nw',this)">
-        <span class="ni-icon">◆</span><span class="ni-label">Net Worth</span>
-      </div>
+      <div class="ni" data-label="Monthly" onclick="showPage('monthly',this)"><span class="ni-icon">▦</span><span class="ni-label">Monthly Tracker</span></div>
+      <div class="ni" data-label="Net Worth" onclick="showPage('nw',this)"><span class="ni-icon">◆</span><span class="ni-label">Net Worth</span></div>
     </div>
-
-    <!-- Live gold price pill in sidebar -->
-    <div class="sb-gold-widget" onclick="showPage('gold',null)">
-      <div class="sb-gold-label">Comex Gold</div>
+    <div class="sb-gold-pill" onclick="showPage('gold',null)">
+      <div class="sb-gold-lbl">Comex Gold</div>
       <div class="sb-gold-price" id="sb-gold-price">Loading…</div>
       <div class="sb-gold-sub" id="sb-gold-sub">MCX India: —</div>
     </div>
-
     <div class="sb-footer">
-      <div class="sb-user">
-        <div class="sb-av" id="user-av">?</div>
-        <div class="sb-user-info">
-          <div class="sb-uname" id="user-name">Loading</div>
-          <div class="sb-sync" id="sb-sync">● Synced</div>
-        </div>
-        <button class="sb-out" onclick="signOut()" title="Sign out">⏻</button>
-      </div>
+      <div style="padding:5px 10px 2px;display:flex;align-items:center;gap:6px"><span style="width:5px;height:5px;border-radius:50%;background:#22c55e;flex-shrink:0"></span><span id="sb-sync" style="font-size:10px;color:rgba(255,255,255,.3)">Synced</span></div>
+      <button onclick="signOut()" style="display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:6px;cursor:pointer;border:none;background:none;width:100%;transition:all .15s" onmouseover="this.style.background='rgba(242,54,69,.12)'" onmouseout="this.style.background='none'">
+        <span style="font-size:13px;color:rgba(255,255,255,.3)">⏻</span>
+        <span style="font-size:12px;font-weight:500;color:rgba(255,255,255,.4)">Sign out</span>
+      </button>
     </div>
   </div>
 
-  <!-- MAIN CONTENT -->
+  <!-- MAIN -->
   <div class="main" id="main-content">
 
-    <!-- TOPBAR -->
+    <!-- TOPBAR — Premium v6 -->
     <div class="topbar">
-      <div>
-        <div class="tb-title" id="tb-title">Dashboard</div>
-        <div class="tb-sub"   id="tb-sub">Your complete financial overview</div>
+      <div style="display:flex;align-items:center;gap:14px">
+        <div class="tb-logo">FINNOVA</div>
+        <div style="display:flex;align-items:center;gap:9px">
+          <div id="tb-page-icon" style="width:28px;height:28px;background:var(--blue-bg);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0">◈</div>
+          <div>
+            <div id="tb-title" style="font-size:14px;font-weight:700;color:var(--head);letter-spacing:-.2px">Dashboard</div>
+            <div id="tb-sub" style="font-size:10px;color:var(--muted)">Your complete financial overview</div>
+          </div>
+        </div>
       </div>
       <div class="tb-right">
+        <span id="tb-greeting" style="font-size:12px;color:var(--sub);font-weight:500;padding:0 6px"></span>
         <span class="tb-sync" id="last-sync">—</span>
         <button class="tb-btn" onclick="syncAll()">↻ Sync</button>
         <button class="tb-btn primary" onclick="openModal('add-exp-modal')">+ Add Entry</button>
+        <div onclick="toggleProfileDropdown(event)" style="display:flex;align-items:center;gap:8px;padding:5px 12px 5px 5px;background:var(--paper);border:1.5px solid var(--border);border-radius:30px;cursor:pointer;transition:all .15s">
+          <div id="tb-av-mini" style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#2962ff,#6e40ff);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:11px;color:#fff;overflow:hidden;flex-shrink:0"><span id="tb-av-letter">?</span></div>
+          <span id="tb-mini-name" style="font-size:12px;font-weight:600;color:var(--head)">—</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROFILE DROPDOWN -->
+    <div id="profile-dropdown" style="display:none">
+      <div onclick="closeProfileDropdown()" style="position:fixed;inset:0;z-index:299"></div>
+      <div style="position:fixed;top:68px;right:20px;z-index:300;background:var(--white);border:1px solid var(--border);border-radius:16px;width:300px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.18)">
+        <div style="background:linear-gradient(135deg,#0d1117,#1c2333);padding:20px;display:flex;align-items:center;gap:14px;position:relative;overflow:hidden">
+          <div style="position:absolute;inset:0;background:radial-gradient(ellipse 80% 100% at 80% 50%,rgba(41,98,255,.15) 0%,transparent 70%);pointer-events:none"></div>
+          <div id="pd-av" style="width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#2962ff,#6e40ff);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:18px;color:#fff;border:2.5px solid rgba(41,98,255,.45);overflow:hidden;flex-shrink:0;position:relative;z-index:1;box-shadow:0 4px 16px rgba(41,98,255,.4)"><span id="pd-av-letter">?</span></div>
+          <div style="position:relative;z-index:1;overflow:hidden;flex:1">
+            <div id="pd-name" style="font-size:15px;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:-.2px">Loading…</div>
+            <div id="pd-email" style="font-size:11px;color:rgba(255,255,255,.42);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px">—</div>
+          </div>
+        </div>
+        <div style="padding:10px">
+          <div style="display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:8px"><div style="width:30px;height:30px;border-radius:8px;background:#eef2ff;display:flex;align-items:center;justify-content:center;font-size:14px">👤</div><div><div id="pd-fullname" style="font-size:12.5px;font-weight:600;color:var(--head)">—</div><div style="font-size:10.5px;color:var(--muted)">Google Account</div></div></div>
+          <div style="display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:8px"><div style="width:30px;height:30px;border-radius:8px;background:#e6f4f1;display:flex;align-items:center;justify-content:center;font-size:14px">📊</div><div><div style="font-size:12.5px;font-weight:600;color:var(--head)">FinNova Personal</div><div id="pd-sheet-info" style="font-size:10.5px;color:var(--muted)">Google Sheet connected</div></div></div>
+          <div style="display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:8px"><div style="width:30px;height:30px;border-radius:8px;background:#fff4e6;display:flex;align-items:center;justify-content:center;font-size:14px">🔒</div><div><div style="font-size:12.5px;font-weight:600;color:var(--head)">Data Privacy</div><div style="font-size:10.5px;color:var(--muted)">Stored only in your Google Sheet</div></div></div>
+          <div style="height:1px;background:var(--border);margin:8px 0"></div>
+          <button onclick="signOut()" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:8px;cursor:pointer;border:none;background:none;width:100%" onmouseover="this.style.background='var(--red-bg)'" onmouseout="this.style.background='none'">
+            <span style="font-size:16px">⏻</span>
+            <span style="font-size:12.5px;font-weight:600;color:var(--red)">Sign out of FinNova</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- NEXUS-STYLE TICKER BAR -->
+    <div id="fin-ticker">
+      <div class="tp gold-tp"><span class="tp-sym">COMEX</span><span class="tp-val" id="tp-comex">—</span><span class="tp-chg neu-chip" id="tp-comex-c">—</span></div>
+      <div class="tp gold-tp"><span class="tp-sym">MCX/10g</span><span class="tp-val" id="tp-mcx">—</span><span class="tp-chg neu-chip" id="tp-mcx-c">—</span></div>
+      <div class="tp gold-tp"><span class="tp-sym">USD/INR</span><span class="tp-val" id="tp-inr">—</span><span class="tp-chg neu-chip">live</span></div>
+      <div class="tp"><span class="tp-sym">SURPLUS</span><span class="tp-val" id="tp-surplus">—</span><span class="tp-chg neu-chip" id="tp-surplus-c">—</span></div>
+      <div class="tp"><span class="tp-sym">NET WORTH</span><span class="tp-val" id="tp-nw">—</span><span class="tp-chg neu-chip" id="tp-nw-c">—</span></div>
+      <div class="tp"><span class="tp-sym">MF PORTFOLIO</span><span class="tp-val" id="tp-mf">—</span><span class="tp-chg neu-chip">NAV</span></div>
+      <div class="tp"><div class="live-dot"></div><span class="tp-sym" style="margin-left:4px">LIVE</span></div>
+      <div class="tp-scroll">
+        <div class="tp-inner" id="tp-scroll-inner">
+          <!-- filled by JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- NEXUS-STYLE FINANCE STRIP -->
+    <div id="fin-strip">
+      <div class="fs-label">💼 PORTFOLIO</div>
+      <div class="fs-pill"><span class="fs-key">INCOME</span><span class="fs-val" id="fs-income">—</span></div>
+      <div class="fs-pill"><span class="fs-key">EXPENSES</span><span class="fs-val" id="fs-expenses">—</span></div>
+      <div class="fs-pill"><span class="fs-key">SAVINGS RATE</span><span class="fs-val" id="fs-rate">—</span></div>
+      <div class="fs-scroll">
+        <div class="fs-inner" id="fs-scroll-inner">
+          <!-- filled by JS -->
+        </div>
       </div>
     </div>
 
     <!-- ── DASHBOARD ── -->
     <div class="page active" id="page-dashboard">
+      <!-- GREETING BANNER -->
+      <div style="background:linear-gradient(135deg,#0d1117 0%,#1c2333 60%,#0d1117 100%);border-radius:14px;padding:20px 24px;display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;overflow:hidden;border:1px solid rgba(41,98,255,.15);position:relative">
+        <div style="position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 80% 50%,rgba(41,98,255,.12) 0%,transparent 70%),radial-gradient(ellipse 40% 60% at 20% 80%,rgba(8,153,129,.07) 0%,transparent 70%);pointer-events:none"></div>
+        <div style="position:relative;z-index:1">
+          <div id="greeting-hi" style="font-family:var(--fd,sans-serif);font-size:22px;font-weight:800;color:#fff;letter-spacing:-.5px">Good morning, <span id="greeting-name" style="background:linear-gradient(135deg,#60a5fa,#818cf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">there</span> &#x1F44B;</div>
+          <div id="greeting-sub" style="font-size:12px;color:rgba(255,255,255,.4);margin-top:5px">Your financial overview for today</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:20px;position:relative;z-index:1">
+          <div style="display:flex;gap:18px;align-items:center">
+            <div style="text-align:center"><div id="gs-income" style="font-family:var(--fm);font-size:17px;font-weight:700;color:#fff">—</div><div style="font-size:9px;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.8px;margin-top:2px">Income</div></div>
+            <div style="width:1px;height:32px;background:rgba(255,255,255,.1)"></div>
+            <div style="text-align:center"><div id="gs-surplus" style="font-family:var(--fm);font-size:17px;font-weight:700;color:#fff">—</div><div style="font-size:9px;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.8px;margin-top:2px">Surplus</div></div>
+            <div style="width:1px;height:32px;background:rgba(255,255,255,.1)"></div>
+            <div style="text-align:center"><div id="gs-nw" style="font-family:var(--fm);font-size:17px;font-weight:700;color:#fff">—</div><div style="font-size:9px;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.8px;margin-top:2px">Net Worth</div></div>
+          </div>
+          <div id="greeting-av" style="width:54px;height:54px;border-radius:50%;background:linear-gradient(135deg,#2962ff,#6e40ff);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:20px;color:#fff;border:2.5px solid rgba(41,98,255,.45);overflow:hidden;flex-shrink:0;box-shadow:0 4px 20px rgba(41,98,255,.4)"><span id="greeting-av-letter">?</span></div>
+        </div>
+      </div>
+
+      <!-- Preset chips like NEXUS -->
+      <div class="preset-row">
+        <div class="preset-chip" onclick="doPreset(this)">📊 Monthly Briefing</div>
+        <div class="preset-chip gold-chip" onclick="doPreset(this)">🪙 Gold Analysis</div>
+        <div class="preset-chip" onclick="doPreset(this)">💰 Budget Check</div>
+        <div class="preset-chip" onclick="doPreset(this)">📈 Investment Review</div>
+        <div class="preset-chip" onclick="doPreset(this)">🏦 Chit Status</div>
+        <div class="preset-chip" onclick="doPreset(this)">🧾 Tax Summary</div>
+      </div>
+
       <div class="kgrid">
         <div class="kpi gold"><div class="kpi-icon">₹</div><div class="kpi-label">Monthly Income</div><div class="kpi-val" id="d-inc">—</div><div class="kpi-sub">This month</div></div>
         <div class="kpi red"><div class="kpi-icon">↓</div><div class="kpi-label">Expenses</div><div class="kpi-val" id="d-exp">—</div><div class="kpi-sub">This month</div></div>
@@ -194,8 +232,22 @@
         <div class="kpi blue"><div class="kpi-icon">↗</div><div class="kpi-label">Invested</div><div class="kpi-val" id="d-inv">—</div><div class="kpi-sub">MF + NPS + Chits</div></div>
       </div>
       <div class="g2 mb">
-        <div class="kpi navy card-glass"><div class="kpi-label">Net Worth</div><div class="kpi-val" id="d-nw">—</div><div class="kpi-sub">Assets − Liabilities</div></div>
-        <div class="kpi amber"><div class="kpi-label">Gold Portfolio</div><div class="kpi-val" id="d-gold-mini">—</div><div class="kpi-sub" id="d-gold-mini-sub">Click Gold tab for live rates</div></div>
+        <div class="kpi navy"><div class="kpi-label">Net Worth</div><div class="kpi-val" id="d-nw">—</div><div class="kpi-sub">Assets − Liabilities</div></div>
+        <div class="kpi amber"><div class="kpi-label">Gold Portfolio (24K)</div><div class="kpi-val" id="d-gold-val">—</div><div class="kpi-sub" id="d-gold-sub">Click Gold tab →</div></div>
+      </div>
+
+      <!-- Auto-scan feed (NEXUS style) -->
+      <div id="scan-feed" class="scan-feed"></div>
+
+      <!-- NEXUS-style heatmap for expense categories -->
+      <div class="card mb">
+        <div class="card-head">
+          <div><div class="card-title">Expense Heatmap</div><div class="card-sub">Category intensity — darker = higher spend</div></div>
+          <span style="font-size:10px;color:var(--muted)">This month</span>
+        </div>
+        <div class="card-body">
+          <div class="hm-grid" id="exp-heatmap"></div>
+        </div>
       </div>
 
       <!-- Mini gold widget -->
@@ -203,17 +255,14 @@
 
       <div class="g2 mb">
         <div class="card">
-          <div class="card-head">
-            <div><div class="card-title">Cash Flow — 6 Months</div><div class="card-sub">Income vs expenses</div></div>
-          </div>
-          <div class="card-body">
-            <div class="chart-wrap" style="height:220px"><canvas id="cashflow-chart"></canvas></div>
-          </div>
+          <div class="card-head"><div><div class="card-title">Cash Flow — 6 Months</div><div class="card-sub">Income vs expenses</div></div></div>
+          <div class="card-body"><div class="chart-wrap" style="height:200px"><canvas id="cashflow-chart"></canvas></div></div>
         </div>
         <div class="card">
-          <div class="card-head"><div><div class="card-title">Surplus Trend</div><div class="card-sub">Monthly net savings</div></div></div>
+          <div class="card-head"><div><div class="card-title">Spending Breakdown</div><div class="card-sub">This month by category</div></div></div>
           <div class="card-body">
-            <div class="chart-wrap" style="height:220px"><canvas id="surplus-line"></canvas></div>
+            <div class="chart-wrap" style="height:150px;margin-bottom:12px"><canvas id="exp-donut-dash"></canvas></div>
+            <div id="exp-donut-legend"></div>
           </div>
         </div>
       </div>
@@ -224,11 +273,8 @@
           <div class="tbl-wrap"><table><thead><tr><th>Description</th><th>Category</th><th>Amount</th><th>Date</th></tr></thead><tbody id="d-recent"></tbody></table></div>
         </div>
         <div class="card">
-          <div class="card-head"><div><div class="card-title">Spending Breakdown</div><div class="card-sub">This month by category</div></div></div>
-          <div class="card-body">
-            <div class="chart-wrap" style="height:170px;margin-bottom:14px"><canvas id="exp-donut-dash"></canvas></div>
-            <div id="exp-donut-legend"></div>
-          </div>
+          <div class="card-head"><div><div class="card-title">Surplus Trend</div><div class="card-sub">Monthly net savings</div></div></div>
+          <div class="card-body"><div class="chart-wrap" style="height:200px"><canvas id="surplus-line"></canvas></div></div>
         </div>
       </div>
     </div>
@@ -244,20 +290,14 @@
       <div class="month-tabs" id="ie-tabs"></div>
       <div class="g2">
         <div class="card">
-          <div class="card-head"><div><div class="card-title">Income</div><div class="card-sub" id="ie-ic">—</div></div><button class="btn btn-green btn-sm" onclick="openModal('add-inc-modal')">+ Add Income</button></div>
+          <div class="card-head"><div><div class="card-title">Income</div><div class="card-sub" id="ie-ic">—</div></div><button class="btn btn-green btn-sm" onclick="openModal('add-inc-modal')">+ Income</button></div>
           <div id="ie-inc-list"></div>
-          <div style="padding:11px 18px;border-top:1px solid var(--bdr);display:flex;justify-content:space-between;align-items:center">
-            <span style="font-size:12px;color:var(--t3);font-family:var(--fh);font-weight:600;letter-spacing:.4px;text-transform:uppercase">Total</span>
-            <span style="font-family:var(--fm);font-weight:700;color:var(--green)" id="ie-inc-tot">—</span>
-          </div>
+          <div style="padding:9px 14px;border-top:1px solid var(--border);display:flex;justify-content:space-between"><span style="font-family:var(--fh);font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--muted)">Total</span><span style="font-family:var(--fm);font-weight:700;color:var(--green)" id="ie-inc-tot">—</span></div>
         </div>
         <div class="card">
-          <div class="card-head"><div><div class="card-title">Expenses</div><div class="card-sub" id="ie-ec">—</div></div><button class="btn btn-red btn-sm" onclick="openModal('add-exp-modal')">+ Add Expense</button></div>
+          <div class="card-head"><div><div class="card-title">Expenses</div><div class="card-sub" id="ie-ec">—</div></div><button class="btn btn-red btn-sm" onclick="openModal('add-exp-modal')">+ Expense</button></div>
           <div id="ie-exp-list"></div>
-          <div style="padding:11px 18px;border-top:1px solid var(--bdr);display:flex;justify-content:space-between;align-items:center">
-            <span style="font-size:12px;color:var(--t3);font-family:var(--fh);font-weight:600;letter-spacing:.4px;text-transform:uppercase">Total</span>
-            <span style="font-family:var(--fm);font-weight:700;color:var(--red)" id="ie-exp-tot">—</span>
-          </div>
+          <div style="padding:9px 14px;border-top:1px solid var(--border);display:flex;justify-content:space-between"><span style="font-family:var(--fh);font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--muted)">Total</span><span style="font-family:var(--fm);font-weight:700;color:var(--red)" id="ie-exp-tot">—</span></div>
         </div>
       </div>
     </div>
@@ -277,17 +317,17 @@
         </div>
         <div class="card">
           <div class="card-head"><div><div class="card-title">Allocation</div></div></div>
-          <div class="card-body"><div class="chart-wrap" style="height:200px"><canvas id="mf-pie"></canvas></div></div>
+          <div class="card-body"><div class="chart-wrap" style="height:190px"><canvas id="mf-pie"></canvas></div></div>
         </div>
       </div>
       <div class="card">
         <div class="card-head"><div><div class="card-title">SIP Projection — 12% CAGR</div></div></div>
         <div class="card-body">
-          <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap">
-            <label style="font-family:var(--fh);font-size:12px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--t2)">Monthly SIP Amount:</label>
-            <input type="number" class="fi" style="width:140px" id="proj-sip" value="5000" oninput="updateProj()">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+            <label style="font-family:var(--fh);font-size:10px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--sub)">Monthly SIP:</label>
+            <input type="number" class="fi" style="width:120px" id="proj-sip" value="5000" oninput="updateProj()">
           </div>
-          <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:10px" id="proj-out"></div>
+          <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:8px" id="proj-out"></div>
         </div>
       </div>
     </div>
@@ -300,52 +340,33 @@
         <div class="kpi navy"><div class="kpi-label">MCX India (24K)</div><div class="kpi-val" id="g-mcx">—</div><div class="kpi-sub">Per 10 grams</div></div>
         <div class="kpi green"><div class="kpi-label">24K Per Gram</div><div class="kpi-val" id="g-gram">—</div><div class="kpi-sub">Indicative</div></div>
       </div>
-
-      <div class="card gold-widget mb" id="gold-full-widget">
-        <div class="gold-loading">
-          <div class="skeleton sk-line w50" style="margin:0 auto 8px"></div>
-          <div class="skeleton sk-line w30" style="margin:0 auto"></div>
-        </div>
-      </div>
-
+      <div class="card mb" id="gold-full-widget"><div class="gold-loading">Fetching live rates…</div></div>
       <div class="g2 mb">
         <div class="card">
-          <div class="card-head"><div><div class="card-title">Your Gold Holdings Calculator</div><div class="card-sub">See current value and Comex sensitivity</div></div></div>
+          <div class="card-head"><div><div class="card-title">Your Gold Holdings Calculator</div></div></div>
           <div class="card-body">
-            <div class="fgrid" style="margin-bottom:16px">
+            <div class="fgrid" style="margin-bottom:14px">
               <div class="fg"><label class="fl">Your gold (grams)</label><input class="fi" id="gold-grams" type="number" value="100" oninput="calcGoldImpact()"></div>
-              <div class="fg"><label class="fl">Purity</label>
-                <select class="fi" id="gold-purity" onchange="calcGoldImpact()">
-                  <option value="1">24K (999)</option>
-                  <option value="0.9167">22K (916)</option>
-                  <option value="0.75">18K (750)</option>
-                  <option value="0.585">14K (585)</option>
-                </select>
-              </div>
+              <div class="fg"><label class="fl">Purity</label><select class="fi" id="gold-purity" onchange="calcGoldImpact()"><option value="1">24K (999)</option><option value="0.9167">22K (916)</option><option value="0.75">18K (750)</option><option value="0.585">14K (585)</option></select></div>
             </div>
-            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px" id="gold-impact-out">
-              <div class="stat"><div class="stat-label">Current Value</div><div class="stat-val">—</div></div>
-              <div class="stat"><div class="stat-label">Today's Change</div><div class="stat-val">—</div></div>
-              <div class="stat"><div class="stat-label">If Comex +$1</div><div class="stat-val">—</div></div>
-            </div>
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px" id="gold-impact-out"></div>
           </div>
         </div>
         <div class="card">
           <div class="card-head"><div><div class="card-title">MCX Price Formula</div></div></div>
           <div class="card-body">
-            <div style="font-size:13px;color:var(--t2);line-height:2.2">
-              <div><strong style="font-family:var(--fh);color:var(--gold4);letter-spacing:.3px">BASE</strong> = (Comex $/oz × USD/INR) ÷ 31.1035 × 10</div>
-              <div><strong style="font-family:var(--fh);color:var(--gold4);letter-spacing:.3px">DUTY</strong> = Base × 1.15 &nbsp;(+15% import duty)</div>
-              <div><strong style="font-family:var(--fh);color:var(--gold4);letter-spacing:.3px">GST</strong> &nbsp;= Duty × 1.03 &nbsp;(+3% GST)</div>
+            <div style="font-size:12px;color:var(--sub);line-height:2.2">
+              <div><strong style="font-family:var(--fh);color:var(--gold-dk);letter-spacing:.3px">BASE</strong> = (Comex $/oz × USD/INR) ÷ 31.1035 × 10</div>
+              <div><strong style="font-family:var(--fh);color:var(--gold-dk)">DUTY</strong> = Base × 1.15 (+15% import duty)</div>
+              <div><strong style="font-family:var(--fh);color:var(--gold-dk)">GST</strong> = Duty × 1.03 (+3% GST)</div>
             </div>
-            <div style="margin-top:14px;padding:12px;background:var(--bg);border:1px solid var(--bdr);border-radius:var(--r-sm);font-family:var(--fm);font-size:12px;color:var(--t1)" id="gold-formula-live">Fetching rates…</div>
-            <div style="margin-top:10px;font-size:11px;color:var(--t3);line-height:1.6">Note: Actual jeweller price includes making charges (₹200–600/g). Bank gold coin includes 3–5% premium. MCX shows nearest futures price.</div>
+            <div style="margin-top:12px;padding:10px;background:var(--paper);border:1px solid var(--border);border-radius:var(--r);font-family:var(--fm);font-size:11px;color:var(--head)" id="gold-formula-live">Fetching rates…</div>
+            <div style="margin-top:8px;font-size:10px;color:var(--muted);line-height:1.6">Note: Actual jeweller price includes making charges (₹200–600/g). Bank coin includes 3–5% premium.</div>
           </div>
         </div>
       </div>
-
       <div class="card">
-        <div class="card-head"><div><div class="card-title">Comex Sensitivity Table</div><div class="card-sub">Every $1 move in Comex → this much change in Indian gold price</div></div></div>
+        <div class="card-head"><div><div class="card-title">Comex Sensitivity Table</div><div class="card-sub">Every $1 Comex move → Indian gold impact</div></div></div>
         <div class="tbl-wrap" id="gold-sensitivity"></div>
       </div>
     </div>
@@ -358,10 +379,7 @@
         <div class="kpi green"><div class="kpi-label">Total Paid</div><div class="kpi-val" id="cf-paid">—</div></div>
         <div class="kpi teal"><div class="kpi-label">Expected Payout</div><div class="kpi-val" id="cf-exp">—</div></div>
       </div>
-      <div class="section-hdr">
-        <div class="section-hdr-title">Chit Groups</div>
-        <button class="btn btn-navy" onclick="openModal('add-chit-modal')">+ Add Chit Fund</button>
-      </div>
+      <div class="section-hdr"><div class="section-hdr-title">Chit Groups</div><button class="btn btn-navy" onclick="openModal('add-chit-modal')">+ Add Chit Fund</button></div>
       <div class="g3 mb" id="chit-cards"></div>
       <div class="card">
         <div class="card-head"><div><div class="card-title">Payment Log</div><div class="card-sub">Monthly chit payment history</div></div><button class="btn btn-outline btn-sm" onclick="openModal('add-cpay-modal')">+ Record Payment</button></div>
@@ -395,15 +413,9 @@
         <div class="card-head"><div><div class="card-title">Insurance Policies</div></div><button class="btn btn-navy btn-sm" onclick="openModal('add-ins-modal')">+ Add Policy</button></div>
         <div class="tbl-wrap"><table><thead><tr><th>Policy</th><th>Type</th><th>Annual</th><th>Coverage</th><th>Renewal</th><th>Status</th><th></th></tr></thead><tbody id="ins-tbl"></tbody></table></div>
       </div>
-      <div class="card">
-        <div class="card-head"><div><div class="card-title">Recommendations</div></div></div>
-        <div class="card-body" style="display:flex;flex-direction:column;gap:10px">
-          <div class="alert alert-ok"><span>✓</span><span><strong>Term Insurance:</strong> ₹1,300/mo is good. Confirm cover ≥ ₹50L (20× annual income of ~₹2.64L).</span></div>
-          <div class="alert" style="background:var(--amber-bg);border-color:rgba(184,104,10,.2);color:var(--amber)"><span>⚠</span><span><strong>Life Insurance ₹1L/year:</strong> Endowment gives 4–6% only. After 5+ years, check surrender value vs index fund returns.</span></div>
-          <div class="alert alert-ok"><span>✓</span><span><strong>Health Insurance:</strong> ₹25k/year good. Add super top-up (₹50L cover) for ₹3–5k/year extra.</span></div>
-          <div class="alert alert-info"><span>+</span><span><strong>Gap:</strong> Personal Accident cover — ₹25L disability cover for ~₹600–1,000/year.</span></div>
-        </div>
-      </div>
+      <!-- NEXUS news card style recommendations -->
+      <div class="card-head" style="background:var(--white);border:1px solid var(--border);border-radius:var(--r) var(--r) 0 0"><div><div class="card-title">Recommendations</div></div></div>
+      <div id="ins-recs-list" style="border:1px solid var(--border);border-top:none;border-radius:0 0 var(--radius) var(--radius);padding:8px" style="border:1px solid var(--border);border-top:none;border-radius:0 0 var(--r) var(--r);padding:8px"></div>
     </div>
 
     <!-- ── TAX PLANNING ── -->
@@ -425,16 +437,13 @@
       <div class="card mb">
         <div class="card-head"><div><div class="card-title">Emergency Fund Status</div><div class="card-sub">Target: 6 months of expenses</div></div></div>
         <div class="card-body">
-          <div class="stat-grid" style="grid-template-columns:repeat(3,1fr)">
+          <div class="stat-grid">
             <div class="stat"><div class="stat-label">Monthly Expenses</div><div class="stat-val" id="ef-mo">—</div></div>
             <div class="stat"><div class="stat-label">6-Month Target</div><div class="stat-val" id="ef-tgt">—</div></div>
-            <div class="stat"><div class="stat-label">Current Balance</div><div class="stat-val"><input type="number" class="fi" id="ef-bal" placeholder="Enter balance" style="text-align:center;font-weight:700;font-size:13px" oninput="updateEF()"></div></div>
+            <div class="stat"><div class="stat-label">Current Balance</div><div class="stat-val"><input type="number" class="fi" id="ef-bal" placeholder="Enter balance" style="text-align:center;font-weight:700;font-size:12px" oninput="updateEF()"></div></div>
           </div>
-          <div class="progress" style="height:8px;margin-bottom:8px"><div class="progress-fill" id="ef-prog" style="background:var(--navy);width:0%"></div></div>
-          <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--t3)">
-            <span id="ef-pct">0% funded</span>
-            <span id="ef-gap">Shortfall: —</span>
-          </div>
+          <div class="progress" style="height:6px;margin-bottom:6px"><div class="progress-fill" id="ef-prog" style="background:var(--gold);width:0%"></div></div>
+          <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted)"><span id="ef-pct">0% funded</span><span id="ef-gap">Shortfall: —</span></div>
         </div>
       </div>
       <div class="card">
@@ -443,16 +452,30 @@
       </div>
     </div>
 
-    <!-- ── FINANCIAL HEALTH ── -->
+    <!-- ── FINANCIAL HEALTH — NEXUS SIGNAL CARDS ── -->
     <div class="page" id="page-health">
-      <div class="card mb">
-        <div class="card-head"><div><div class="card-title">Financial Health Metrics</div><div class="card-sub">6 key ratios — scored automatically</div></div></div>
-        <div class="card-body" id="health-metrics"></div>
+      <!-- Sentiment bars (NEXUS style) -->
+      <div class="g2 mb">
+        <div class="sent-card">
+          <div class="sent-title">Savings Health Score</div>
+          <div class="sent-big" id="health-score-display">
+            <div class="sent-num" id="health-score-num" style="color:var(--green)">—</div>
+            <div class="sent-lbl" id="health-score-lbl" style="color:var(--green)">LOADING</div>
+          </div>
+        </div>
+        <div class="sent-card">
+          <div class="sent-title">Key Ratios</div>
+          <div id="health-bars"></div>
+        </div>
       </div>
-      <div class="card">
-        <div class="card-head"><div><div class="card-title">Priority Action Plan</div></div></div>
-        <div class="card-body" id="health-actions" style="display:flex;flex-direction:column;gap:8px"></div>
-      </div>
+
+      <!-- Signal cards (NEXUS BUY/SELL/HOLD → GOOD/REVIEW/CRITICAL) -->
+      <div class="section-hdr"><div class="section-hdr-title">Health Signal Scanner</div><span style="font-size:10px;color:var(--muted)">Auto-assessed from your live data</span></div>
+      <div id="health-signals"></div>
+
+      <!-- Priority action plan as NEXUS news cards -->
+      <div class="section-hdr" style="margin-top:16px"><div class="section-hdr-title">Priority Action Feed</div></div>
+      <div id="health-actions"></div>
     </div>
 
     <!-- ── MONTHLY TRACKER ── -->
@@ -464,10 +487,7 @@
         <div class="kpi gold"><div class="kpi-label">Surplus / Deficit</div><div class="kpi-val" id="mo-sur">—</div></div>
         <div class="kpi navy"><div class="kpi-label">Savings Rate</div><div class="kpi-val" id="mo-rate">—</div></div>
       </div>
-      <div class="card">
-        <div class="card-head"><div><div class="card-title">Category Breakdown</div></div></div>
-        <div class="card-body" id="mo-cats"></div>
-      </div>
+      <div class="card"><div class="card-head"><div><div class="card-title">Category Breakdown</div></div></div><div class="card-body" id="mo-cats"></div></div>
     </div>
 
     <!-- ── NET WORTH ── -->
@@ -479,149 +499,27 @@
         <div class="kpi navy"><div class="kpi-label">Change</div><div class="kpi-val" id="nw-ch">—</div></div>
       </div>
       <div class="g2">
-        <div class="card">
-          <div class="card-head"><div><div class="card-title">Assets</div></div><button class="btn btn-green btn-sm" onclick="openModal('add-asset-modal')">+ Add Asset</button></div>
-          <div class="tbl-wrap"><table><thead><tr><th>Asset</th><th>Type</th><th>Value</th><th>Updated</th><th></th></tr></thead><tbody id="assets-tbl"></tbody></table></div>
-        </div>
-        <div class="card">
-          <div class="card-head"><div><div class="card-title">Liabilities</div></div><button class="btn btn-outline btn-sm" onclick="openModal('add-liab-modal')">+ Add Liability</button></div>
-          <div class="tbl-wrap"><table><thead><tr><th>Liability</th><th>Type</th><th>Amount</th><th>Updated</th><th></th></tr></thead><tbody id="liab-tbl"></tbody></table></div>
-        </div>
+        <div class="card"><div class="card-head"><div><div class="card-title">Assets</div></div><button class="btn btn-green btn-sm" onclick="openModal('add-asset-modal')">+ Asset</button></div><div class="tbl-wrap"><table><thead><tr><th>Asset</th><th>Type</th><th>Value</th><th>Updated</th><th></th></tr></thead><tbody id="assets-tbl"></tbody></table></div></div>
+        <div class="card"><div class="card-head"><div><div class="card-title">Liabilities</div></div><button class="btn btn-outline btn-sm" onclick="openModal('add-liab-modal')">+ Liability</button></div><div class="tbl-wrap"><table><thead><tr><th>Liability</th><th>Type</th><th>Amount</th><th>Updated</th><th></th></tr></thead><tbody id="liab-tbl"></tbody></table></div></div>
       </div>
     </div>
 
   </div><!-- /main -->
 </div><!-- /app -->
 
-<!-- ═══════════════════════════════════════
-   MODALS
-═══════════════════════════════════════ -->
-<div class="mov" id="add-inc-modal"><div class="modal">
-  <div class="modal-title">Add Income</div>
-  <div class="fgrid">
-    <div class="fg fspan"><label class="fl">Description</label><input class="fi" id="ii-desc" placeholder="e.g. Monthly salary"></div>
-    <div class="fg"><label class="fl">Amount (₹)</label><input class="fi" id="ii-amt" type="number"></div>
-    <div class="fg"><label class="fl">Category</label><select class="fi" id="ii-cat"><option>Salary</option><option>Business</option><option>Freelance</option><option>Chit Payout</option><option>Dividends</option><option>Other</option></select></div>
-    <div class="fg"><label class="fl">Date</label><input class="fi" id="ii-date" type="date"></div>
-    <div class="fg fspan"><label class="fl">Notes (optional)</label><input class="fi" id="ii-note" placeholder="Optional"></div>
-  </div>
-  <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('add-inc-modal')">Cancel</button><button class="btn btn-green" onclick="addIncome()">Save Income</button></div>
-</div></div>
+<!-- ═══ MODALS ═══ -->
+<div class="mov" id="add-inc-modal"><div class="modal"><div class="modal-title">Add Income</div><div class="fgrid"><div class="fg fspan"><label class="fl">Description</label><input class="fi" id="ii-desc" placeholder="e.g. Monthly salary"></div><div class="fg"><label class="fl">Amount (₹)</label><input class="fi" id="ii-amt" type="number"></div><div class="fg"><label class="fl">Category</label><select class="fi" id="ii-cat"><option>Salary</option><option>Business</option><option>Freelance</option><option>Chit Payout</option><option>Dividends</option><option>Other</option></select></div><div class="fg"><label class="fl">Date</label><input class="fi" id="ii-date" type="date"></div><div class="fg fspan"><label class="fl">Notes</label><input class="fi" id="ii-note" placeholder="Optional"></div></div><div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('add-inc-modal')">Cancel</button><button class="btn btn-green" onclick="addIncome()">Save Income</button></div></div></div>
+<div class="mov" id="add-exp-modal"><div class="modal"><div class="modal-title">Add Expense</div><div class="fgrid"><div class="fg fspan"><label class="fl">Description</label><input class="fi" id="ei-desc" placeholder="e.g. House rent"></div><div class="fg"><label class="fl">Amount (₹)</label><input class="fi" id="ei-amt" type="number"></div><div class="fg"><label class="fl">Category</label><select class="fi" id="ei-cat"><option>Housing</option><option>Utilities</option><option>Food</option><option>Transport</option><option>Education</option><option>Health</option><option>Insurance</option><option>NPS</option><option>Mutual Funds</option><option>Chit Funds</option><option>Entertainment</option><option>Shopping</option><option>Other</option></select></div><div class="fg"><label class="fl">Date</label><input class="fi" id="ei-date" type="date"></div><div class="fg fspan"><label class="fl">Notes</label><input class="fi" id="ei-note" placeholder="Optional"></div></div><div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('add-exp-modal')">Cancel</button><button class="btn btn-red" onclick="addExpense()">Save Expense</button></div></div></div>
+<div class="mov" id="add-mf-modal"><div class="modal"><div class="modal-title">Add Mutual Fund</div><div class="fgrid"><div class="fg fspan"><label class="fl">Fund Name</label><input class="fi" id="mfi-name" placeholder="e.g. Nifty 50 Index — Direct"></div><div class="fg"><label class="fl">Category</label><select class="fi" id="mfi-cat"><option>India Index</option><option>India Active</option><option>US/International</option><option>Debt/Hybrid</option><option>ELSS</option></select></div><div class="fg"><label class="fl">Monthly SIP (₹)</label><input class="fi" id="mfi-sip" type="number" placeholder="2000"></div><div class="fg"><label class="fl">Units Held</label><input class="fi" id="mfi-units" type="number" step="0.001" placeholder="0"></div><div class="fg"><label class="fl">Current NAV (₹)</label><input class="fi" id="mfi-nav" type="number" step="0.01" placeholder="0"></div><div class="fg"><label class="fl">Started</label><input class="fi" id="mfi-start" placeholder="Mar-26"></div></div><div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('add-mf-modal')">Cancel</button><button class="btn btn-navy" onclick="addMF()">Save Fund</button></div></div></div>
+<div class="mov" id="add-chit-modal"><div class="modal"><div class="modal-title">Add Chit Fund</div><div class="fgrid"><div class="fg fspan"><label class="fl">Name</label><input class="fi" id="ci-name" placeholder="e.g. Mahalakshmi 10L"></div><div class="fg"><label class="fl">Chit Value (₹)</label><input class="fi" id="ci-val" type="number" placeholder="1000000"></div><div class="fg"><label class="fl">Total Months</label><input class="fi" id="ci-mo" type="number" placeholder="20"></div><div class="fg"><label class="fl">Months Done</label><input class="fi" id="ci-done" type="number" placeholder="0"></div><div class="fg"><label class="fl">Current Monthly (₹)</label><input class="fi" id="ci-pm" type="number"></div><div class="fg"><label class="fl">Start Month</label><input class="fi" id="ci-start" placeholder="Jan-26"></div><div class="fg"><label class="fl">Commission %</label><input class="fi" id="ci-comm" type="number" placeholder="5"></div><div class="fg"><label class="fl">Status</label><select class="fi" id="ci-status"><option>Active</option><option>Prize Taken</option><option>Completing</option><option>Planned</option></select></div></div><div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('add-chit-modal')">Cancel</button><button class="btn btn-gold" onclick="addChit()">Save Chit</button></div></div></div>
+<div class="mov" id="add-cpay-modal"><div class="modal"><div class="modal-title">Record Chit Payment</div><div class="fgrid"><div class="fg"><label class="fl">Month</label><input class="fi" id="cp-mo" placeholder="Mar-26"></div><div class="fg"><label class="fl">Chit Fund</label><select class="fi" id="cp-chit"></select></div><div class="fg"><label class="fl">Amount (₹)</label><input class="fi" id="cp-amt" type="number"></div><div class="fg"><label class="fl">Status</label><select class="fi" id="cp-st"><option>Paid</option><option>Pending</option><option>Overdue</option></select></div><div class="fg fspan"><label class="fl">Notes</label><input class="fi" id="cp-note"></div></div><div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('add-cpay-modal')">Cancel</button><button class="btn btn-gold" onclick="addChitPay()">Save Payment</button></div></div></div>
+<div class="mov" id="add-inv-modal"><div class="modal"><div class="modal-title">Add Investment</div><div class="fgrid"><div class="fg fspan"><label class="fl">Name</label><input class="fi" id="ivi-name" placeholder="e.g. NPS Personal Tier 1"></div><div class="fg"><label class="fl">Type</label><select class="fi" id="ivi-type"><option>NPS</option><option>Gold SGB</option><option>Gold ETF</option><option>Physical Gold</option><option>Direct Stocks India</option><option>US Stocks</option><option>PPF</option><option>FD</option><option>EPF</option><option>Real Estate</option><option>Other</option></select></div><div class="fg"><label class="fl">Monthly (₹)</label><input class="fi" id="ivi-mo" type="number"></div><div class="fg"><label class="fl">Current Value (₹)</label><input class="fi" id="ivi-val" type="number"></div><div class="fg"><label class="fl">Target (₹)</label><input class="fi" id="ivi-tgt" type="number"></div><div class="fg"><label class="fl">Notes</label><input class="fi" id="ivi-note"></div></div><div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('add-inv-modal')">Cancel</button><button class="btn btn-navy" onclick="addInv()">Save</button></div></div></div>
+<div class="mov" id="add-ins-modal"><div class="modal"><div class="modal-title">Add Insurance Policy</div><div class="fgrid"><div class="fg fspan"><label class="fl">Policy Name</label><input class="fi" id="ini-name" placeholder="e.g. LIC Term Insurance"></div><div class="fg"><label class="fl">Type</label><select class="fi" id="ini-type"><option>Term Life</option><option>Life/Endowment</option><option>Health</option><option>Vehicle</option><option>Personal Accident</option><option>Other</option></select></div><div class="fg"><label class="fl">Annual Premium (₹)</label><input class="fi" id="ini-prem" type="number"></div><div class="fg"><label class="fl">Sum Assured (₹)</label><input class="fi" id="ini-cov" type="number"></div><div class="fg"><label class="fl">Renewal Date</label><input class="fi" id="ini-ren" type="date"></div><div class="fg"><label class="fl">Status</label><select class="fi" id="ini-st"><option>Active</option><option>Lapsed</option><option>Maturing</option></select></div></div><div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('add-ins-modal')">Cancel</button><button class="btn btn-navy" onclick="addIns()">Save Policy</button></div></div></div>
+<div class="mov" id="add-goal-modal"><div class="modal"><div class="modal-title">Add Financial Goal</div><div class="fgrid"><div class="fg fspan"><label class="fl">Goal Name</label><input class="fi" id="gi-name" placeholder="e.g. Home Down Payment"></div><div class="fg"><label class="fl">Target (₹)</label><input class="fi" id="gi-tgt" type="number"></div><div class="fg"><label class="fl">Timeline (years)</label><input class="fi" id="gi-yr" type="number"></div><div class="fg"><label class="fl">Saved So Far (₹)</label><input class="fi" id="gi-saved" type="number"></div></div><div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('add-goal-modal')">Cancel</button><button class="btn btn-navy" onclick="addGoal()">Save Goal</button></div></div></div>
+<div class="mov" id="add-asset-modal"><div class="modal"><div class="modal-title">Add Asset</div><div class="fgrid"><div class="fg fspan"><label class="fl">Asset Name</label><input class="fi" id="ai-name" placeholder="e.g. Savings Account"></div><div class="fg"><label class="fl">Type</label><select class="fi" id="ai-type"><option>Cash/Savings</option><option>Mutual Funds</option><option>NPS</option><option>Chit Fund</option><option>Stocks</option><option>Gold</option><option>PPF/FD</option><option>Real Estate</option><option>Vehicle</option><option>Other</option></select></div><div class="fg"><label class="fl">Value (₹)</label><input class="fi" id="ai-val" type="number"></div><div class="fg fspan"><label class="fl">Notes</label><input class="fi" id="ai-note"></div></div><div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('add-asset-modal')">Cancel</button><button class="btn btn-green" onclick="addAsset()">Save Asset</button></div></div></div>
+<div class="mov" id="add-liab-modal"><div class="modal"><div class="modal-title">Add Liability</div><div class="fgrid"><div class="fg fspan"><label class="fl">Name</label><input class="fi" id="li-name" placeholder="e.g. Personal Loan"></div><div class="fg"><label class="fl">Type</label><select class="fi" id="li-type"><option>Personal Loan</option><option>Vehicle Loan</option><option>Home Loan</option><option>Credit Card</option><option>Other</option></select></div><div class="fg"><label class="fl">Amount (₹)</label><input class="fi" id="li-amt" type="number"></div><div class="fg fspan"><label class="fl">Notes</label><input class="fi" id="li-note"></div></div><div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('add-liab-modal')">Cancel</button><button class="btn btn-red" onclick="addLiab()">Save Liability</button></div></div></div>
 
-<div class="mov" id="add-exp-modal"><div class="modal">
-  <div class="modal-title">Add Expense</div>
-  <div class="fgrid">
-    <div class="fg fspan"><label class="fl">Description</label><input class="fi" id="ei-desc" placeholder="e.g. House rent"></div>
-    <div class="fg"><label class="fl">Amount (₹)</label><input class="fi" id="ei-amt" type="number"></div>
-    <div class="fg"><label class="fl">Category</label><select class="fi" id="ei-cat"><option>Housing</option><option>Utilities</option><option>Food</option><option>Transport</option><option>Education</option><option>Health</option><option>Insurance</option><option>NPS</option><option>Mutual Funds</option><option>Chit Funds</option><option>Entertainment</option><option>Shopping</option><option>Other</option></select></div>
-    <div class="fg"><label class="fl">Date</label><input class="fi" id="ei-date" type="date"></div>
-    <div class="fg fspan"><label class="fl">Notes (optional)</label><input class="fi" id="ei-note" placeholder="Optional"></div>
-  </div>
-  <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('add-exp-modal')">Cancel</button><button class="btn btn-red" onclick="addExpense()">Save Expense</button></div>
-</div></div>
-
-<div class="mov" id="add-mf-modal"><div class="modal">
-  <div class="modal-title">Add Mutual Fund</div>
-  <div class="fgrid">
-    <div class="fg fspan"><label class="fl">Fund Name</label><input class="fi" id="mfi-name" placeholder="e.g. Nifty 50 Index — Direct"></div>
-    <div class="fg"><label class="fl">Category</label><select class="fi" id="mfi-cat"><option>India Index</option><option>India Active</option><option>US/International</option><option>Debt/Hybrid</option><option>ELSS</option></select></div>
-    <div class="fg"><label class="fl">Monthly SIP (₹)</label><input class="fi" id="mfi-sip" type="number" placeholder="2000"></div>
-    <div class="fg"><label class="fl">Units Held</label><input class="fi" id="mfi-units" type="number" step="0.001" placeholder="0"></div>
-    <div class="fg"><label class="fl">Current NAV (₹)</label><input class="fi" id="mfi-nav" type="number" step="0.01" placeholder="0"></div>
-    <div class="fg"><label class="fl">Started</label><input class="fi" id="mfi-start" placeholder="Mar-26"></div>
-  </div>
-  <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('add-mf-modal')">Cancel</button><button class="btn btn-navy" onclick="addMF()">Save Fund</button></div>
-</div></div>
-
-<div class="mov" id="add-chit-modal"><div class="modal">
-  <div class="modal-title">Add Chit Fund</div>
-  <div class="fgrid">
-    <div class="fg fspan"><label class="fl">Name</label><input class="fi" id="ci-name" placeholder="e.g. Mahalakshmi 10L"></div>
-    <div class="fg"><label class="fl">Chit Value (₹)</label><input class="fi" id="ci-val" type="number" placeholder="1000000"></div>
-    <div class="fg"><label class="fl">Total Months</label><input class="fi" id="ci-mo" type="number" placeholder="20"></div>
-    <div class="fg"><label class="fl">Months Completed</label><input class="fi" id="ci-done" type="number" placeholder="0"></div>
-    <div class="fg"><label class="fl">Current Monthly (₹)</label><input class="fi" id="ci-pm" type="number"></div>
-    <div class="fg"><label class="fl">Start Month</label><input class="fi" id="ci-start" placeholder="Jan-26"></div>
-    <div class="fg"><label class="fl">Commission %</label><input class="fi" id="ci-comm" type="number" placeholder="5"></div>
-    <div class="fg"><label class="fl">Status</label><select class="fi" id="ci-status"><option>Active</option><option>Prize Taken</option><option>Completing</option><option>Planned</option></select></div>
-  </div>
-  <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('add-chit-modal')">Cancel</button><button class="btn btn-gold" onclick="addChit()">Save Chit</button></div>
-</div></div>
-
-<div class="mov" id="add-cpay-modal"><div class="modal">
-  <div class="modal-title">Record Chit Payment</div>
-  <div class="fgrid">
-    <div class="fg"><label class="fl">Month</label><input class="fi" id="cp-mo" placeholder="Mar-26"></div>
-    <div class="fg"><label class="fl">Chit Fund</label><select class="fi" id="cp-chit"></select></div>
-    <div class="fg"><label class="fl">Amount (₹)</label><input class="fi" id="cp-amt" type="number"></div>
-    <div class="fg"><label class="fl">Status</label><select class="fi" id="cp-st"><option>Paid</option><option>Pending</option><option>Overdue</option></select></div>
-    <div class="fg fspan"><label class="fl">Notes</label><input class="fi" id="cp-note"></div>
-  </div>
-  <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('add-cpay-modal')">Cancel</button><button class="btn btn-gold" onclick="addChitPay()">Save Payment</button></div>
-</div></div>
-
-<div class="mov" id="add-inv-modal"><div class="modal">
-  <div class="modal-title">Add Investment</div>
-  <div class="fgrid">
-    <div class="fg fspan"><label class="fl">Name</label><input class="fi" id="ivi-name" placeholder="e.g. NPS Personal Tier 1"></div>
-    <div class="fg"><label class="fl">Type</label><select class="fi" id="ivi-type"><option>NPS</option><option>Gold SGB</option><option>Gold ETF</option><option>Physical Gold</option><option>Direct Stocks India</option><option>US Stocks</option><option>PPF</option><option>FD</option><option>EPF</option><option>Real Estate</option><option>Other</option></select></div>
-    <div class="fg"><label class="fl">Monthly (₹)</label><input class="fi" id="ivi-mo" type="number"></div>
-    <div class="fg"><label class="fl">Current Value (₹)</label><input class="fi" id="ivi-val" type="number"></div>
-    <div class="fg"><label class="fl">Target (₹)</label><input class="fi" id="ivi-tgt" type="number"></div>
-    <div class="fg"><label class="fl">Notes</label><input class="fi" id="ivi-note"></div>
-  </div>
-  <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('add-inv-modal')">Cancel</button><button class="btn btn-navy" onclick="addInv()">Save</button></div>
-</div></div>
-
-<div class="mov" id="add-ins-modal"><div class="modal">
-  <div class="modal-title">Add Insurance Policy</div>
-  <div class="fgrid">
-    <div class="fg fspan"><label class="fl">Policy Name</label><input class="fi" id="ini-name" placeholder="e.g. LIC Term Insurance"></div>
-    <div class="fg"><label class="fl">Type</label><select class="fi" id="ini-type"><option>Term Life</option><option>Life/Endowment</option><option>Health</option><option>Vehicle</option><option>Personal Accident</option><option>Other</option></select></div>
-    <div class="fg"><label class="fl">Annual Premium (₹)</label><input class="fi" id="ini-prem" type="number"></div>
-    <div class="fg"><label class="fl">Sum Assured (₹)</label><input class="fi" id="ini-cov" type="number"></div>
-    <div class="fg"><label class="fl">Renewal Date</label><input class="fi" id="ini-ren" type="date"></div>
-    <div class="fg"><label class="fl">Status</label><select class="fi" id="ini-st"><option>Active</option><option>Lapsed</option><option>Maturing</option></select></div>
-  </div>
-  <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('add-ins-modal')">Cancel</button><button class="btn btn-navy" onclick="addIns()">Save Policy</button></div>
-</div></div>
-
-<div class="mov" id="add-goal-modal"><div class="modal">
-  <div class="modal-title">Add Financial Goal</div>
-  <div class="fgrid">
-    <div class="fg fspan"><label class="fl">Goal Name</label><input class="fi" id="gi-name" placeholder="e.g. Home Down Payment"></div>
-    <div class="fg"><label class="fl">Target Amount (₹)</label><input class="fi" id="gi-tgt" type="number"></div>
-    <div class="fg"><label class="fl">Timeline (years)</label><input class="fi" id="gi-yr" type="number"></div>
-    <div class="fg"><label class="fl">Saved So Far (₹)</label><input class="fi" id="gi-saved" type="number"></div>
-  </div>
-  <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('add-goal-modal')">Cancel</button><button class="btn btn-navy" onclick="addGoal()">Save Goal</button></div>
-</div></div>
-
-<div class="mov" id="add-asset-modal"><div class="modal">
-  <div class="modal-title">Add Asset</div>
-  <div class="fgrid">
-    <div class="fg fspan"><label class="fl">Asset Name</label><input class="fi" id="ai-name" placeholder="e.g. Savings Account"></div>
-    <div class="fg"><label class="fl">Type</label><select class="fi" id="ai-type"><option>Cash/Savings</option><option>Mutual Funds</option><option>NPS</option><option>Chit Fund</option><option>Stocks</option><option>Gold</option><option>PPF/FD</option><option>Real Estate</option><option>Vehicle</option><option>Other</option></select></div>
-    <div class="fg"><label class="fl">Current Value (₹)</label><input class="fi" id="ai-val" type="number"></div>
-    <div class="fg fspan"><label class="fl">Notes</label><input class="fi" id="ai-note"></div>
-  </div>
-  <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('add-asset-modal')">Cancel</button><button class="btn btn-green" onclick="addAsset()">Save Asset</button></div>
-</div></div>
-
-<div class="mov" id="add-liab-modal"><div class="modal">
-  <div class="modal-title">Add Liability</div>
-  <div class="fgrid">
-    <div class="fg fspan"><label class="fl">Liability Name</label><input class="fi" id="li-name" placeholder="e.g. Personal Loan"></div>
-    <div class="fg"><label class="fl">Type</label><select class="fi" id="li-type"><option>Personal Loan</option><option>Vehicle Loan</option><option>Home Loan</option><option>Credit Card</option><option>Other</option></select></div>
-    <div class="fg"><label class="fl">Outstanding (₹)</label><input class="fi" id="li-amt" type="number"></div>
-    <div class="fg fspan"><label class="fl">Notes</label><input class="fi" id="li-note"></div>
-  </div>
-  <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('add-liab-modal')">Cancel</button><button class="btn btn-red" onclick="addLiab()">Save Liability</button></div>
-</div></div>
-
-<!-- Toast container -->
 <div id="toast"></div>
-
 <script src="app.js"></script>
 </body>
 </html>
